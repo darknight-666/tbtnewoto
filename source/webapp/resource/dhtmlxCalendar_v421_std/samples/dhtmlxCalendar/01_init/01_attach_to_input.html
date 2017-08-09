@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Attach to input</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<link rel="stylesheet" type="text/css" href="../../../codebase/dhtmlxcalendar.css"/>
+	<script src="../../../codebase/dhtmlxcalendar.js"></script>
+	<style>
+		#calendar,
+		#calendar2,
+		#calendar3 {
+			border: 1px solid #909090;
+			font-family: Tahoma;
+			font-size: 12px;
+		}
+	</style>
+	<script>
+		var myCalendar;
+		function doOnLoad() {
+			myCalendar = new dhtmlXCalendarObject(["calendar"]);
+            myCalendar.setDateFormat("%y-%m-%d %H:%i");
+
+        }
+//        function doLoadLiveDemo(){
+//
+//            var d = new Date();
+//
+////            myCalendar = new dhtmlXCalendarObject(["fromdate", "todate"]);
+////            myCalendar.setDateFormat("%d/%m/%Y");
+////            myCalendar.hideTime();
+////
+////            d.setDate(1);
+////            document.getElementById("fromdate").value = myCalendar.getFormatedDate(null,d);
+////            d.setDate(14);
+////            document.getElementById("todate").value = myCalendar.getFormatedDate(null,d);
+//
+//            myCalendarRem = new dhtmlXCalendarObject("reminder");
+//            myCalendarRem.setDateFormat("%d/%m/%Y %H:%i");
+//
+//            d.setDate(1);
+//            d.setHours(10);
+//            d.setMinutes(0);
+//            document.getElementById("reminder").value = myCalendarRem.getFormatedDate(null,d);
+//
+//
+//        }
+
+    </script>
+</head>
+<body onload="doOnLoad();">
+	<div style="position:relative;height:280px;">
+        <input type="text" name="release" autocomplete="off" id="calendar">		<!--<input type="text" id="calendar2">-->
+		<!--<input type="text" id="calendar3">-->
+	</div>
+</body>
+</html>

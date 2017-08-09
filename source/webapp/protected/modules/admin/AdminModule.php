@@ -1,0 +1,147 @@
+<?php
+
+class AdminModule extends BaseMoudle {
+
+    public function init() {
+        $this->layout = 'admin.views.layouts.main';
+        // this method is called when the module is being created
+        // you may place code here to customize the module or the application
+        // import the module-level models and components
+        $this->setImport(array(
+            'admin.models.*',
+            'admin.components.*',
+        ));
+        yii::app()->setComponents(array(
+            'user' => array(
+                'class' => 'AdminWebUser',
+                'allowAutoLogin' => true,
+                'stateKeyPrefix' => 'admin_',
+                'loginUrl' => array('/admin/default/login')
+            ),
+            'errorHandler' => array(
+                'errorAction' => 'admin/default/error',
+            ),
+        ));
+        $this->menus = array(
+            array(
+                'label' => '品牌管理',
+                'url' => 'javascript:;',
+                'number' => 0,
+                'fa_img' => 'fa-th',
+                'itemOptions' => array('name' => 'default'),
+                'items' => array(
+                    array(
+                        'label' => '分类管理',
+                        'url' => array('/admin/brand/typeList'),
+                        'number' => 0,
+                        'itemOptions' => array('name' => 'brand.typeList', 'class' => 'second-parent'),
+                    ),
+                    array(
+                        'label' => '品牌列表',
+                        'url' => array('/admin/brand/list'),
+                        'number' => 0,
+                        'itemOptions' => array('name' => 'brand.list', 'class' => 'second-parent'),
+                    ),
+                    array(
+                        'label' => '品牌创建',
+                        'url' => array('/admin/brand/add'),
+                        'number' => 0,
+                        'itemOptions' => array('name' => 'brand.add', 'class' => 'second-parent'),
+                    ),
+                    array(
+                        'label' => '品牌编辑',
+                        'url' => array('/admin/brand/update'),
+                        'number' => 0,
+                        'itemOptions' => array('name' => 'brand.update', 'class' => 'second-parent'),
+                    ),
+                    array(
+                        'label' => '品牌详情',
+                        'url' => array('/admin/brand/detail'),
+                        'number' => 0,
+                        'itemOptions' => array('name' => 'brand.detail', 'class' => 'second-parent'),
+                    ),
+                    array(
+                        'label' => '门店列表',
+                        'url' => array('/admin/shop/list'),
+                        'number' => 0,
+                        'itemOptions' => array('name' => 'shop.list', 'class' => 'second-parent'),
+                    ),
+                    array(
+                        'label' => '门店创建',
+                        'url' => array('/admin/shop/add'),
+                        'number' => 0,
+                        'itemOptions' => array('name' => 'shop.add', 'class' => 'second-parent'),
+                    ),
+                    array(
+                        'label' => '门店编辑',
+                        'url' => array('/admin/shop/update'),
+                        'number' => 0,
+                        'itemOptions' => array('name' => 'shop.update', 'class' => 'second-parent'),
+                    ),
+                ),
+            ),
+            array(
+                'label' => '产品管理',
+                'url' => 'javascript:;',
+                'number' => 0,
+                'fa_img' => 'fa-th',
+                'itemOptions' => array('name' => 'default'),
+                'items' => array(
+                    array(
+                        'label' => '代金券列表',
+                        'url' => array('/admin/voucher/list'),
+                        'number' => 0,
+                        'itemOptions' => array('name' => 'voucher.list', 'class' => 'second-parent'),
+                    ),
+                    array(
+                        'label' => '代金券添加',
+                        'url' => array('/admin/voucher/add'),
+                        'number' => 0,
+                        'itemOptions' => array('name' => 'voucher.add', 'class' => 'second-parent'),
+                    ),
+                    array(
+                        'label' => '代金券编辑',
+                        'url' => array('/admin/voucher/update'),
+                        'number' => 0,
+                        'itemOptions' => array('name' => 'voucher.update', 'class' => 'second-parent'),
+                    ),
+                    array(
+                        'label' => '代金券设置门店',
+                        'url' => array('/admin/voucher/addShop'),
+                        'number' => 0,
+                        'itemOptions' => array('name' => 'voucher.addShop', 'class' => 'second-parent'),
+                    ),
+                ),
+            ),
+            array(
+                'label' => '我的信息',
+                'url' => 'javascript:;',
+                'number' => isset($newData['default']['number']) ? $newData['default']['number'] : 0,
+                'fa_img' => 'fa-th',
+                'itemOptions' => array('name' => 'default'),
+                'items' => array(
+                    array(
+                        'label' => '我的信息',
+                        'url' => array('/admin/default/index'),
+                        'number' => isset($newData['default']['itmes']['admin']) ? $newData['default']['itmes']['admin'] : 0,
+                        'itemOptions' => array('name' => 'default.index', 'class' => 'second-parent'),
+                    ),
+                ),
+            ),
+        );
+    }
+
+    public function beforeControllerAction($controller, $action) {
+        if (parent::beforeControllerAction($controller, $action)) {
+            // this method is called before any module controller action is performed
+            // you may place customized code here
+            return true;
+        } else
+            return false;
+    }
+
+    public function getName() {
+        return "OTO交易网络平台清算运营系统（版本：V1.0）";
+    }
+
+}
