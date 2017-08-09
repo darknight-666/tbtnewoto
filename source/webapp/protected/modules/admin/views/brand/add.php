@@ -10,10 +10,10 @@ $this->module->params = array('title' => '创建品牌', 'title_img' => 'fa-th',
         <!-- 品牌名称 -->
         <div class="section">
             <div class="from-group">
-                <label class="control-label required" for="TrainingCourse_name">品牌名称：<span class="required">*</span></label>
+                <label class="control-label required" for="TrainingCourse_name_a">品牌名称：<span class="required">*</span></label>
                 <div class="from-control col-lg">
                     <div class="input">
-                        <input autocomplete="off" maxlength="30" name="TrainingCourse[name]" id="TrainingCourse_name" type="text">
+                        <input autocomplete="off" maxlength="20" name="TrainingCourse[name]" id="TrainingCourse_name_a" type="text">
                     </div>
                     <div class="sep"></div>
                     <span class="tip">最大可输入20个字</span>
@@ -30,8 +30,8 @@ $this->module->params = array('title' => '创建品牌', 'title_img' => 'fa-th',
                             <select name="TrainingCourse[course_type_id]" id="TrainingCourse_course_type_id">
                                 <option value="">请选择...</option>
                                 <optgroup label="TBT_1">
-                                    <option value="38">TBT_1_A</option>
-                                    <option value="39">TBT_1_B</option>
+                                    <option value="1">111</option>
+                                    <option value="2">222</option>
                                 </optgroup>
                             </select>
                         </div>
@@ -40,8 +40,8 @@ $this->module->params = array('title' => '创建品牌', 'title_img' => 'fa-th',
                             <select name="TrainingCourse[course_type_id]" id="TrainingCourse_course_type_id">
                                 <option value="">请选择...</option>
                                 <optgroup label="TBT_1">
-                                    <option value="38">TBT_1_A</option>
-                                    <option value="39">TBT_1_B</option>
+                                    <option value="3">111</option>
+                                    <option value="4">222</option>
                                 </optgroup>
                             </select>
                         </div>
@@ -55,7 +55,7 @@ $this->module->params = array('title' => '创建品牌', 'title_img' => 'fa-th',
                 <label class="control-label required" for="TrainingCourse_name">标签：</label>
                 <div class="from-control col-lg">
                     <div class="input">
-                        <input autocomplete="off" maxlength="30" name="TrainingCourse[name]" id="TrainingCourse_name" type="text">
+                        <input autocomplete="off" maxlength="10" name="TrainingCourse[name]" id="TrainingCourse_name" type="text">
                     </div>
                     <div class="sep"></div>
                     <span class="tip">最大可输入10个字</span>
@@ -97,6 +97,21 @@ $this->module->params = array('title' => '创建品牌', 'title_img' => 'fa-th',
                 </div>
             </div>
         </div>
+        <!-- 提供增值服务 -->
+        <div class="section">
+            <div class="from-group">
+                <label class="control-label" for="TrainingCourse_description">提供增值服务：</label>
+                <div class="from-control col-lg">
+                    <div>
+                        <input   name="TrainingCourse[name]"  type="checkbox" >  <div class="sep"></div> <span>咖啡设备 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+                        <input   name="TrainingCourse[name]"  type="checkbox" > <div class="sep"></div> <span>咖啡设备  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+                        <input   name="TrainingCourse[name]"  type="checkbox" >  <div class="sep"></div> <span>咖啡设备  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+                        <input   name="TrainingCourse[name]"  type="checkbox" > <div class="sep"></div> <span>咖啡设备</span>
+
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- 品牌主图 -->
         <div class="section">
             <div class="from-group">
@@ -124,8 +139,9 @@ $this->module->params = array('title' => '创建品牌', 'title_img' => 'fa-th',
                 <div class="from-control col-lg">
                     <div class="file-upload">
                         <div class="file">
-                            <div class="input">
-                                <input class="fileInput" name="TrainingCourse[file_path]" id="TrainingCourse_file_path" type="text">                            </div>
+                            <div class="input readonly">
+                                <input autocomplete="off"  readonly="readOnly" name="CrmManager[phonenum]"  value="" type="text">
+                            </div>
                             <input class="btn btn-primary btn-file activeFileSubmit" value="上传" type="button">
                             <div class="sep"></div>
                             <span class="tip">仅支持PDF格式文件,最大不超过200KB。仅支持jpg、png、jpeg格式</span>
@@ -136,5 +152,22 @@ $this->module->params = array('title' => '创建品牌', 'title_img' => 'fa-th',
                 </div>
             </div>
         </div>
+        <div class="section">
+            <div class="from-group">
+                  <div class="file-show">
+                        <div class="uploadlogo" ><img src="#"></div>
+                   </div>
+             </div>
+            <div class="from-group">
+                <div class="file-show">
+                    <div class="uploadlogo" ><img src="#"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="btn-panel">
+    <div class="btn-wrap">
+        <input class="btn btn-primary submitForm" tag="1" name="yt5" value="创建" type="button">
     </div>
 </div>
