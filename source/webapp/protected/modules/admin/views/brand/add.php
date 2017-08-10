@@ -34,9 +34,9 @@ $this->module->params = array('title' => '创建品牌', 'title_img' => 'fa-th',
                                     <option value="2">222</option>
                                 </optgroup>
                             </select>
+                            <div class="mb20"></div>
                         </div>
-                        <div class="sep"></div>
-                        <div class="select-wrap">
+                        <div class="select-wrap ">
                             <select name="TrainingCourse[course_type_id]" id="TrainingCourse_course_type_id">
                                 <option value="">请选择...</option>
                                 <optgroup label="TBT_1">

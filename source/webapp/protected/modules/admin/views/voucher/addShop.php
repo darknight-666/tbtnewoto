@@ -74,8 +74,12 @@ $this->module->params = array('title' => '创建品牌', 'title_img' => 'fa-th',
                 </div>
             </div>
         </div>
+    </div>
+</div>
 <div class="btn-panel">
     <div class="btn-wrap">
         <input class="btn btn-primary submitForm" tag="1" name="yt5" value="发布优惠券" type="button">
     </div>
 </div>
+
+
