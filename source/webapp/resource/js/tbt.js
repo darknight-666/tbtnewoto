@@ -276,7 +276,7 @@ $(function () {
         var default_options = {
             autoOpen: false,
             resizable: false,
-            height: 200,
+            height: 250,
             width: 500,
             modal: true,
             html: '<div id="dialog-confirm"><p>是否确认通过？</p></div>',
