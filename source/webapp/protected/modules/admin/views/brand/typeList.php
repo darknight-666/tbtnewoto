@@ -6,7 +6,7 @@ $this->module->params = array('title' => '品牌分类列表', 'title_img' => 'f
     <div class="panel-header">
         <h3 class="panel-title">分类列表</h3>
         <div class="panel-btnWrap">
-            <input class="btn btn-primary"  value="添加分类" type="button">
+            <input class="btn btn-primary"  value="添加分类" type="button" id="btn-add">
         </div>
     </div>
     <div class="panel-body">
@@ -71,3 +71,22 @@ $this->module->params = array('title' => '品牌分类列表', 'title_img' => 'f
         </table>
     </div>
 </div>
+<script>
+    $(function(){
+        /**
+         *  添加分类
+         */
+        $("#btn-add").click(function(){
+            var coursetypeId = $(this).attr("coursetypeid");
+            $('#tbt_product_id').val(coursetypeId);
+//            $('#dialog-return').confirm({
+//                titleString: '删除',
+//                contentString: '是否删除该课程分类?',
+//                submitString: '添加',
+//                callback: 'updata("/sell/training/courseTypeDelete", "0", "0")'
+//            });
+            return false;
+        });
+
+    });
+</script>
