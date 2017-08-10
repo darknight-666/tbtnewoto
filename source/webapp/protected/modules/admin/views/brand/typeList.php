@@ -81,8 +81,8 @@ $this->module->params = array('title' => '品牌分类列表', 'title_img' => 'f
             $('#tbt_product_id').val(coursetypeId);
             $('#dialog-return').confirm({
                 titleString: '',
-                contentString: '<div class="from-group"><label for="" class="control-label">分类名称</label>  <input autocomplete="off"  type="text" style="width: 200px; height: 25px; line-height: 25px;   border: 1px solid #e6e5ea;padding: 0;margin: 0;"></div> ' +
-                '<div class="from-group"><label class="control-label" for="">上级分类</label><select name="FormLiborCustomer[role]" style=" width: 200px;padding: 0;margin: 0;height: 25px; line-height: 25px;"> <option value="">请选择...</option> <option value="41">餐饮</option></select></div> ',
+                contentString: '<div class="from-group"><label for="" class="control-label">分类名称</label>  <input autocomplete="off"  type="text" style="width: 180px; height: 25px; line-height: 25px;   border: 1px solid #e6e5ea;padding: 0;margin: 0;"></div> ' +
+                '<div class="from-group"><label class="control-label" for="">上级分类</label><select name="FormLiborCustomer[role]" style=" width: 180px;padding: 0;margin: 0;height: 25px; line-height: 25px;"> <option value="">请选择...</option> <option value="41">餐饮</option></select></div> ',
                  submitString: '添加',
                 callback: 'updata(" ", "0", "0")'
             });
