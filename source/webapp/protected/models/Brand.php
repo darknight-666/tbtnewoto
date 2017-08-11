@@ -11,7 +11,7 @@ class Brand extends CActiveRecord {
 
     public $pageSize = 10;
     public $parent_id; //分类id一级
-
+    public $qualification_path_tmp; // 资质上传临时存储
     /**
      * @return string the associated database table name
      */
@@ -27,7 +27,7 @@ class Brand extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('name, parent_id, brand_type_id, status, allowance_detail, recommend_detail, create_time', 'required'),
+            array('name, parent_id, brand_type_id, status, allowance_detail, recommend_detail, image_path, qualification_path_tmp, create_time', 'required'),
             array('brand_type_id, status', 'numerical', 'integerOnly' => true),
             array('reach_amount, discount_amount', 'numerical'),
             array('name', 'length', 'max' => 20),

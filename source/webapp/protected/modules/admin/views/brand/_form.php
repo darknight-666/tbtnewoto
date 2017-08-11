@@ -151,7 +151,7 @@ $form = $this->beginWidget('CActiveForm', array(
                     <div class="file-upload">
                         <div class="file">
                             <div class="input readonly">
-                                <input autocomplete="off"  readonly="readOnly" name=""  value="" type="text">
+                                <?php echo $form->textField($model, 'qualification_path_tmp', array('autocomplete' => 'off')); ?>
                                 <?php echo $form->error($model, 'qualification_path'); ?>
                             </div>
                             <?php echo CHtml::Button('上传', array('class' => 'btn btn-primary btn-file activeFileSubmit')); ?>
@@ -191,7 +191,7 @@ $form = $this->beginWidget('CActiveForm', array(
         $(".activeFileSubmit").each(function () {
             uploadBtn = $(this);
             new AjaxUpload(uploadBtn, {
-                action: "/admin/default/uploadImage/FormIframeUpload[field]/",
+                action: "/admin/default/uploadImage/FormIframeUpload[field]/" + uploadBtn.parent('.file').find('.fileInput').attr('id'),
                 name: "FormIframeUpload[fileField]",
                 data: {YII_CSRF_TOKEN: "<?php echo Yii::app()->request->csrfToken; ?>"},
                 onComplete: function (file, response) {

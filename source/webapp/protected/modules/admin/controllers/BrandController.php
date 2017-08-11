@@ -88,6 +88,12 @@ class BrandController extends AdminBaseController {
      */
     public function actionAdd() {
         $model = new Brand();
+        if(isset($_POST['Brand'])){
+            $model->attributes = $_POST['Brand'];
+            if($model->save()){
+                $this->redirect('/admin/brand/list');
+            }
+        }
         $this->render('add', array('model' => $model));
     }
 
