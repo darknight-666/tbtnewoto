@@ -47,4 +47,12 @@ class DefaultController extends AdminBaseController {
         $this->render('error', array('code' => $error['code']));
     }
 
+    /**
+     * 图片上传
+     */
+    public function actionUploadImage() {
+        $path = Yii::app()->params['site']['uploadOTO'] . date('Y-m') . '/';
+        parent::actionIframeUploadWithField('images', $path); //上传图片 回显原始ID
+    }
+
 }

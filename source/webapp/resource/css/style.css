@@ -216,8 +216,8 @@
     background-position: 0 -20px;
 }
 .menu-item-parent .fa-pd {
-     background-position: 0 -40px;
- }
+    background-position: 0 -40px;
+}
 .menu-item-parent .fa-jy {
     background-position: 0 -60px;
 }
@@ -1722,8 +1722,20 @@
     width: 16px;
 }
 
+/*****分页处理*******/
+/*重写yii css 取消首页尾页的隐藏*/
+ul.yiiPager{
+    margin-top:20px;
+    display: block;
+    text-align: right;
 
-
+}
+ul.yiiPager .first, ul.yiiPager .last{
+    display: inline-block;
+}
+ul.yiiPager .selected a{
+    background:#3b99ff;
+}
 
 
 

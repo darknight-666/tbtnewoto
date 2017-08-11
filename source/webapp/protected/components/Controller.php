@@ -24,8 +24,4 @@ class Controller extends CController {
      */
     public $breadcrumbs = array();
 
-    public function output($data, $status = 10000, $message = "") {
-        My::output($data, $status, $message);
-    }
-
 }

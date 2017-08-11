@@ -24,15 +24,15 @@ return array(
     ),
     'modules' => array(
         'admin', // 系统管理员模块
-        'user11', // 用户模块
+        'user', // 用户模块
         'shop', // 商户模块
         // uncomment the following to enable the Gii tool
-        'gii' => array(
-            'class' => 'system.gii.GiiModule',
-            'password' => '123456',
-            // If removed, Gii defaults to localhost only. Edit carefully to taste.
-            'ipFilters' => array('127.0.0.1', '::1'),
-        ),
+//        'gii' => array(
+//            'class' => 'system.gii.GiiModule',
+//            'password' => '123456',
+//            // If removed, Gii defaults to localhost only. Edit carefully to taste.
+//            'ipFilters' => array('127.0.0.1', '::1'),
+//        ),
         'rights' => array(
             'superuserName' => 'admin', //自己用户表里面的用户，这个作为超级用户
             'userClass' => 'Admin', //自己用户表对应的用户模型类
@@ -95,8 +95,8 @@ return array(
             'class' => 'CLogRouter',
             'routes' => array(
                 array(
-                    'class' => 'ext.yii-debug-toolbar.YiiDebugToolbarRoute',
-//                    'class' => 'CFileLogRoute',
+//                    'class' => 'ext.yii-debug-toolbar.YiiDebugToolbarRoute',
+                    'class' => 'CFileLogRoute',
                     'levels' => 'error, warning',
                 ),
             ),

@@ -55,4 +55,44 @@ class AdminBaseController extends RController {
         );
     }
 
+    public function output($data, $status = 10000, $message = "") {
+        My::output($data, $status, $message);
+    }
+    
+    /**
+     * 异步上传
+     * @param type $type
+     * @param type $path
+     * @return boolean
+     */
+    public function actionIframeUploadWithField($type = 'images', $path = '') {
+        if (empty($path)) {
+            return false;
+        }
+        $model = new FormIframeUpload($type);
+        $model->field = @$_REQUEST['FormIframeUpload']['field'];
+        $ret = array('status' => ApiStatusCode::$error, 'url' => '', 'message' => '无上传文件');
+        if (isset($_FILES['FormIframeUpload'])) {
+            if ($model->validate()) {
+                $model->attributes = $model->constructionFiles($path); //处理上传
+                if (!empty($model->fileField)) {//上传成功
+                    $ret = array('status' => ApiStatusCode::$ok, 'url' => json_encode($model->attributes), 'message' => $model->originName . '上传成功');
+                    $this->render('//site/iframeupload', array(
+                        'items' => $ret,
+                    ));
+                    Yii::app()->end();
+                }
+            } else {//文件验证不通过
+                $ret = array('status' => ApiStatusCode::$error, 'url' => json_encode($model->attributes), 'message' => $model->getError('fileField'));
+                $this->render('//site/iframeupload', array(
+                    'items' => $ret,
+                ));
+                Yii::app()->end();
+            }
+        }
+        $this->render('//site/iframeupload', array(
+            'items' => $ret,
+        ));
+    }
+
 }
