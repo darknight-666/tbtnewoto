@@ -88,9 +88,9 @@ class BrandController extends AdminBaseController {
      */
     public function actionAdd() {
         $model = new Brand();
-        if(isset($_POST['Brand'])){
+        if (isset($_POST['Brand'])) {
             $model->attributes = $_POST['Brand'];
-            if($model->save()){
+            if ($model->save()) {
                 $this->redirect('/admin/brand/list');
             }
         }
@@ -101,7 +101,18 @@ class BrandController extends AdminBaseController {
      * 品牌 - 编辑
      */
     public function actionUpdate() {
-        $this->render('update');
+        $id = Yii::app()->request->getParam('id');
+        $model = Brand::model()->findByPk($id);
+        if (is_null($model)) {
+            throw new CHttpException(404, '页面不存在');
+        }
+        if (isset($_POST['Brand'])) {
+            $model->attributes = $_POST['Brand'];
+            if ($model->save()) {
+                $this->redirect('/admin/brand/list');
+            }
+        }
+        $this->render('update', array('model' => $model));
     }
 
     /**
