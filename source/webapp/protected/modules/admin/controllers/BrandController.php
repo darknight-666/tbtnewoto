@@ -118,9 +118,5 @@ class BrandController extends AdminBaseController {
     public function actionDetail() {
         $this->render('detail');
     }
-    
-    public function actionTest(){
-        $this->render('test');
-    }
 
 }
