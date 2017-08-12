@@ -27,7 +27,7 @@ class Brand extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('name, parent_id, brand_type_id, status, allowance_detail, recommend_detail, image_path, qualification_path_tmp, create_time', 'required'),
+            array('name, parent_id, brand_type_id, status, allowance_detail, recommend_detail, image_path, create_time', 'required'),
             array('brand_type_id, status', 'numerical', 'integerOnly' => true),
             array('reach_amount, discount_amount', 'numerical'),
             array('name', 'length', 'max' => 20),
@@ -35,7 +35,7 @@ class Brand extends CActiveRecord {
             array('recommend_reason', 'length', 'max' => 40),
             array('value_added_service', 'length', 'max' => 120),
             array('image_path', 'length', 'max' => 255),
-            array('qualification_path', 'length', 'max' => 1000),
+            array('qualification_path_tmp, qualification_path', 'length', 'max' => 1000),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('brand_id, brand_type_id, name, tag, status, reach_amount, discount_amount, allowance_detail, recommend_reason, recommend_detail, value_added_service, image_path, qualification_path, create_time', 'safe', 'on' => 'search'),
@@ -49,6 +49,8 @@ class Brand extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
+            'type' => array(self::BELONGS_TO,'BrandType','brand_type_id'),
+            'shop' => array(self::HAS_MANY,'Shop','brand_id'),
         );
     }
 
@@ -96,8 +98,8 @@ class Brand extends CActiveRecord {
         $criteria->compare('name', $this->name, true);
         $criteria->compare('tag', $this->tag, true);
         $criteria->compare('status', $this->status);
-        $criteria->compare('reach_amount', $this->reach_amount);
-        $criteria->compare('discount_amount', $this->discount_amount);
+//        $criteria->compare('reach_amount', $this->reach_amount);
+//        $criteria->compare('discount_amount', $this->discount_amount);
         $criteria->compare('allowance_detail', $this->allowance_detail, true);
         $criteria->compare('recommend_reason', $this->recommend_reason, true);
         $criteria->compare('recommend_detail', $this->recommend_detail, true);
@@ -123,7 +125,25 @@ class Brand extends CActiveRecord {
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
-
+    
+    public function beforeValidate() {
+        $this->value_added_service = !empty($this->value_added_service) ? implode(',', $this->value_added_service) : '';
+        $this->status = !empty($this->status) ? $this->status: self::STATUS_CONFIRMED;
+        $this->create_time = !empty($this->create_time) ? $this->create_time: date('Y-m-d H:i:s');
+        return parent::beforeValidate();
+    }
+    
+    public function afterSave() {
+        $this->value_added_service = !empty($this->value_added_service) ? explode(',', $this->value_added_service) : array();
+        return parent::afterSave();
+    }
+    
+    public function afterFind() {
+        $this->value_added_service = !empty($this->value_added_service) ? explode(',', $this->value_added_service) : array();
+        $this->parent_id = $this->type->parent_id;
+        parent::afterFind();
+    }
+    
     /**
      * 状态组
      */

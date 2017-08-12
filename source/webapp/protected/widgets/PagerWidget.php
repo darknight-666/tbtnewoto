@@ -25,5 +25,10 @@ class PagerWidget extends CLinkPager {
     public $header = '';
     public $footer = '';
     public $cssFile;
-
+    
+    public function init() {
+//        $this->header = $this->getItemCount();
+//        $this->footer = $this->getItemCount();
+        parent::init();
+    }
 }

@@ -12,58 +12,31 @@ $this->module->params = array('title' => '品牌列表', 'title_img' => 'fa-th',
     <div class="panel-body">
         <table class="table table-striped" width="100%">
             <thead><tr role="row" >
-                <th>品牌名称</th>
-                <th>类别</th>
-                <th>门店数量</th>
-                <th>创建时间</th>
-                <th>操作</th>
+                    <th>品牌名称</th>
+                    <th>类别</th>
+                    <th>门店数量</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
             </thead>
             <tbody>
-            <tr>
-                <td></td>
-                <td>二级分类</td>
-                <td></td>
-                <td></td>
-                <td>
-                    <a class="btn-link" href="#">详情</a>
-                    <span class="sep">|</span>
-                    <a class="btn-link return-btn" href="javascript:;">编辑</a>
-                    <span class="sep">|</span>
-                    <a class="btn-link return-btn"  href="javascript:;">门店</a>
-                    <span class="sep">|</span>
-                    <a class="btn-link return-btn"  href="javascript:;">优惠券</a>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
-                    <a class="btn-link" href="#">详情</a>
-                    <span class="sep">|</span>
-                    <a class="btn-link return-btn"  href="javascript:;">编辑</a>
-                    <span class="sep">|</span>
-                    <a class="btn-link return-btn"  href="javascript:;">门店</a>
-                    <span class="sep">|</span>
-                    <a class="btn-link return-btn"  href="javascript:;">优惠券</a>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
-                    <a class="btn-link" href="#">详情</a>
-                    <span class="sep">|</span>
-                    <a class="btn-link return-btn" href="javascript:;">编辑</a>
-                    <span class="sep">|</span>
-                    <a class="btn-link return-btn"  href="javascript:;">门店</a>
-                    <span class="sep">|</span>
-                    <a class="btn-link return-btn" href="javascript:;">优惠券</a>
-                </td>
-            </tr>
+                <?php foreach ($list as $item) { ?>
+                    <tr>
+                        <td><?php echo $item->name ?></td>
+                        <td><?php echo $item->type->name ?></td>
+                        <td><?php echo count($item->shop) ?></td>
+                        <td><?php echo $item->create_time ?></td>
+                        <td>
+                            <?php echo CHtml::link('详情', '/admin/brand/detail/id/' . $item->brand_id, array('class' => 'btn-link return-btn')) ?>
+                            <span class="sep">|</span>
+                            <?php echo CHtml::link('编辑', '/admin/brand/update/id/' . $item->brand_id, array('class' => 'btn-link return-btn')) ?>
+                            <span class="sep">|</span>
+                            <?php echo CHtml::link('门店', '/admin/shop/list/brand_id/' . $item->brand_id, array('class' => 'btn-link return-btn')) ?>
+                            <span class="sep">|</span>
+                            <?php echo CHtml::link('优惠券', '/admin/voucher/list/brand_id/' . $item->brand_id, array('class' => 'btn-link return-btn')) ?>
+                        </td>
+                    </tr>
+                <?php } ?>
+                <?php $this->widget('application.widgets.PagerWidget', array('pages' => $pager)); ?>
             </tbody>
         </table>
     </div>

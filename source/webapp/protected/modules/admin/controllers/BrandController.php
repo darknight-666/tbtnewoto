@@ -126,7 +126,14 @@ class BrandController extends AdminBaseController {
      * 品牌 - 列表
      */
     public function actionList() {
-        $this->render('list');
+        $model = new Brand('search');
+        if (isset($_GET['Brand'])) {
+            $model->attributes = $_GET['Brand'];
+        }
+        $dataProvider = $model->search();
+        $list = $dataProvider->getData();
+        $pager = $dataProvider->pagination;
+        $this->render('list', array('model' => $model, 'pager' => $pager, 'list' => $list));
     }
 
     /**
