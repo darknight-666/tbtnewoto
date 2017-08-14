@@ -22,12 +22,12 @@ $menu = Yii::app()->request->getParam('menu');
             <tbody>
                 <?php foreach ($list as $item) { ?>
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td><?php echo $item->name ?></td>
+                        <td><?php echo $item->phonenumber ?></td>
+                        <td><?php echo $item->address ?></td>
+                        <td><?php echo $item->create_time ?></td>
                         <td>
-                            <a class="btn-link return-btn" href="javascript:;">编辑</a>
+                            <?php echo CHtml::link('编辑', '/admin/brand/shopUpdate/menu/' . $menu . '/brand_id/' . $item->brand_id.'/id/'.$item->shop_id, array('class' => 'btn-link return-btn')) ?>
                             <span class="sep">|</span>
                             <a class="btn-link return-btn"  href="javascript:;">删除</a>
                         </td>

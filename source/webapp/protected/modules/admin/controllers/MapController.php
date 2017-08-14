@@ -13,14 +13,36 @@ class MapController extends AdminBaseController {
      * 根据省id获取下属所有的市
      */
     public function actionGetCityListByProvinceId() {
-        $this->output(Map::getAllCityByProvinceIdByListData(130000));
+        $adcode = Yii::app()->request->getParam('adcode');
+        echo CHtml::tag('option', array('value' => ''), '请选择', TRUE);
+        $data = Map::getAllCityByProvinceIdByListData($adcode);
+        foreach ($data as $key => $value) {
+            echo CHtml::tag('option', array('value' => $key), $value, TRUE);
+        }
     }
 
     /**
      * 根据省id获取下属所有的市
      */
     public function actionGetDistrictListByCityId() {
-        $this->output(Map::getAllDistrictByCityIdByListData(130600));
+        $adcode = Yii::app()->request->getParam('adcode');
+        echo CHtml::tag('option', array('value' => ''), '请选择', TRUE);
+        $data = Map::getAllDistrictByCityIdByListData($adcode);
+        foreach ($data as $key => $value) {
+            echo CHtml::tag('option', array('value' => $key), $value, TRUE);
+        }
+    }
+
+    /**
+     * 根据省id获取下属所有的市
+     */
+    public function actionGetBusinessCenterListByDistrictId() {
+        $adcode = Yii::app()->request->getParam('adcode');
+        echo CHtml::tag('option', array('value' => ''), '请选择', TRUE);
+        $data = BusinessCenter::getAllByDistrictIdByListData($adcode);
+        foreach ($data as $key => $value) {
+            echo CHtml::tag('option', array('value' => $key), $value, TRUE);
+        }
     }
 
 }

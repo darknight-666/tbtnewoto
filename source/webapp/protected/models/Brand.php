@@ -12,6 +12,7 @@ class Brand extends CActiveRecord {
     public $pageSize = 10;
     public $parent_id; //分类id一级
     public $qualification_path_tmp; // 资质上传临时存储
+
     /**
      * @return string the associated database table name
      */
@@ -49,8 +50,8 @@ class Brand extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'type' => array(self::BELONGS_TO,'BrandType','brand_type_id'),
-            'shop' => array(self::HAS_MANY,'Shop','brand_id'),
+            'type' => array(self::BELONGS_TO, 'BrandType', 'brand_type_id'),
+            'shop' => array(self::HAS_MANY, 'Shop', 'brand_id'),
         );
     }
 
@@ -107,6 +108,7 @@ class Brand extends CActiveRecord {
         $criteria->compare('image_path', $this->image_path, true);
         $criteria->compare('qualification_path', $this->qualification_path, true);
         $criteria->compare('create_time', $this->create_time, true);
+        $criteria->order = 'create_time desc';
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -125,25 +127,25 @@ class Brand extends CActiveRecord {
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
-    
+
     public function beforeValidate() {
         $this->value_added_service = !empty($this->value_added_service) ? implode(',', $this->value_added_service) : '';
-        $this->status = !empty($this->status) ? $this->status: self::STATUS_CONFIRMED;
-        $this->create_time = !empty($this->create_time) ? $this->create_time: date('Y-m-d H:i:s');
+        $this->status = !empty($this->status) ? $this->status : self::STATUS_CONFIRMED;
+        $this->create_time = !empty($this->create_time) ? $this->create_time : date('Y-m-d H:i:s');
         return parent::beforeValidate();
     }
-    
+
     public function afterSave() {
         $this->value_added_service = !empty($this->value_added_service) ? explode(',', $this->value_added_service) : array();
         return parent::afterSave();
     }
-    
+
     public function afterFind() {
         $this->value_added_service = !empty($this->value_added_service) ? explode(',', $this->value_added_service) : array();
         $this->parent_id = $this->type->parent_id;
         parent::afterFind();
     }
-    
+
     /**
      * 状态组
      */
