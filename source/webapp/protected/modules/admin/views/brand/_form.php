@@ -3,7 +3,7 @@ $form = $this->beginWidget('CActiveForm', array(
     'id' => 'organization-form',
     'enableAjaxValidation' => false,
     'htmlOptions' => array('enctype' => 'multipart/form-data', 'class' => 'smart-form'),
-        ));
+));
 ?>
 <div class="tbt-panel">
     <div class="panel-header">
@@ -63,6 +63,20 @@ $form = $this->beginWidget('CActiveForm', array(
                     </div>
                     <div class="sep"></div>
                     <span class="tip">最大可输入10个字</span>
+                </div>
+            </div>
+        </div>
+        <!-- 买单免检 -->
+        <div class="section">
+            <div class="from-group">
+                <label class="control-label" for="Brand_tag">买单免检</label>
+                <div class="from-control col-lg">
+                    <div class="sep"></div> <div class="sep"></div> <div class="sep"></div>
+                    <label>满</label>
+                        <input autocomplete="off"  name="Brand[tag]" id="Brand_tag" value="" type="text" style="border: 1px solid #ccc;width: 50px">
+                    <div class="sep">&nbsp;&nbsp;&nbsp;&nbsp;</div> <div class="sep"></div> <div class="sep"></div>
+                    <label>减</label>
+                    <input autocomplete="off"  name="Brand[tag]" id="Brand_tag" value="" type="text" style="border: 1px solid #ccc;width: 50px">
                 </div>
             </div>
         </div>
@@ -130,7 +144,7 @@ $form = $this->beginWidget('CActiveForm', array(
                     <div class="file-upload">
                         <div class="file">
                             <div class="input">
-                                <?php echo $form->textField($model, 'image_path', array('autocomplete' => 'off')); ?>
+                                <?php echo $form->textField($model, 'image_path', array('autocomplete' => 'off', 'class' => 'fileInput fileInput_image')); ?>
                                 <?php echo $form->error($model, 'image_path'); ?>
                             </div>
                             <?php echo CHtml::Button('上传', array('class' => 'btn btn-primary btn-file activeFileSubmit')); ?>
@@ -151,28 +165,16 @@ $form = $this->beginWidget('CActiveForm', array(
                     <div class="file-upload">
                         <div class="file">
                             <div class="input readonly">
-                                <?php echo $form->textField($model, 'qualification_path_tmp', array('autocomplete' => 'off')); ?>
+                                <?php echo $form->textField($model, 'qualification_path_tmp', array('autocomplete' => 'off', 'class' => 'fileInput fileInput_image')); ?>
                                 <?php echo $form->error($model, 'qualification_path'); ?>
                             </div>
-                            <?php echo CHtml::Button('上传', array('class' => 'btn btn-primary btn-file activeFileSubmit')); ?>
+                            <?php echo CHtml::Button('上传', array('class' => 'btn btn-primary btn-file activeFileSubmita')); ?>
                             <div class="sep"></div>
                             <span class="tip">仅支持PDF格式文件,最大不超过200KB。仅支持jpg、png、jpeg格式</span>
                         </div>
                         <div class="errorMessage TrainingCourse_file_path_errormessage"></div>
                         <div class="file-show"></div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="section">
-            <div class="from-group">
-                <div class="file-show">
-                    <div class="uploadlogo" ><img src="#"></div>
-                </div>
-            </div>
-            <div class="from-group">
-                <div class="file-show">
-                    <div class="uploadlogo" ><img src="#"></div>
                 </div>
             </div>
         </div>
@@ -201,4 +203,47 @@ $form = $this->beginWidget('CActiveForm', array(
             });
         });
     })
+    $(function () {
+        $(".activeFileSubmita").each(function () {
+            uploadBtn = $(this);
+            new AjaxUpload(uploadBtn, {
+                action: "/admin/default/uploadImage/FormIframeUpload[field]/" + uploadBtn.parent('.file').find('.fileInput').attr('id'),
+                name: "FormIframeUpload[fileField]",
+                data: {YII_CSRF_TOKEN: "<?php echo Yii::app()->request->csrfToken; ?>"},
+                onComplete: function (file, response) {
+                    uploadBtn.disabled = "";
+                    uploadBtn.value = "上传";
+                }
+            });
+        });
+    })
+    /**
+     *  上传异步回调
+     */
+    function iframeUpload(status, data, message) {
+        var jsonData = jQuery.parseJSON(data);
+        if (status != 10000) {
+            $("#"+ jsonData.field +"").parents(".file-upload").find(".errorMessage").html('');
+            $("." + jsonData.field + "_errormessage").html(message);
+            return false;
+        }
+        $("#"+ jsonData.field +"").parents(".file-upload").find(".errorMessage").html('');
+//        $("." + jsonData.field + "_errormessage").html('');
+        $("#" + jsonData.field).val(jsonData.fileField);
+        if ($("#" + jsonData.field).hasClass("fileInput_image")) {
+            showImage();
+        };
+    }
+    ;
+    /**
+     *  图片回显
+     */
+    function showImage() {
+        $(".fileInput_image").each(function () {
+            if (jQuery.trim($(this).val()) != '') {
+                $(this).parents(".file-upload").find(".file-show").html('<img src="' + $(this).val() + '"  width="300">');
+            };
+        });
+    };
+
 </script>
