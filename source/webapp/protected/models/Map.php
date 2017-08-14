@@ -138,6 +138,9 @@ class Map extends CActiveRecord {
      * 获取所有的市根据省份Id
      */
     static function getAllCityByProvinceId($adcode) {
+        if (empty($adcode)) {
+            return array();
+        }
         $model = self::model();
         $model->adcodeBettwen = array($adcode, $adcode + 10000);
         $model->level = self::LEVEL_CITY;
@@ -158,6 +161,9 @@ class Map extends CActiveRecord {
      * 获取所有的区根据市Id
      */
     static function getAllDistrictByCityId($adcode) {
+        if (empty($adcode)) {
+            return array();
+        }
         $model = self::model();
         $model->adcodeBettwen = array($adcode, $adcode + 100);
         $model->level = self::LEVEL_DISTRICT;

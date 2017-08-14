@@ -35,7 +35,7 @@ class Shop extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('brand_id, location_x, location_y, create_time', 'required'),
+            array('name, brand_id, phonenumber, address, location_x, location_y, create_time', 'required'),
             array('brand_id, business_center_id', 'numerical', 'integerOnly' => true),
             array('location_x, location_y', 'numerical'),
             array('name, phonenumber, province_adcode, city_adcode, district_adcode', 'length', 'max' => 20),
@@ -69,7 +69,7 @@ class Shop extends CActiveRecord {
             'province_adcode' => '省份adcode',
             'city_adcode' => '城市adcode',
             'district_adcode' => '地区adcode',
-            'business_center_id' => '商圈id',
+            'business_center_id' => '商圈',
             'address' => '地址',
             'location_x' => '经度',
             'location_y' => '维度',
@@ -106,7 +106,7 @@ class Shop extends CActiveRecord {
         $criteria->compare('location_x', $this->location_x);
         $criteria->compare('location_y', $this->location_y);
         $criteria->compare('create_time', $this->create_time, true);
-
+        $criteria->order = 'create_time desc';
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
             'pagination' => array(
@@ -123,6 +123,11 @@ class Shop extends CActiveRecord {
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
+    }
+
+    public function beforeValidate() {
+        $this->create_time = !empty($this->create_time) ? $this->create_time : date('Y-m-d H:i:s');
+        return parent::beforeValidate();
     }
 
 }

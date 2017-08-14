@@ -148,14 +148,35 @@ class BrandController extends AdminBaseController {
      * 门店 - 添加
      */
     public function actionShopAdd() {
-        $this->render('shopAdd');
+        $brandId = Yii::app()->request->getParam('brand_id');
+        $menu = Yii::app()->request->getParam('menu');
+        $model = new Shop();
+        $model->brand_id = $brandId;
+        if (isset($_POST['Shop'])) {
+            $model->attributes = $_POST['Shop'];
+            if ($model->save()) {
+                $this->redirect('/admin/brand/shopList/menu/' . $menu . '/brand_id/' . $brandId);
+            }
+        }
+        $this->render('shopAdd', array('model' => $model));
     }
 
     /**
      * 门店 - 编辑
      */
     public function actionShopUpdate() {
-        $this->render('shopUpdate');
+        $id = Yii::app()->request->getParam('id');
+        $brandId = Yii::app()->request->getParam('brand_id');
+        $menu = Yii::app()->request->getParam('menu');
+        $model = Shop::model()->findByPk($id);
+        $model->brand_id = $brandId;
+        if (isset($_POST['Shop'])) {
+            $model->attributes = $_POST['Shop'];
+            if ($model->save()) {
+                $this->redirect('/admin/brand/shopList/menu/' . $menu . '/brand_id/' . $brandId);
+            }
+        }
+        $this->render('shopUpdate', array('model' => $model));
     }
 
     /**

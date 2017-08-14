@@ -96,27 +96,10 @@ $this->module->params = array('title' => '代金券列表', 'title_img' => 'fa-t
                 <td></td>
                 <td></td>
                 <td></td>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th>未上线</th>
-                <td>
-                    <a class="btn-link" href="#">详情</a>
-                    <span class="sep">|</span>
-                    <a class="btn-link return-btn" href="javascript:;">适用门店</a>
-                    <span class="sep">|</span>
-                    <a class="btn-link return-btn" href="javascript:;">上线/下线</a>
-                </td>
-            </tr>
-            <tr>
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th>已上线</th>
+                <td>已上线</td>
                 <td>
                     <a class="btn-link" href="#">详情</a>
                     <span class="sep">|</span>
