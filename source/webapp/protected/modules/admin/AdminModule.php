@@ -58,18 +58,6 @@ class AdminModule extends BaseMoudle {
                         'itemOptions' => array('name' => 'voucher.list', 'class' => 'second-parent'),
                     ),
                     array(
-                        'label' => '代金券添加',
-                        'url' => array('/admin/voucher/add'),
-                        'number' => 0,
-                        'itemOptions' => array('name' => 'voucher.add', 'class' => 'second-parent'),
-                    ),
-                    array(
-                        'label' => '代金券编辑',
-                        'url' => array('/admin/voucher/update'),
-                        'number' => 0,
-                        'itemOptions' => array('name' => 'voucher.update', 'class' => 'second-parent'),
-                    ),
-                    array(
                         'label' => '代金券设置门店',
                         'url' => array('/admin/voucher/addShop'),
                         'number' => 0,

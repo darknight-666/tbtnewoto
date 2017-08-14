@@ -33,7 +33,7 @@ $menu = $this->getAction()->getId();
                             <span class="sep">|</span>
                             <?php echo CHtml::link('门店', '/admin/brand/shopList/menu/' . $menu . '/brand_id/' . $item->brand_id, array('class' => 'btn-link return-btn')) ?>
                             <span class="sep">|</span>
-                            <?php echo CHtml::link('优惠券', '/admin/voucher/list/menu/' . $menu . '/brand_id/' . $item->brand_id, array('class' => 'btn-link return-btn')) ?>
+                            <?php echo CHtml::link('优惠券', '/admin/voucher/list/Voucher[brand_id]/' . $item->brand_id, array('class' => 'btn-link return-btn')) ?>
                         </td>
                     </tr>
                 <?php } ?>

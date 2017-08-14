@@ -189,4 +189,45 @@ class Brand extends CActiveRecord {
         return isset($items[$key]) ? $items[$key] : Null;
     }
 
+    /**
+     * 获取所有数据
+     */
+    static function getAll() {
+        $model = self::model();
+        $model->pageSize = 999;
+        $model->status = self::STATUS_CONFIRMED;
+        $dataProvider = $model->search();
+        $list = $dataProvider->getData();
+        return $list;
+    }
+
+    /**
+     * 获取所有数据 - listData
+     * @return type
+     */
+    static function getAllListByListData() {
+        $data = self::getAll();
+        return CHtml::listData($data, 'brand_id', 'name');
+    }
+    /**
+     * 获取所有数据by typeid
+     */
+    static function getAllByBrandTypeId($brandTypeId) {
+        $model = self::model();
+        $model->pageSize = 999;
+        $model->brand_type_id = $brandTypeId;
+        $model->status = self::STATUS_CONFIRMED;
+        $dataProvider = $model->search();
+        $list = $dataProvider->getData();
+        return $list;
+    }
+
+    /**
+     * 获取所有数据by typeid - listData
+     * @return type
+     */
+    static function getAllByBrandTypeIdByListData($brandTypeId) {
+        $data = self::getAllByBrandTypeId($brandTypeId);
+        return CHtml::listData($data, 'brand_id', 'name');
+    }
 }
