@@ -136,6 +136,15 @@ class BrandController extends AdminBaseController {
         $this->render('list', array('model' => $model, 'pager' => $pager, 'list' => $list));
     }
 
+    public function actionGetAllByBrandTypeId() {
+        $brandTypeId = Yii::app()->request->getParam('brand_type_id');
+        $data = Brand::getAllByBrandTypeIdByListData($brandTypeId);
+        echo CHtml::tag('option', array('value' => ''), '请选择', TRUE);
+        foreach ($data as $key => $value) {
+            echo CHtml::tag('option', array('value' => $key), $value, TRUE);
+        }
+    }
+
     /**
      * 品牌 - 详情
      */

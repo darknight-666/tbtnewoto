@@ -9,14 +9,29 @@ class VoucherController extends AdminBaseController {
      * 代金券 - 添加
      */
     public function actionAdd() {
-        $this->render('add');
+        $model = new Voucher();
+        if (isset($_POST['Voucher'])) {
+            $model->attributes = $_POST['Voucher'];
+            if ($model->save()) {
+                $this->redirect('/admin/voucher/list');
+            }
+        }
+        $this->render('add', array('model' => $model));
     }
 
     /**
      * 代金券 - 编辑
      */
     public function actionUpdate() {
-        $this->render('update');
+        $id = Yii::app()->request->getParam('id');
+        $model = Voucher::model()->findByPk($id);
+        if (isset($_POST['Voucher'])) {
+            $model->attributes = $_POST['Voucher'];
+            if ($model->save()) {
+                $this->redirect('/admin/voucher/list');
+            }
+        }
+        $this->render('update', array('model' => $model));
     }
 
     /**
@@ -44,7 +59,14 @@ class VoucherController extends AdminBaseController {
      * 代金券 - 列表
      */
     public function actionList() {
-        $this->render('list');
+        $model = new Voucher('search');
+        if (isset($_GET['Voucher'])) {
+            $model->attributes = $_GET['Voucher'];
+        }
+        $dataProvider = $model->search();
+        $list = $dataProvider->getData();
+        $pager = $dataProvider->pagination;
+        $this->render('list', array('model' => $model, 'pager' => $pager, 'list' => $list));
     }
 
     /**
