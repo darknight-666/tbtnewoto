@@ -43,6 +43,7 @@ class BrandType extends CActiveRecord {
         // class name for the relations automatically generated below.
         return array(
             'parent' => array(self::BELONGS_TO, 'BrandType', 'parent_id'),
+            'brand' => array(self::HAS_MANY, 'Brand', 'brand_type_id', 'on' => 'brand.status = ' . Brand::STATUS_CONFIRMED),
         );
     }
 
@@ -121,7 +122,7 @@ class BrandType extends CActiveRecord {
      * @return type
      */
     static function getSonType($parentId) {
-        if($parentId == 0){
+        if ($parentId == 0) {
             return array();
         }
         $model = self::model();

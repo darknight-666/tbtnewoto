@@ -1,6 +1,7 @@
 <?php
 $this->pageTitle = Yii::app()->name . ' - 品牌列表';
 $this->module->params = array('title' => '品牌列表', 'title_img' => 'fa-th', 'icon' => '');
+$menu = $this->getAction()->getId();
 ?>
 <div class="tbt-panel">
     <div class="panel-header">
@@ -26,13 +27,13 @@ $this->module->params = array('title' => '品牌列表', 'title_img' => 'fa-th',
                         <td><?php echo count($item->shop) ?></td>
                         <td><?php echo $item->create_time ?></td>
                         <td>
-                            <?php echo CHtml::link('详情', '/admin/brand/detail/id/' . $item->brand_id, array('class' => 'btn-link return-btn')) ?>
+                            <?php echo CHtml::link('详情', '/admin/brand/detail/menu/' . $menu . '/id/' . $item->brand_id, array('class' => 'btn-link return-btn')) ?>
                             <span class="sep">|</span>
-                            <?php echo CHtml::link('编辑', '/admin/brand/update/id/' . $item->brand_id, array('class' => 'btn-link return-btn')) ?>
+                            <?php echo CHtml::link('编辑', '/admin/brand/update/menu/' . $menu . '/id/' . $item->brand_id, array('class' => 'btn-link return-btn')) ?>
                             <span class="sep">|</span>
-                            <?php echo CHtml::link('门店', '/admin/shop/list/brand_id/' . $item->brand_id, array('class' => 'btn-link return-btn')) ?>
+                            <?php echo CHtml::link('门店', '/admin/brand/shopList/menu/' . $menu . '/brand_id/' . $item->brand_id, array('class' => 'btn-link return-btn')) ?>
                             <span class="sep">|</span>
-                            <?php echo CHtml::link('优惠券', '/admin/voucher/list/brand_id/' . $item->brand_id, array('class' => 'btn-link return-btn')) ?>
+                            <?php echo CHtml::link('优惠券', '/admin/voucher/list/menu/' . $menu . '/brand_id/' . $item->brand_id, array('class' => 'btn-link return-btn')) ?>
                         </td>
                     </tr>
                 <?php } ?>

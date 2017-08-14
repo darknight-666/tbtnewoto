@@ -69,7 +69,7 @@ $form = $this->beginWidget('CActiveForm', array(
         <!-- 买单免检 -->
         <div class="section">
             <div class="from-group">
-                <label class="control-label" for="Brand_tag">买单免检</label>
+                <label class="control-label" for="Brand_tag">买单满减</label>
                 <div class="from-control col-lg">
                     <div class="sep"></div> <div class="sep"></div> <div class="sep"></div>
                     <label>满</label>

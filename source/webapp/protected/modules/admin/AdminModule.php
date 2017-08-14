@@ -42,42 +42,6 @@ class AdminModule extends BaseMoudle {
                         'number' => 0,
                         'itemOptions' => array('name' => 'brand.list', 'class' => 'second-parent'),
                     ),
-                    array(
-                        'label' => '品牌创建',
-                        'url' => array('/admin/brand/add'),
-                        'number' => 0,
-                        'itemOptions' => array('name' => 'brand.add', 'class' => 'second-parent'),
-                    ),
-                    array(
-                        'label' => '品牌编辑',
-                        'url' => array('/admin/brand/update'),
-                        'number' => 0,
-                        'itemOptions' => array('name' => 'brand.update', 'class' => 'second-parent'),
-                    ),
-                    array(
-                        'label' => '品牌详情',
-                        'url' => array('/admin/brand/detail'),
-                        'number' => 0,
-                        'itemOptions' => array('name' => 'brand.detail', 'class' => 'second-parent'),
-                    ),
-                    array(
-                        'label' => '门店列表',
-                        'url' => array('/admin/shop/list'),
-                        'number' => 0,
-                        'itemOptions' => array('name' => 'shop.list', 'class' => 'second-parent'),
-                    ),
-                    array(
-                        'label' => '门店创建',
-                        'url' => array('/admin/shop/add'),
-                        'number' => 0,
-                        'itemOptions' => array('name' => 'shop.add', 'class' => 'second-parent'),
-                    ),
-                    array(
-                        'label' => '门店编辑',
-                        'url' => array('/admin/shop/update'),
-                        'number' => 0,
-                        'itemOptions' => array('name' => 'shop.update', 'class' => 'second-parent'),
-                    ),
                 ),
             ),
             array(

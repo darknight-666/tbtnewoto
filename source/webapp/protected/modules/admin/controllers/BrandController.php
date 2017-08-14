@@ -143,4 +143,39 @@ class BrandController extends AdminBaseController {
         $this->render('detail');
     }
 
+    /**
+     * ********************* 门店 *********************
+     * 门店 - 添加
+     */
+    public function actionShopAdd() {
+        $this->render('shopAdd');
+    }
+
+    /**
+     * 门店 - 编辑
+     */
+    public function actionShopUpdate() {
+        $this->render('shopUpdate');
+    }
+
+    /**
+     * 门店 - 删除
+     */
+    public function actionShopDelete() {
+        
+    }
+
+    /**
+     * 门店 - 列表
+     */
+    public function actionShopList() {
+        $brandId = Yii::app()->request->getParam('brand_id');
+        $model = new Shop();
+        $model->brand_id = $brandId;
+        $dataProvider = $model->search();
+        $list = $dataProvider->getData();
+        $pager = $dataProvider->pagination;
+        $this->render('shopList', array('model' => $model, 'pager' => $pager, 'list' => $list));
+    }
+
 }

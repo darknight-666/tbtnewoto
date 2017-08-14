@@ -57,7 +57,7 @@ $this->module->params = array('title' => '品牌分类列表', 'title_img' => 'f
                     <tr>
                         <td><?php echo $item->name ?></td>
                         <td><?php echo $item->parent->name ?></td>
-                        <td></td>
+                        <td><?php echo count($item->brand)?></td>
                         <td>
                             <a class="btn-link" href="#">编辑</a>
                             <span class="sep">|</span>
