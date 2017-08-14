@@ -3,7 +3,7 @@ $form = $this->beginWidget('CActiveForm', array(
     'id' => 'organization-form',
     'enableAjaxValidation' => false,
     'htmlOptions' => array('enctype' => 'multipart/form-data', 'class' => 'smart-form'),
-));
+        ));
 ?>
 <div class="tbt-panel">
     <div class="panel-header">
@@ -73,10 +73,10 @@ $form = $this->beginWidget('CActiveForm', array(
                 <div class="from-control col-lg">
                     <div class="sep"></div> <div class="sep"></div> <div class="sep"></div>
                     <label>满</label>
-                        <input autocomplete="off"  name="Brand[tag]" id="Brand_tag" value="" type="text" style="border: 1px solid #ccc;width: 50px">
+                    <?php echo $form->textField($model, 'reach_amount', array('autocomplete' => 'off', 'maxlength' => 12, 'style' => 'border: 1px solid #ccc;width: 50px')); ?>
                     <div class="sep">&nbsp;&nbsp;&nbsp;&nbsp;</div> <div class="sep"></div> <div class="sep"></div>
                     <label>减</label>
-                    <input autocomplete="off"  name="Brand[tag]" id="Brand_tag" value="" type="text" style="border: 1px solid #ccc;width: 50px">
+                    <?php echo $form->textField($model, 'discount_amount', array('autocomplete' => 'off', 'maxlength' => 12, 'style' => 'border: 1px solid #ccc;width: 50px')); ?>
                 </div>
             </div>
         </div>
@@ -223,16 +223,17 @@ $form = $this->beginWidget('CActiveForm', array(
     function iframeUpload(status, data, message) {
         var jsonData = jQuery.parseJSON(data);
         if (status != 10000) {
-            $("#"+ jsonData.field +"").parents(".file-upload").find(".errorMessage").html('');
+            $("#" + jsonData.field + "").parents(".file-upload").find(".errorMessage").html('');
             $("." + jsonData.field + "_errormessage").html(message);
             return false;
         }
-        $("#"+ jsonData.field +"").parents(".file-upload").find(".errorMessage").html('');
+        $("#" + jsonData.field + "").parents(".file-upload").find(".errorMessage").html('');
 //        $("." + jsonData.field + "_errormessage").html('');
         $("#" + jsonData.field).val(jsonData.fileField);
         if ($("#" + jsonData.field).hasClass("fileInput_image")) {
             showImage();
-        };
+        }
+        ;
     }
     ;
     /**
@@ -242,8 +243,10 @@ $form = $this->beginWidget('CActiveForm', array(
         $(".fileInput_image").each(function () {
             if (jQuery.trim($(this).val()) != '') {
                 $(this).parents(".file-upload").find(".file-show").html('<img src="' + $(this).val() + '"  width="300">');
-            };
+            }
+            ;
         });
-    };
+    }
+    ;
 
 </script>
