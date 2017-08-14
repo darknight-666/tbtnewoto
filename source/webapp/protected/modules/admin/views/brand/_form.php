@@ -3,7 +3,7 @@ $form = $this->beginWidget('CActiveForm', array(
     'id' => 'organization-form',
     'enableAjaxValidation' => false,
     'htmlOptions' => array('enctype' => 'multipart/form-data', 'class' => 'smart-form'),
-        ));
+));
 ?>
 <div class="tbt-panel">
     <div class="panel-header">
