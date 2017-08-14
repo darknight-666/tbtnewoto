@@ -66,6 +66,20 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div>
             </div>
         </div>
+        <!-- 买单免检 -->
+        <div class="section">
+            <div class="from-group">
+                <label class="control-label" for="Brand_tag">买单免检</label>
+                <div class="from-control col-lg">
+                    <div class="sep"></div> <div class="sep"></div> <div class="sep"></div>
+                    <label>满</label>
+                        <input autocomplete="off"  name="Brand[tag]" id="Brand_tag" value="" type="text" style="border: 1px solid #ccc;width: 50px">
+                    <div class="sep">&nbsp;&nbsp;&nbsp;&nbsp;</div> <div class="sep"></div> <div class="sep"></div>
+                    <label>减</label>
+                    <input autocomplete="off"  name="Brand[tag]" id="Brand_tag" value="" type="text" style="border: 1px solid #ccc;width: 50px">
+                </div>
+            </div>
+        </div>
         <!-- 银行补贴详情 -->
         <div class="section">
             <div class="from-group">
