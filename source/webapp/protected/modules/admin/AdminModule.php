@@ -57,8 +57,8 @@ class AdminModule extends BaseMoudle {
                         'number' => 0,
                         'itemOptions' => array('name' => 'voucher.list', 'class' => 'second-parent'),
                     ),
+                    ),
                 ),
-            ),
             array(
                 'label' => '我的信息',
                 'url' => 'javascript:;',
