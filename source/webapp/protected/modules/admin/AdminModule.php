@@ -57,12 +57,6 @@ class AdminModule extends BaseMoudle {
                         'number' => 0,
                         'itemOptions' => array('name' => 'voucher.list', 'class' => 'second-parent'),
                     ),
-                    array(
-                        'label' => '代金券设置门店',
-                        'url' => array('/admin/voucher/addShop'),
-                        'number' => 0,
-                        'itemOptions' => array('name' => 'voucher.addShop', 'class' => 'second-parent'),
-                    ),
                 ),
             ),
             array(

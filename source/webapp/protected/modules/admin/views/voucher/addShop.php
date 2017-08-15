@@ -1,11 +1,13 @@
 <?php
-
 $this->pageTitle = Yii::app()->name . ' - 代金券设置门店';
 $this->module->params = array('title' => '代金券设置门店', 'title_img' => 'fa-th', 'icon' => '');
 ?>
 <?php
-$this->pageTitle = Yii::app()->name . ' - 创建品牌';
-$this->module->params = array('title' => '创建品牌', 'title_img' => 'fa-th', 'icon' => '');
+$form = $this->beginWidget('CActiveForm', array(
+    'id' => 'organization-form',
+    'enableAjaxValidation' => false,
+    'htmlOptions' => array('enctype' => 'multipart/form-data', 'class' => 'smart-form'),
+        ));
 ?>
 <div class="tbt-panel">
     <div class="panel-header">
@@ -16,60 +18,18 @@ $this->module->params = array('title' => '创建品牌', 'title_img' => 'fa-th',
         <!-- 全部 -->
         <div class="section">
             <div class="from-group">
-                <label class="control-label" for="TrainingCourse_description">全部：</label>
                 <div class="from-control col-lg">
                     <div>
-                        <input   name="TrainingCourse[name]"  type="checkbox" >  <div class="sep"></div> <span>全部 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- 中关村店 -->
-        <div class="section">
-            <div class="from-group">
-                <div class="from-control col-lg">
-                    <div>
-                        <input   name="TrainingCourse[name]"  type="checkbox" >  <div class="sep"></div> <span>中关村店 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- 中关村店 -->
-        <div class="section">
-            <div class="from-group">
-                <div class="from-control col-lg">
-                    <div>
-                        <input   name="TrainingCourse[name]"  type="checkbox" >  <div class="sep"></div> <span>广渠门店 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- 中关村店 -->
-        <div class="section">
-            <div class="from-group">
-                <div class="from-control col-lg">
-                    <div>
-                        <input   name="TrainingCourse[name]"  type="checkbox" >  <div class="sep"></div> <span>欧美汇店 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- 中关村店 -->
-        <div class="section">
-            <div class="from-group">
-                <div class="from-control col-lg">
-                    <div>
-                        <input   name="TrainingCourse[name]"  type="checkbox" >  <div class="sep"></div> <span>新中关店 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- 中关村店 -->
-        <div class="section">
-            <div class="from-group">
-                <div class="from-control col-lg">
-                    <div>
-                        <input   name="TrainingCourse[name]"  type="checkbox" >  <div class="sep"></div> <span>王府井店 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+                        <?php
+                        echo $form->checkBoxList($model, 'shopIds', Shop::getAllByBrandIdbyListData($modelVoucher->brand_id), array(
+                            'class' => 'proxyList',
+                            'separator' => '',
+                            'checkAll' => '全部',
+                            'container' => 'ul class="role-list"',
+                            'template' => '<li class ="item">{input}{label}</li>',
+                            'labelOptions' => array('style' => 'display:inline;', 'class' => 'pointname')));
+                        ?>
+                        <?php echo $form->error($model, 'shopIds'); ?>
                     </div>
                 </div>
             </div>
@@ -78,8 +38,8 @@ $this->module->params = array('title' => '创建品牌', 'title_img' => 'fa-th',
 </div>
 <div class="btn-panel">
     <div class="btn-wrap">
-        <input class="btn btn-primary submitForm" tag="1" name="yt5" value="发布优惠券" type="button">
+        <?php echo CHtml::submitButton('发布优惠券', array('class' => 'btn btn-primary submitForm')); ?>
     </div>
 </div>
-
+<?php $this->endWidget(); ?>
 

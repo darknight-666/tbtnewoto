@@ -7,7 +7,7 @@ $menu = $this->getAction()->getId();
     <div class="panel-header">
         <h3 class="panel-title">品牌列表</h3>
         <div class="panel-btnWrap">
-            <input class="btn btn-primary" value="创建品牌" type="button">
+            <input class="btn btn-primary" value="创建品牌" type="button" onclick="window.location.href = '/admin/brand/add/menu/<?php echo $menu ?>'">
         </div>
     </div>
     <div class="panel-body">

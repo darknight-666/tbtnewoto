@@ -10,10 +10,11 @@ class VoucherController extends AdminBaseController {
      */
     public function actionAdd() {
         $model = new Voucher();
+        $menu = Yii::app()->request->getParam('menu');
         if (isset($_POST['Voucher'])) {
             $model->attributes = $_POST['Voucher'];
             if ($model->save()) {
-                $this->redirect('/admin/voucher/list');
+                $this->redirect('/admin/voucher/addShop/menu/' . $menu . '/voucher_id/' . $model->voucher_id);
             }
         }
         $this->render('add', array('model' => $model));
@@ -45,7 +46,24 @@ class VoucherController extends AdminBaseController {
      * 代金券 - 关联门店
      */
     public function actionAddShop() {
-        $this->render('addShop');
+        $voucherId = Yii::app()->request->getParam('voucher_id');
+        $model = new VoucherShopRelation();
+        $model->voucher_id = $voucherId;
+        $model->shopIds = VoucherShopRelation::getAllByVoucherIdByArray($model->voucher_id);
+        $modelVoucher = Voucher::model()->findByPk($voucherId);
+        if (isset($_POST['VoucherShopRelation'])) {
+            $model->attributes = $_POST['VoucherShopRelation'];
+            if ($model->validate()) {
+                $model->deleteAll('voucher_id=:voucher_id', array(':voucher_id' => $model->voucher_id));
+                foreach ($model->shopIds as $shopId) {
+                    $model->isNewRecord = TRUE;
+                    $model->shop_id = $shopId;
+                    $model->save();
+                }
+                $this->redirect('/admin/voucher/list');
+            }
+        }
+        $this->render('addShop', array('model' => $model, 'modelVoucher' => $modelVoucher));
     }
 
     /**

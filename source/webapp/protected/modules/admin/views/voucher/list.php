@@ -109,11 +109,17 @@ $menu = $this->getAction()->getId();
                         <td>xxx</td>
                         <td><?php echo Voucher::getStatusTitle($item->status) ?></td>
                         <td>
-                            <a class="btn-link" href="#">详情</a>
+                            <?php echo CHtml::link('详情', '/admin/voucher/detail/menu/' . $menu . '/id/' . $item->voucher_id, array('class' => 'btn-link')) ?>
                             <span class="sep">|</span>
-                            <a class="btn-link return-btn" href="javascript:;">适用门店</a>
+                            <?php echo CHtml::link('适用门店', '/admin/voucher/addShop/menu/' . $menu . '/voucher_id/' . $item->voucher_id, array('class' => 'btn-link return-btn')) ?>
                             <span class="sep">|</span>
-                            <a class="btn-link return-btn" href="javascript:;">上线/下线</a>
+                            <?php
+                            if ($item->status == Voucher::STATUS_NOTONLINE || $item->status == Voucher::STATUS_LINEOFF) {
+                                echo CHtml::link('上线', 'javascript:;' . $item->voucher_id, array('class' => 'btn-link return-btn', 'voucherStatus' => Voucher::STATUS_ONLINE));
+                            } else {
+                                echo CHtml::link('下线', 'javascript:;' . $item->voucher_id, array('class' => 'btn-link return-btn', 'voucherStatus' => Voucher::STATUS_LINEOFF));
+                            }
+                            ?>
                         </td>
                     </tr>
                 <?php } ?>

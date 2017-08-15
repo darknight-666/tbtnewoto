@@ -28,11 +28,11 @@ class Voucher extends CActiveRecord {
 
     public $parent_id; // 一级分类类别
     public $brand_type_id; // 二级分类类别
+    public $pageSize = 10;
 
     /**
      * @return string the associated database table name
      */
-
     public function tableName() {
         return '{{voucher}}';
     }
@@ -116,9 +116,12 @@ class Voucher extends CActiveRecord {
         $criteria->compare('tips', $this->tips, true);
         $criteria->compare('overdue_time', $this->overdue_time, true);
         $criteria->compare('create_time', $this->create_time, true);
-
+        $criteria->order = 'create_time desc';
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
+            'pagination' => array(
+                'pageSize' => $this->pageSize,
+            ),
         ));
     }
 

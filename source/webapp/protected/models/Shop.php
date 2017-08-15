@@ -130,4 +130,30 @@ class Shop extends CActiveRecord {
         return parent::beforeValidate();
     }
 
+    /**
+     * 获取所有根据 brand_id
+     * @param type $brandId
+     * @return type
+     */
+    static function getAllByBrandId($brandId) {
+        if (empty($brandId)) {
+            return array();
+        }
+        $model = self::model();
+        $model->brand_id = $brandId;
+        $dataProvider = $model->search();
+        $list = $dataProvider->getData();
+        return $list;
+    }
+
+    /**
+     * 获取所有根据 brand_id - listData
+     * @param type $brandId
+     * @return type
+     */
+    static function getAllByBrandIdbyListData($brandId) {
+        $data = self::getAllByBrandId($brandId);
+        return CHtml::listData($data, 'shop_id', 'name');
+    }
+
 }

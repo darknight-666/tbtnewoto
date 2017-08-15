@@ -156,7 +156,7 @@ $form = $this->beginWidget('CActiveForm', array(
 </div>
 <div class="btn-panel">
     <div class="btn-wrap">
-        <?php echo CHtml::submitButton($model->isNewRecord ? '创建' : '保存', array('class' => 'btn btn-primary submitForm')); ?>
+        <?php echo CHtml::submitButton($model->isNewRecord ? '下一步' : '保存', array('class' => 'btn btn-primary submitForm')); ?>
     </div>
 </div>
 <?php $this->endWidget(); ?>
