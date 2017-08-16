@@ -147,15 +147,101 @@ $form = $this->beginWidget('CActiveForm', array(
         <div class="section">
             <div class="from-group">
                 <div class="file-show">
-                    <div class="uploadlogo" ><img src="#"></div>
+
                 </div>
             </div>
         </div>
+        <div id="mapContainer" tabindex="0" style='width:800px; height:600px'></div>
+        <input id = 'mapInput' value = '点击地图显示地址/输入地址显示位置' onfocus = 'this.value = ""'></input>
+        <div id='mapMessage'></div>
     </div>
 </div>
 <div class="btn-panel">
     <div class="btn-wrap">
-        <?php echo CHtml::submitButton($model->isNewRecord ? '创建' : '保存', array('class' => 'btn btn-primary submitForm')); ?>
+        <?php echo CHtml::button($model->isNewRecord ? '创建' : '保存', array('class' => 'btn btn-primary submitForm')); ?>
     </div>
 </div>
 <?php $this->endWidget(); ?>
+<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=ba4de2c26e0f25b2632f1d9b4f3c3114&plugin=AMap.DistrictSearch"></script>
+<script>
+            $(function () {
+                $(".submitForm").click(function(){
+                    $("#organization-form").submit();
+                });
+                
+                var map = new AMap.Map('mapContainer', {
+                    resizeEnable: true,
+                    zoom: 13,
+<?php
+if (!empty($model->location_x) && !empty($model->location_y)) {
+    echo "center: [" . $model->location_x . ", " . $model->location_y . "]";
+}
+?>
+                });
+                var opts = {
+                    subdistrict: 1, //返回下一级行政区
+                    extensions: 'all', //返回行政区边界坐标组等具体信息
+                    level: 'city'  //查询行政级别为 市
+                };
+
+                var district = new AMap.DistrictSearch(opts);
+                district.setLevel('district');
+                AMap.plugin('AMap.Geocoder', function () {
+                    var geocoder = new AMap.Geocoder({
+                        city: "010"//城市，默认：“全国”
+                    });
+                    var marker = new AMap.Marker({
+                        map: map,
+                        bubble: true,
+                    })
+                    var input = document.getElementById('Shop_address');
+                    var message = document.getElementById('mapMessage');
+                    var provinceObj = document.getElementById('Shop_province_adcode');
+                    var cityObj = document.getElementById('Shop_city_adcode');
+                    var districtObj = document.getElementById('Shop_district_adcode');
+                    map.on('click', function (e) {
+                        marker.setPosition(e.lnglat);
+                        geocoder.getAddress(e.lnglat, function (status, result) {
+                            if (status == 'complete') {
+                                input.value = result.regeocode.formattedAddress
+                                //地理编码
+                                geocoder.getLocation(result.regeocode.formattedAddress, function (status, resultLocation) {
+                                    if (status === 'complete' && result.info === 'OK') {
+                                        $("#Shop_location_x").val(resultLocation.geocodes[0].location.lng);
+                                        $("#Shop_location_y").val(resultLocation.geocodes[0].location.lat);
+                                    } else {
+                                        //获取经纬度失败
+                                    }
+                                });
+//                                message.innerHTML = ''
+                            } else {
+//                                message.innerHTML = '无法获取地址'
+                            }
+                        })
+                    })
+
+                    input.onchange = function (e) {
+                        var address = input.value;
+                        geocoder.getLocation(address, function (status, result) {
+                            if (status == 'complete' && result.geocodes.length) {
+                                alert(result.geocodes[0].location);
+                                marker.setPosition(result.geocodes[0].location);
+                                map.setCenter(marker.getPosition())
+                                message.innerHTML = ''
+                            } else {
+                                message.innerHTML = '无法获取位置'
+                            }
+                        })
+                    }
+                    provinceObj.onchange = function (e) {
+
+                    }
+                    cityObj.onchange = function (e) {
+
+                    }
+                    districtObj.onchange = function (e) {
+
+                    }
+                });
+            });
+</script>
