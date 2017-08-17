@@ -2,6 +2,22 @@
 
 /**
  * This is the model class for table "{{brand}}".
+ *
+ * The followings are the available columns in table '{{brand}}':
+ * @property string $brand_id
+ * @property integer $brand_type_id
+ * @property string $name
+ * @property string $tag
+ * @property integer $status
+ * @property double $reach_amount
+ * @property double $discount_amount
+ * @property string $allowance_detail
+ * @property string $recommend_reason
+ * @property string $recommend_detail
+ * @property string $value_added_service
+ * @property string $image_path
+ * @property string $qualification_path
+ * @property string $create_time
  */
 class Brand extends CActiveRecord {
 
@@ -209,6 +225,7 @@ class Brand extends CActiveRecord {
         $data = self::getAll();
         return CHtml::listData($data, 'brand_id', 'name');
     }
+
     /**
      * 获取所有数据by typeid
      */
@@ -230,4 +247,5 @@ class Brand extends CActiveRecord {
         $data = self::getAllByBrandTypeId($brandTypeId);
         return CHtml::listData($data, 'brand_id', 'name');
     }
+
 }

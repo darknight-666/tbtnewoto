@@ -4,7 +4,7 @@
  * 公共类
  */
 class My {
-    
+
     /**
      * json 输出
      * @param type $data
@@ -498,6 +498,11 @@ class My {
      */
     static function numberFormat($amount) {
         return number_format($amount, 2);
+    }
+
+    static function getModelErrors($errors) {
+        $error = current($errors);
+        return $error[0];
     }
 
 }

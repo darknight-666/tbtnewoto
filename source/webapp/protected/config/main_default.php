@@ -99,6 +99,12 @@ return array(
                     'class' => 'CFileLogRoute',
                     'levels' => 'error, warning',
                 ),
+                array(
+                    'class' => 'CFileLogRoute',
+                    'levels' => 'info, profile',
+                    'categories' => 'newapi.*',
+                    'logFile' => 'newapi.log',
+                ),
             ),
         ),
     ),
