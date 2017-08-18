@@ -55,4 +55,44 @@ class UserController extends CustomerBaseController {
         $this->output($data);
     }
 
+    /**
+     * 忘记密码 - 修改密码
+     */
+    public function actionForgetPassword() {
+        $this->checkParams(array('empty' => array('phonenumber', 'code', 'password')));
+        $model = CustomerUser::model()->find('phonenumber = :phonenumber', array(':phonenumber' => $this->params['phonenumber']));
+        if (is_null($model)) {
+            $this->output('', ApiStatusCode::$error, '该手机号不存在');
+        }
+        $model->setScenario('forgetPassword');
+        $model->attributes = $this->params;
+        $model->salt = CustomerUser::makeSalt();
+        $model->password = $model->makePassword($model->password);
+        if ($model->save()) {
+            $this->output('ok');
+        }
+        $this->output('', ApiStatusCode::$error, My::getModelErrors($model->errors));
+    }
+
+    /**
+     * 修改密码
+     */
+    public function actionChangePassword() {
+        $this->checkLogin();
+        $this->checkParams(array('oldPassword', 'newPassword'));
+        $model = CustomerUser::model()->findByPk(Yii::app()->user->id);
+        if (is_null($model)) {
+            $this->output('', ApiStatusCode::$error, '该用户不存在');
+        }
+        $model->setScenario('changePassword');
+        $model->attributes = $this->params;
+        if ($model->validate()) {
+            $model->salt = CustomerUser::makeSalt();
+            $model->password = $model->makePassword($model->newPassword);
+            $model->update(); // 此处用update 是为了不再作validate 验证
+            $this->output('ok');
+        }
+        $this->output('', ApiStatusCode::$error, My::getModelErrors($model->errors));
+    }
+
 }

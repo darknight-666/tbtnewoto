@@ -15,6 +15,8 @@
  */
 class CustomerUser extends CActiveRecord {
 
+    public $oldPassword;
+    public $newPassword; // 新密码
     public $code; // 短信验证码
 
     /**
@@ -33,7 +35,8 @@ class CustomerUser extends CActiveRecord {
         // will receive user inputs.
         return array(
             array('salt, reg_time, last_login_time', 'required'),
-            array('code', 'checkCode', 'on' => 'register'),
+            array('code', 'checkCode', 'on' => array('register', 'forgetPassword')),
+            array('oldPassword, newPassword', 'verifyPassword', array('changePassword')),
             array('phonenumber, username', 'unique', 'message' => '此{attribute}已经被注册'),
             array('phonenumber', 'match', 'pattern' => '/^[1][3458][0-9]{9}$/', 'message' => '请填写正确的手机号码'),
             array('username, realname', 'length', 'max' => 20),
@@ -122,7 +125,7 @@ class CustomerUser extends CActiveRecord {
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
-    
+
     /**
      * checkcode
      * @param type $attribute
@@ -130,7 +133,14 @@ class CustomerUser extends CActiveRecord {
      */
     public function checkCode($attribute, $param) {
         $shortMessageServer = new ShortMessageService();
-        $ret = $shortMessageServer->checkMessageCode($this->phonenumber, $this->code, MessageCodeType::$register, FALSE);
+        $codeType = '';
+        if ($this->getScenario() == 'register') {
+            $codeType = MessageCodeType::$register;
+        }
+        if ($this->getScenario() == 'forgetPassword') {
+            $codeType = MessageCodeType::$forgetPassword;
+        }
+        $ret = $shortMessageServer->checkMessageCode($this->phonenumber, $this->code, $codeType, FALSE);
         if ($ret != ShortMessageService::ERROR_NONE) {
             if ($ret == ShortMessageService::ERROR_CODE_INVALID) {
                 $this->addError($attribute, '短信验证码错误');
@@ -157,6 +167,15 @@ class CustomerUser extends CActiveRecord {
      */
     public function checkPassword($password) {
         return $this->password == $this->makePassword($password) ? TRUE : FALSE;
+    }
+
+    public function verifyPassword($attribute, $param) {
+        if ($this->checkPassword($this->oldPassword) != TRUE) {
+            $this->addError($attribute, '旧密码错误');
+        }
+        if ($this->newPassword == $this->oldPassword) {
+            $this->addError($attribute, '新旧密码不可一致');
+        }
     }
 
     /**
