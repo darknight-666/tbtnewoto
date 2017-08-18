@@ -98,6 +98,31 @@ class Voucher extends CActiveRecord {
      *
      * @return CActiveDataProvider the data provider that can return the models
      * based on the search/filter conditions.
+     * 
+     * 
+     * 
+     * 
+     * 
+     * SELECT  voucher.voucher_id, voucher.name, voucher.price, 
+      (
+      SELECT MIN(ROUND(6378.138*2*ASIN(SQRT(POW(SIN((40.041274*PI()/180-shop.location_y*PI()/180)/2),2)+COS(40.041274*PI()/180)*COS(shop.location_y*PI()/180)*POW(sin( (116.187216*PI()/180-shop.location_x*PI()/180)/2),2)))*1000)) AS shop_distance
+      FROM `oto_voucher_shop_relation` AS r
+      LEFT JOIN  `oto_shop` AS shop ON r.`shop_id` = shop.`shop_id`
+      WHERE r.`voucher_id` = voucher.`voucher_id` AND shop.`business_center_id` = 1
+      ) AS distance,
+      brand.`name` AS brand__name, brand.`tag` AS brand__tag, brand.`image_path` AS brand__image_path,
+      brand_type.`name` AS brand_type__name, brand_type.`brand_type_id` AS brand_type__brand_type_id,
+      shop.`business_center_id` AS shop__business_center_id, shop.`shop_id` AS shop__shop_id
+      FROM `oto_voucher` AS voucher
+      LEFT JOIN  `oto_brand`AS brand ON voucher.brand_id = brand.`brand_id`
+      LEFT JOIN  `oto_brand_type` AS brand_type ON brand.`brand_type_id` = brand_type.`brand_type_id`
+      LEFT JOIN  `oto_voucher_shop_relation` AS voucher_shop_relation ON voucher_shop_relation.`voucher_id` = voucher.voucher_id
+      LEFT JOIN  `oto_shop` AS shop ON voucher_shop_relation.`shop_id` = shop.`shop_id`
+      WHERE shop.`business_center_id` = 1
+      GROUP BY voucher.`voucher_id`
+      ORDER BY distance ASC , voucher.price DESC
+      LIMIT 0,3
+
      */
     public function search() {
         // @todo Please modify the following code to remove attributes that should not be searched.
