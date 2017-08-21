@@ -308,6 +308,8 @@ $form = $this->beginWidget('CActiveForm', array(
         if (pathValTmpVal=='') {
 //                        删除mig图片
             $(".button_img").remove();
+            $("#Brand_qualification_path_tmp").val('');
+
         }
     }
 
