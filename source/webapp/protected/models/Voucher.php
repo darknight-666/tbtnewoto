@@ -105,7 +105,7 @@ class Voucher extends CActiveRecord {
      * 
      * SELECT  voucher.voucher_id, voucher.name, voucher.price, 
       (
-      SELECT MIN(ROUND(6378.138*2*ASIN(SQRT(POW(SIN((40.041274*PI()/180-shop.location_y*PI()/180)/2),2)+COS(40.041274*PI()/180)*COS(shop.location_y*PI()/180)*POW(sin( (116.187216*PI()/180-shop.location_x*PI()/180)/2),2)))*1000)) AS shop_distance
+      SELECT MIN(ROUND(6378.138*2*ASIN(SQRT(POW(SIN((40.041274*PI()/180-shop.location_lat*PI()/180)/2),2)+COS(40.041274*PI()/180)*COS(shop.location_lat*PI()/180)*POW(sin( (116.187216*PI()/180-shop.location_lng*PI()/180)/2),2)))*1000)) AS shop_distance
       FROM `oto_voucher_shop_relation` AS r
       LEFT JOIN  `oto_shop` AS shop ON r.`shop_id` = shop.`shop_id`
       WHERE r.`voucher_id` = voucher.`voucher_id` AND shop.`business_center_id` = 1

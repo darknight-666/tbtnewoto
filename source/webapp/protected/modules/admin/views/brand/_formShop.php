@@ -122,11 +122,11 @@ $form = $this->beginWidget('CActiveForm', array(
         <!--精度-->
         <div class="section">
             <div class="from-group">
-                <?php echo $form->labelEx($model, 'location_x', array('class' => 'control-label')); ?>
+                <?php echo $form->labelEx($model, 'location_lng', array('class' => 'control-label')); ?>
                 <div class="from-control col-lg">
                     <div class="input">
-                        <?php echo $form->textField($model, 'location_x', array('autocomplete' => 'off', 'maxlength' => 200)); ?>
-                        <?php echo $form->error($model, 'location_x'); ?>
+                        <?php echo $form->textField($model, 'location_lng', array('autocomplete' => 'off', 'maxlength' => 200)); ?>
+                        <?php echo $form->error($model, 'location_lng'); ?>
                     </div>
                 </div>
             </div>
@@ -134,11 +134,11 @@ $form = $this->beginWidget('CActiveForm', array(
         <!-- 维度 -->
         <div class="section">
             <div class="from-group">
-                <?php echo $form->labelEx($model, 'location_y', array('class' => 'control-label')); ?>
+                <?php echo $form->labelEx($model, 'location_lat', array('class' => 'control-label')); ?>
                 <div class="from-control col-lg">
                     <div class="input">
-                        <?php echo $form->textField($model, 'location_y', array('autocomplete' => 'off', 'maxlength' => 200)); ?>
-                        <?php echo $form->error($model, 'location_y'); ?>
+                        <?php echo $form->textField($model, 'location_lat', array('autocomplete' => 'off', 'maxlength' => 200)); ?>
+                        <?php echo $form->error($model, 'location_lat'); ?>
                     </div>
                 </div>
             </div>
@@ -173,8 +173,8 @@ $form = $this->beginWidget('CActiveForm', array(
 //                    resizeEnable: true,
 //                    zoom: 13,
 //<?php
-if (!empty($model->location_x) && !empty($model->location_y)) {
-//    echo "center: [" . $model->location_x . ", " . $model->location_y . "]";
+if (!empty($model->location_lng) && !empty($model->location_lat)) {
+//    echo "center: [" . $model->location_lng . ", " . $model->location_lat . "]";
 }
 ?>//
 //                });
@@ -200,8 +200,8 @@ if (!empty($model->location_x) && !empty($model->location_y)) {
 //                                //地理编码
 //                                geocoder.getLocation(result.regeocode.formattedAddress, function (status, resultLocation) {
 //                                    if (status === 'complete' && result.info === 'OK') {
-//                                        $("#Shop_location_x").val(resultLocation.geocodes[0].location.lng);
-//                                        $("#Shop_location_y").val(resultLocation.geocodes[0].location.lat);
+//                                        $("#Shop_location_lng").val(resultLocation.geocodes[0].location.lng);
+//                                        $("#Shop_location_lat").val(resultLocation.geocodes[0].location.lat);
 //                                    } else {
 //                                        //获取经纬度失败
 //                                    }

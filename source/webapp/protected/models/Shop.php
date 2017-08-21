@@ -13,8 +13,8 @@
  * @property string $district_adcode
  * @property integer $business_center_id
  * @property string $address
- * @property double $location_x
- * @property double $location_y
+ * @property double $location_lng
+ * @property double $location_lat
  * @property string $create_time
  */
 class Shop extends CActiveRecord {
@@ -35,15 +35,15 @@ class Shop extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('name, brand_id, phonenumber, address, location_x, location_y, create_time', 'required'),
+            array('name, brand_id, phonenumber, address, location_lng, location_lat, create_time', 'required'),
             array('brand_id, business_center_id', 'numerical', 'integerOnly' => true),
-            array('location_x, location_y', 'numerical'),
+            array('location_lng, location_lat', 'numerical'),
             array('name, phonenumber, province_adcode, city_adcode, district_adcode', 'length', 'max' => 20),
             array('address', 'length', 'max' => 200),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('shop_id, brand_id, name, phonenumber, province_adcode, city_adcode, district_adcode, business_center_id,'
-                . ' address, location_x, location_y, create_time', 'safe', 'on' => 'search'),
+                . ' address, location_lng, location_lat, create_time', 'safe', 'on' => 'search'),
         );
     }
 
@@ -71,8 +71,8 @@ class Shop extends CActiveRecord {
             'district_adcode' => '地区adcode',
             'business_center_id' => '商圈',
             'address' => '地址',
-            'location_x' => '经度',
-            'location_y' => '维度',
+            'location_lng' => '经度',
+            'location_lat' => '维度',
             'create_time' => '创建时间',
         );
     }
@@ -103,8 +103,8 @@ class Shop extends CActiveRecord {
         $criteria->compare('district_adcode', $this->district_adcode, true);
         $criteria->compare('business_center_id', $this->business_center_id);
         $criteria->compare('address', $this->address, true);
-        $criteria->compare('location_x', $this->location_x);
-        $criteria->compare('location_y', $this->location_y);
+        $criteria->compare('location_lng', $this->location_lng);
+        $criteria->compare('location_lat', $this->location_lat);
         $criteria->compare('create_time', $this->create_time, true);
         $criteria->order = 'create_time desc';
         return new CActiveDataProvider($this, array(
