@@ -192,7 +192,7 @@ $form = $this->beginWidget('CActiveForm', array(
                                 <?php echo $form->textField($model, 'qualification_path_tmp', array('autocomplete' => 'off', 'class' => 'fileInput fileInput_imagea')); ?>
                                 <?php echo $form->error($model, 'qualification_path'); ?>
                             </div>
-                            <?php echo CHtml::Button('上传', array('class' => 'btn btn-primary btn-file activeFileSubmita')); ?>
+                            <?php echo CHtml::Button('上传', array('class' => 'btn btn-primary btn-file activeFileSubmit')); ?>
                             <div class="sep"></div>
                             <span class="tip">仅支持PDF格式文件,最大不超过200KB。仅支持jpg、png、jpeg格式</span>
                         </div>
@@ -203,8 +203,7 @@ $form = $this->beginWidget('CActiveForm', array(
             </div>
         </div>
         <!--上传路径放到此字段 多个数据 ','隔开-->
-        <?php echo $form->hiddenField($model, 'qualification_path', array('autocomplete' => 'off')); ?>
-        <input id="qualification_path" type="text" value=""></input>
+        <?php echo $form->hiddenField($model, 'qualification_path', array('autocomplete' => 'off', 'id' => 'qualification_path')); ?>
 
         <div id="showimg"></div>
     </div>
@@ -229,21 +228,13 @@ $form = $this->beginWidget('CActiveForm', array(
                 }
             });
         });
-    })
-    $(function () {
-        $(".activeFileSubmita").each(function () {
-            uploadBtn = $(this);
-            new AjaxUpload(uploadBtn, {
-                action: "/admin/default/uploadImage/FormIframeUpload[field]/" + uploadBtn.parent('.file').find('.fileInput').attr('id'),
-                name: "FormIframeUpload[fileField]",
-                data: {YII_CSRF_TOKEN: "<?php echo Yii::app()->request->csrfToken; ?>"},
-                onComplete: function (file, response) {
-                    uploadBtn.disabled = "";
-                    uploadBtn.value = "上传";
-                }
-            });
-        });
-    })
+
+        //图片回显
+        showImage();
+        showQualification();
+
+    });
+
     /**
      *  上传异步回调
      */
@@ -257,6 +248,7 @@ $form = $this->beginWidget('CActiveForm', array(
         $("#" + jsonData.field + "").parents(".file-upload").find(".errorMessage").html('');
         $("." + jsonData.field + "_errormessage").html('');
 
+        // 品牌图
         if (jsonData.field == "Brand_image_path") {
             $("#" + jsonData.field).val(jsonData.fileField);
             if ($("#" + jsonData.field).hasClass("fileInput_image")) {
@@ -264,7 +256,7 @@ $form = $this->beginWidget('CActiveForm', array(
             }
         }
 
-
+        // 资质图
         if (jsonData.field == "Brand_qualification_path_tmp") {
             $("#" + jsonData.field).val(jsonData.fileField);
             var pathValTmpVal = $("#qualification_path").val();
@@ -273,9 +265,8 @@ $form = $this->beginWidget('CActiveForm', array(
             } else {
                 $("#qualification_path").val(jsonData.fileField);
             }
-            qualificationShow();
+            showQualification();
         }
-
     }
 
     /**
@@ -286,14 +277,13 @@ $form = $this->beginWidget('CActiveForm', array(
             if (jQuery.trim($(this).val()) != '') {
                 $(this).parents(".file-upload").find(".file-show").html('<img src="' + $(this).val() + '"  width="300">');
             }
-            ;
         });
     }
 
     /**
      * 资质图片回显
      */
-    function qualificationShow() {
+    function showQualification() {
         var showImg = $("#showimg");
         var pathValTmpVal = $("#qualification_path").val();
         var pathValTmpValArr = pathValTmpVal.split(',');
@@ -322,7 +312,7 @@ $form = $this->beginWidget('CActiveForm', array(
             }
         }
         pathValTmp.val(pathValTmpValArr.join(','));
-        qualificationShow();
+        showQualification();
     }
 
 </script>
