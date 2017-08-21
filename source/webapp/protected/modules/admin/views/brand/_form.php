@@ -3,7 +3,7 @@ $form = $this->beginWidget('CActiveForm', array(
     'id' => 'organization-form',
     'enableAjaxValidation' => false,
     'htmlOptions' => array('enctype' => 'multipart/form-data', 'class' => 'smart-form'),
-));
+        ));
 ?>
 <div class="tbt-panel">
     <div class="panel-header">
@@ -261,7 +261,8 @@ $form = $this->beginWidget('CActiveForm', array(
             $("#" + jsonData.field).val(jsonData.fileField);
             if ($("#" + jsonData.field).hasClass("fileInput_image")) {
                 showImage();
-            };
+            }
+            ;
         }
 
 
@@ -291,7 +292,7 @@ $form = $this->beginWidget('CActiveForm', array(
     }
 
     /**
-     * 资质图片回显 方法
+     * 资质图片回显
      */
     function qualificationShow() {
         var showImg = $("#showimg");
@@ -299,33 +300,30 @@ $form = $this->beginWidget('CActiveForm', array(
         var pathValTmpValArr = pathValTmpVal.split(',');
         showImg.html('');
         for (var i = 0; i < pathValTmpValArr.length; i++) {
-            showImg.append("<span><b class='button_img'>x</b><img src="+pathValTmpValArr[i] +"></span> ");
+            if (pathValTmpValArr[i] != '') {
+                showImg.append("<span><b class='button_img'>x</b><img src=" + pathValTmpValArr[i] + "></span> ");
+            }
         }
-        showImg.find('span').find('.button_img').on('click',function(){
+        showImg.find('span').find('.button_img').on('click', function () {
             qualificationDelete($(this));
-
         });
-        if (pathValTmpVal=='') {
-//                        删除mig图片
-            $(".button_img").remove();
-            $("#Brand_qualification_path_tmp").val('');
-
-        }
     }
 
-    function qualificationDelete(obj){
+    /**
+     * 资质图片删除
+     */
+    function qualificationDelete(obj) {
         var imgSrc = obj.parents("span").find('img').attr('src');
         var pathValTmp = $("#qualification_path");
         var pathValTmpVal = $("#qualification_path").val();
         var pathValTmpValArr = pathValTmpVal.split(',');
         for (var i = 0; i < pathValTmpValArr.length; i++) {
-            if(imgSrc == pathValTmpValArr[i]){
-                pathValTmpValArr.splice(i,1);
+            if (imgSrc == pathValTmpValArr[i]) {
+                pathValTmpValArr.splice(i, 1);
             }
         }
         pathValTmp.val(pathValTmpValArr.join(','));
         qualificationShow();
     }
-//    $("#qualification_path").val();
 
 </script>

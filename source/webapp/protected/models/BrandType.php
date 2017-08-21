@@ -131,6 +131,26 @@ class BrandType extends CActiveRecord {
         $list = $dataProvider->getData();
         return $list;
     }
+    
+    /**
+     * 获取子分类 by 数组
+     * @param type $parentId
+     * @return type
+     */
+    static function getSonTypeByArray($parentId) {
+        if ($parentId == 0) {
+            return array();
+        }
+        $model = self::model();
+        $model->parent_id = $parentId;
+        $dataProvider = $model->search();
+        $list = $dataProvider->getData();
+        $data = array();
+        foreach($list as $obj){
+            $data[] = $obj->attributes;
+        }
+        return $data;
+    }
 
     /**
      * 获取所有顶级分类listData
