@@ -261,16 +261,11 @@ $form = $this->beginWidget('CActiveForm', array(
             $("#" + jsonData.field).val(jsonData.fileField);
             if ($("#" + jsonData.field).hasClass("fileInput_image")) {
                 showImage();
-            }
-            ;
+            };
         }
 
 
         if (jsonData.field == "Brand_qualification_path_tmp") {
-            // 从input中获取图片地址
-//            document.getElementById("Brand_qualification_path_tmp").value=jsonData.fileField;
-//            var path= document.getElementById("Brand_qualification_path_tmp").value;
-//            var inputstr=document.getElementById("qualification_path").value=document.getElementById("qualification_path").value+ path+",";
             $("#" + jsonData.field).val(jsonData.fileField);
             var pathValTmpVal = $("#qualification_path").val();
             if (pathValTmpVal != '') {
@@ -308,7 +303,12 @@ $form = $this->beginWidget('CActiveForm', array(
         }
         showImg.find('span').find('.button_img').on('click',function(){
             qualificationDelete($(this));
+
         });
+        if (pathValTmpVal=='') {
+//                        删除mig图片
+            $(".button_img").remove();
+        }
     }
 
     function qualificationDelete(obj){
@@ -324,4 +324,6 @@ $form = $this->beginWidget('CActiveForm', array(
         pathValTmp.val(pathValTmpValArr.join(','));
         qualificationShow();
     }
+//    $("#qualification_path").val();
+
 </script>
