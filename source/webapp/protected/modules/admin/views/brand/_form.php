@@ -189,7 +189,7 @@ $form = $this->beginWidget('CActiveForm', array(
                     <div class="file-upload">
                         <div class="file">
                             <div class="input readonly">
-                                <?php echo $form->textField($model, 'qualification_path_tmp', array('autocomplete' => 'off', 'class' => 'fileInput fileInput_imagea')); ?>
+                                <?php echo $form->textField($model, 'qualification_path', array('autocomplete' => 'off', 'class' => 'fileInput fileInput_imagea')); ?>
                                 <?php echo $form->error($model, 'qualification_path'); ?>
                             </div>
                             <?php echo CHtml::Button('上传', array('class' => 'btn btn-primary btn-file activeFileSubmit')); ?>
@@ -202,9 +202,6 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div>
             </div>
         </div>
-        <!--上传路径放到此字段 多个数据 ','隔开-->
-        <?php echo $form->hiddenField($model, 'qualification_path', array('autocomplete' => 'off', 'id' => 'qualification_path')); ?>
-
         <div id="showimg"></div>
     </div>
 </div>
@@ -257,13 +254,12 @@ $form = $this->beginWidget('CActiveForm', array(
         }
 
         // 资质图
-        if (jsonData.field == "Brand_qualification_path_tmp") {
-            $("#" + jsonData.field).val(jsonData.fileField);
-            var pathValTmpVal = $("#qualification_path").val();
-            if (pathValTmpVal != '') {
-                $("#qualification_path").val(pathValTmpVal + ',' + jsonData.fileField);
+        if (jsonData.field == "Brand_qualification_path") {
+            var path = $("#" + jsonData.field);
+            if (path.val() != '') {
+                path.val(path.val() + ',' + jsonData.fileField);
             } else {
-                $("#qualification_path").val(jsonData.fileField);
+                path.val(jsonData.fileField);
             }
             showQualification();
         }
@@ -285,12 +281,12 @@ $form = $this->beginWidget('CActiveForm', array(
      */
     function showQualification() {
         var showImg = $("#showimg");
-        var pathValTmpVal = $("#qualification_path").val();
-        var pathValTmpValArr = pathValTmpVal.split(',');
+        var pathVal = $("#Brand_qualification_path").val();
+        var pathValArr = pathVal.split(',');
         showImg.html('');
-        for (var i = 0; i < pathValTmpValArr.length; i++) {
-            if (pathValTmpValArr[i] != '') {
-                showImg.append("<span><b class='button_img'>x</b><img src=" + pathValTmpValArr[i] + "></span> ");
+        for (var i = 0; i < pathValArr.length; i++) {
+            if (pathValArr[i] != '') {
+                showImg.append("<span><b class='button_img'>x</b><img src=" + pathValArr[i] + "></span> ");
             }
         }
         showImg.find('span').find('.button_img').on('click', function () {
@@ -303,15 +299,15 @@ $form = $this->beginWidget('CActiveForm', array(
      */
     function qualificationDelete(obj) {
         var imgSrc = obj.parents("span").find('img').attr('src');
-        var pathValTmp = $("#qualification_path");
-        var pathValTmpVal = $("#qualification_path").val();
-        var pathValTmpValArr = pathValTmpVal.split(',');
-        for (var i = 0; i < pathValTmpValArr.length; i++) {
-            if (imgSrc == pathValTmpValArr[i]) {
-                pathValTmpValArr.splice(i, 1);
+        var path = $("#Brand_qualification_path");
+        var pathVal = $("#Brand_qualification_path").val();
+        var pathValArr = pathVal.split(',');
+        for (var i = 0; i < pathValArr.length; i++) {
+            if (imgSrc == pathValArr[i]) {
+                pathValArr.splice(i, 1);
             }
         }
-        pathValTmp.val(pathValTmpValArr.join(','));
+        path.val(pathValArr.join(','));
         showQualification();
     }
 
