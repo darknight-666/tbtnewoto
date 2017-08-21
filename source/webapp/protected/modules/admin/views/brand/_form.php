@@ -3,7 +3,7 @@ $form = $this->beginWidget('CActiveForm', array(
     'id' => 'organization-form',
     'enableAjaxValidation' => false,
     'htmlOptions' => array('enctype' => 'multipart/form-data', 'class' => 'smart-form'),
-        ));
+));
 ?>
 <div class="tbt-panel">
     <div class="panel-header">
@@ -70,11 +70,16 @@ $form = $this->beginWidget('CActiveForm', array(
         <div class="section">
             <div class="from-group">
                 <label class="control-label" for="Brand_tag">买单满减</label>
+
                 <div class="from-control col-lg">
-                    <div class="sep"></div> <div class="sep"></div> <div class="sep"></div>
+                    <div class="sep"></div>
+                    <div class="sep"></div>
+                    <div class="sep"></div>
                     <label>满</label>
                     <?php echo $form->textField($model, 'reach_amount', array('autocomplete' => 'off', 'maxlength' => 12, 'style' => 'border: 1px solid #ccc;width: 50px')); ?>
-                    <div class="sep">&nbsp;&nbsp;&nbsp;&nbsp;</div> <div class="sep"></div> <div class="sep"></div>
+                    <div class="sep">&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                    <div class="sep"></div>
+                    <div class="sep"></div>
                     <label>减</label>
                     <?php echo $form->textField($model, 'discount_amount', array('autocomplete' => 'off', 'maxlength' => 12, 'style' => 'border: 1px solid #ccc;width: 50px')); ?>
                 </div>
@@ -84,11 +89,16 @@ $form = $this->beginWidget('CActiveForm', array(
         <div class="section">
             <div class="from-group">
                 <label class="control-label" for="Brand_tag">买单免检</label>
+
                 <div class="from-control col-lg">
-                    <div class="sep"></div> <div class="sep"></div> <div class="sep"></div>
+                    <div class="sep"></div>
+                    <div class="sep"></div>
+                    <div class="sep"></div>
                     <label>满</label>
                     <?php echo $form->textField($model, 'reach_amount', array('autocomplete' => 'off', 'maxlength' => 12, 'style' => 'border: 1px solid #ccc;width: 50px')); ?>
-                    <div class="sep">&nbsp;&nbsp;&nbsp;&nbsp;</div> <div class="sep"></div> <div class="sep"></div>
+                    <div class="sep">&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                    <div class="sep"></div>
+                    <div class="sep"></div>
                     <label>减</label>
                     <?php echo $form->textField($model, 'discount_amount', array('autocomplete' => 'off', 'maxlength' => 12, 'style' => 'border: 1px solid #ccc;width: 50px')); ?>
                 </div>
@@ -165,7 +175,7 @@ $form = $this->beginWidget('CActiveForm', array(
                             <div class="sep"></div>
                             <span class="tip">仅支持PDF格式文件,最大不超过200KB。仅支持jpg、png、jpeg格式</span>
                         </div>
-                        <div class="errorMessage TrainingCourse_image_path_errormessage"></div>
+                        <div class="errorMessage Brand_image_path_errormessage"></div>
                         <div class="file-show"></div>
                     </div>
                 </div>
@@ -179,14 +189,14 @@ $form = $this->beginWidget('CActiveForm', array(
                     <div class="file-upload">
                         <div class="file">
                             <div class="input readonly">
-                                <?php echo $form->textField($model, 'qualification_path_tmp', array('autocomplete' => 'off', 'class' => 'fileInput fileInput_image')); ?>
+                                <?php echo $form->textField($model, 'qualification_path_tmp', array('autocomplete' => 'off', 'class' => 'fileInput fileInput_imagea')); ?>
                                 <?php echo $form->error($model, 'qualification_path'); ?>
                             </div>
                             <?php echo CHtml::Button('上传', array('class' => 'btn btn-primary btn-file activeFileSubmita')); ?>
                             <div class="sep"></div>
                             <span class="tip">仅支持PDF格式文件,最大不超过200KB。仅支持jpg、png、jpeg格式</span>
                         </div>
-                        <div class="errorMessage TrainingCourse_file_path_errormessage"></div>
+                        <div class="errorMessage Brand_qualification_path_tmp_errormessage"></div>
                         <div class="file-show"></div>
                     </div>
                 </div>
@@ -194,6 +204,9 @@ $form = $this->beginWidget('CActiveForm', array(
         </div>
         <!--上传路径放到此字段 多个数据 ','隔开-->
         <?php echo $form->hiddenField($model, 'qualification_path', array('autocomplete' => 'off')); ?>
+        <input id="qualification_path" type="text" value=""></input>
+
+        <div id="showimg"></div>
     </div>
 </div>
 <div class="btn-panel">
@@ -242,14 +255,34 @@ $form = $this->beginWidget('CActiveForm', array(
             return false;
         }
         $("#" + jsonData.field + "").parents(".file-upload").find(".errorMessage").html('');
-//        $("." + jsonData.field + "_errormessage").html('');
-        $("#" + jsonData.field).val(jsonData.fileField);
-        if ($("#" + jsonData.field).hasClass("fileInput_image")) {
-            showImage();
+        $("." + jsonData.field + "_errormessage").html('');
+
+        if (jsonData.field == "Brand_image_path") {
+            $("#" + jsonData.field).val(jsonData.fileField);
+            if ($("#" + jsonData.field).hasClass("fileInput_image")) {
+                showImage();
+            }
+            ;
         }
-        ;
+
+
+        if (jsonData.field == "Brand_qualification_path_tmp") {
+            // 从input中获取图片地址
+//            document.getElementById("Brand_qualification_path_tmp").value=jsonData.fileField;
+//            var path= document.getElementById("Brand_qualification_path_tmp").value;
+//            var inputstr=document.getElementById("qualification_path").value=document.getElementById("qualification_path").value+ path+",";
+            $("#" + jsonData.field).val(jsonData.fileField);
+            var pathValTmpVal = $("#qualification_path").val();
+            if (pathValTmpVal != '') {
+                $("#qualification_path").val(pathValTmpVal + ',' + jsonData.fileField);
+            } else {
+                $("#qualification_path").val(jsonData.fileField);
+            }
+            qualificationShow();
+        }
+
     }
-    ;
+
     /**
      *  图片回显
      */
@@ -261,6 +294,34 @@ $form = $this->beginWidget('CActiveForm', array(
             ;
         });
     }
-    ;
 
+    /**
+     * 资质图片回显 方法
+     */
+    function qualificationShow() {
+        var showImg = $("#showimg");
+        var pathValTmpVal = $("#qualification_path").val();
+        var pathValTmpValArr = pathValTmpVal.split(',');
+        showImg.html('');
+        for (var i = 0; i < pathValTmpValArr.length; i++) {
+            showImg.append("<span><b class='button_img'>x</b><img src="+pathValTmpValArr[i] +"></span> ");
+        }
+        showImg.find('span').find('.button_img').on('click',function(){
+            qualificationDelete($(this));
+        });
+    }
+
+    function qualificationDelete(obj){
+        var imgSrc = obj.parents("span").find('img').attr('src');
+        var pathValTmp = $("#qualification_path");
+        var pathValTmpVal = $("#qualification_path").val();
+        var pathValTmpValArr = pathValTmpVal.split(',');
+        for (var i = 0; i < pathValTmpValArr.length; i++) {
+            if(imgSrc == pathValTmpValArr[i]){
+                pathValTmpValArr.splice(i,1);
+            }
+        }
+        pathValTmp.val(pathValTmpValArr.join(','));
+        qualificationShow();
+    }
 </script>

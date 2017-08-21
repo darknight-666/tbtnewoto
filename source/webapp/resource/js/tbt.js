@@ -676,6 +676,20 @@ function sizeLayout() {
         $("#tbtLeft,#tbtMain").css({'min-height': minH ,'height':'auto !important;', '_height': minH});
     };
 }
+//function textare(){
+//    var n=parseInt(document.getElementById("bb").innerHTML);
+//    document.getElementById("PmetalGoods_description").onkeyup=function(){
+//        var strlen=this.value.length;
+//        document.getElementById("int").innerHTML=strlen;
+//        if(strlen>=n){
+//
+//            var slen=this.value.substr(0,n);
+//            document.getElementById("PmetalGoods_description").value=slen;
+//            document.getElementById("int").innerHTML=n;
+//        }
+//
+//    }
+//}
 
 
 

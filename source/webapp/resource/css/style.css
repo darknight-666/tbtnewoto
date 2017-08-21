@@ -1736,9 +1736,26 @@ ul.yiiPager .first, ul.yiiPager .last{
 ul.yiiPager .selected a{
     background:#3b99ff;
 }
-
-
-
+#showimg  img{
+    display: inline;
+    width: 300px;
+margin-left: 5px;
+    margin-top: 5px;
+}
+#showimg  span b{
+   position: absolute;
+    z-index: 10;
+    margin-left: 5px;
+    margin-top: 5px;
+    /*left:-300px;*/
+    width: 20px;
+    height: 20px;
+    background-color: #ccc;
+    text-align: center;
+    /*top: -100px;*/
+    cursor: pointer;
+    /*display: none;*/
+}
 
 
 
