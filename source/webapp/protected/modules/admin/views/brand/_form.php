@@ -262,7 +262,6 @@ $form = $this->beginWidget('CActiveForm', array(
             if ($("#" + jsonData.field).hasClass("fileInput_image")) {
                 showImage();
             }
-            ;
         }
 
 
