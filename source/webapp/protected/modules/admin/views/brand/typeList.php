@@ -92,12 +92,11 @@ $this->module->params = array('title' => '品牌分类列表', 'title_img' => 'f
         $('#tbt_product_id').val(coursetypeId);
         var dialogTmp = $('#dialog-box').html();
         $('#tbt_product_id').val($(this).attr("merchId"));
-
-        $('#dialog-manager').manager({
+            $('#dialog-manager').manager({
             width: 500,
             height: 280,
             title: '添加分类?',
-            buttons: [
+               buttons: [
                 {
                     html: "确定",
                     "class": "btn btn-primary btn-confirm",
