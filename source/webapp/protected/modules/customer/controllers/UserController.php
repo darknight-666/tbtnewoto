@@ -79,7 +79,7 @@ class UserController extends CustomerBaseController {
      */
     public function actionChangePassword() {
         $this->checkLogin();
-        $this->checkParams(array('oldPassword', 'newPassword'));
+        $this->checkParams(array('empty' => array('oldPassword', 'newPassword')));
         $model = CustomerUser::model()->findByPk(Yii::app()->user->id);
         if (is_null($model)) {
             $this->output('', ApiStatusCode::$error, '该用户不存在');

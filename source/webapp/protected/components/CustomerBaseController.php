@@ -39,12 +39,11 @@ class CustomerBaseController extends Controller {
         }
         Yii::app()->session->open();
 
-        $url = substr(Yii::app()->request->getUrl(), 0, strpos(Yii::app()->request->getUrl(), '?'));
-
+        $url = Yii::app()->request->getPathInfo();
         Yii::log('', CLogger::LEVEL_PROFILE, 'newapi');
-        Yii::log('SESSION_ID:' . $session_id, CLogger::LEVEL_PROFILE, 'newapi');
-        Yii::log('url地址:' . $url, CLogger::LEVEL_PROFILE, 'newapi');
-        Yii::log('参数:' . json_encode($this->params, JSON_UNESCAPED_UNICODE), CLogger::LEVEL_PROFILE, 'newapi');
+        Yii::log('SESSION_ID: ' . $session_id, CLogger::LEVEL_PROFILE, 'newapi');
+        Yii::log('URL: ' . $url, CLogger::LEVEL_PROFILE, 'newapi');
+        Yii::log('参数: ' . json_encode($this->params, JSON_UNESCAPED_UNICODE), CLogger::LEVEL_PROFILE, 'newapi');
     }
 
     public function checkLogin() {
@@ -61,7 +60,7 @@ class CustomerBaseController extends Controller {
         if (isset($items['empty'])) {
             foreach ($items['empty'] as $item) {
                 if (empty($this->params[$item])) {
-                    Yii::log('缺少参数:' . '   ' . $item, CLogger::LEVEL_PROFILE, 'newapi');
+                    Yii::log('缺少参数: ' . '   ' . $item, CLogger::LEVEL_PROFILE, 'newapi');
                     $this->output('error', ApiStatusCode::$paramsAbsent, '缺少必要参数');
                 }
             }
@@ -69,7 +68,7 @@ class CustomerBaseController extends Controller {
         if (isset($items['isset'])) {
             foreach ($items['isset'] as $item) {
                 if (!isset($this->params[$item])) {
-                    Yii::log('缺少参数:' . '   ' . $item, CLogger::LEVEL_PROFILE, 'newapi');
+                    Yii::log('缺少参数: ' . '   ' . $item, CLogger::LEVEL_PROFILE, 'newapi');
                     $this->output('error', ApiStatusCode::$paramsAbsent, '缺少必要参数');
                 }
             }

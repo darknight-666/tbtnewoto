@@ -14,6 +14,7 @@ class My {
     static function output($data, $status = 10000, $message = "") {
         header("Content-type: application/json");
         $arr = array('status' => $status, 'data' => $data, 'message' => $message);
+        Yii::log('返回结果: ' . json_encode($arr, JSON_UNESCAPED_UNICODE), CLogger::LEVEL_PROFILE, 'newapi');
         echo json_encode($arr);
         exit;
     }
