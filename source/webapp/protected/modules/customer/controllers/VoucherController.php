@@ -66,7 +66,7 @@ class VoucherController extends CustomerBaseController {
         $sql = "SELECT  "
                 . "voucher.voucher_id, voucher.name, voucher.face_value, voucher.price, voucher.status, voucher.discount_status, voucher.order_number, "
                 . $distance
-                . "brand.`name` AS brand__name, brand.`tag` AS brand__tag, brand.`image_path` AS brand__image_path, "
+                . "brand.`name` AS brand__name, brand.`expensive_status` as brand__expensive_status, brand.`tag` AS brand__tag, brand.`image_path` AS brand__image_path, "
                 . "brand_type.`name` AS brand_type__name, brand_type.`brand_type_id` AS brand_type__brand_type_id, "
                 . "shop.`business_center_id` AS shop__business_center_id, shop.`shop_id` AS shop__shop_id "
                 . "FROM `oto_voucher` AS voucher "
