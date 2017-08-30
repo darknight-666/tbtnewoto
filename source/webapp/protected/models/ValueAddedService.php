@@ -1,14 +1,14 @@
 <?php
 
 /**
- * This is the model class for table "{{business_center}}".
+ * This is the model class for table "{{value_added_service}}".
  *
- * The followings are the available columns in table '{{business_center}}':
- * @property string $business_center_id
- * @property string $district_adcode
+ * The followings are the available columns in table '{{value_added_service}}':
+ * @property string $value_added_service_id
  * @property string $name
+ * @property string $image_path
  */
-class BusinessCenter extends CActiveRecord {
+class ValueAddedService extends CActiveRecord {
 
     public $pageSize = 999;
 
@@ -16,7 +16,7 @@ class BusinessCenter extends CActiveRecord {
      * @return string the associated database table name
      */
     public function tableName() {
-        return '{{business_center}}';
+        return '{{value_added_service}}';
     }
 
     /**
@@ -26,10 +26,11 @@ class BusinessCenter extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('district_adcode, name', 'length', 'max' => 20),
+            array('name', 'length', 'max' => 10),
+            array('image_path', 'length', 'max' => 255),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('business_center_id, district_adcode, name', 'safe', 'on' => 'search'),
+            array('value_added_service_id, name, image_path', 'safe', 'on' => 'search'),
         );
     }
 
@@ -48,9 +49,9 @@ class BusinessCenter extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'business_center_id' => '商圈id',
-            'district_adcode' => '地区adcode',
-            'name' => '商圈名称',
+            'value_added_service_id' => '增值服务id',
+            'name' => '服务名称',
+            'image_path' => '图标路径',
         );
     }
 
@@ -71,10 +72,10 @@ class BusinessCenter extends CActiveRecord {
 
         $criteria = new CDbCriteria;
 
-        $criteria->compare('business_center_id', $this->business_center_id, true);
-        $criteria->compare('district_adcode', $this->district_adcode, true);
-        $criteria->compare('name', $this->name, true);
-
+        $criteria->compare('value_added_service_id', $this->value_added_service_id, true);
+//        $criteria->compare('name', $this->name, true);
+//        $criteria->compare('image_path', $this->image_path, true);
+        $criteria->order = 'value_added_service_id desc';
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
             'pagination' => array(
@@ -87,52 +88,28 @@ class BusinessCenter extends CActiveRecord {
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return BusinessCenter the static model class
+     * @return ValueAddedService the static model class
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
 
     /**
-     * 根据地区获取商圈
-     * @param type $adcode
-     * @return type
+     * 获取所有增值服务
      */
-    public static function getAllByDistrictId($adcode) {
-        if (empty($adcode)) {
-            return array();
-        }
+    public static function getAll() {
         $model = self::model();
-        $model->district_adcode = $adcode;
         $dataProvider = $model->search();
         $list = $dataProvider->getData();
         return $list;
     }
 
     /**
-     * 根据地区获取商圈 - Array
-     * @return type
+     * 获取所有增值服务 - listData
      */
-    public static function getAllByDistrictIdByArray($adcode) {
-        if ($adcode == 0) {
-            return array();
-        }
-        $list = self::getAllByDistrictId($adcode);
-        $data = array();
-        foreach ($list as $obj) {
-            $data[] = $obj->attributes;
-        }
-        return $data;
-    }
-
-    /**
-     * 根据地区获取商圈 - listData
-     * @param type $adcode
-     * @return type
-     */
-    public static function getAllByDistrictIdByListData($adcode) {
-        $data = self::getAllByDistrictId($adcode);
-        return CHtml::listData($data, 'business_center_id', 'name');
+    public static function getAllByListData() {
+        $data = self::getAll();
+        return CHtml::listData($data, 'value_added_service_id', 'name');
     }
 
 }

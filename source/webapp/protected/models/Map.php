@@ -180,4 +180,18 @@ class Map extends CActiveRecord {
         return CHtml::listData($data, 'adcode', 'name');
     }
 
+    /**
+     * 根据区dcode 获取 市code
+     */
+    static function getCityCodeByCode($adcode) {
+        return substr_replace($adcode, '00', -2);
+    }
+
+    /**
+     * 根据区dcode 获取 市code
+     */
+    static function getProvinceCodeByCode($adcode) {
+        return substr_replace($adcode, '0000', -4);
+    }
+
 }

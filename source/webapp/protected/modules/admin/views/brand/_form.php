@@ -52,66 +52,40 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div>
             </div>
         </div>
-        <!-- 标签 -->
+        <!-- TAG -->
         <div class="section">
             <div class="from-group">
                 <?php echo $form->labelEx($model, 'tag', array('class' => 'control-label')); ?>
                 <div class="from-control col-lg">
-                    <div class="input">
-                        <?php echo $form->textField($model, 'tag', array('autocomplete' => 'off', 'maxlength' => 20)); ?>
-                        <?php echo $form->error($model, 'tag'); ?>
+                    <div>
+                        <?php
+                        echo $form->checkBoxList($model, 'tag', Tag::getAllByListData(), array(
+                            'class' => 'proxyList',
+                            'separator' => '',
+                            'checkAll' => '全部',
+                            'container' => 'ul class="role-list"',
+                            'template' => '<li class ="item">{input}{label}</li>',
+                            'labelOptions' => array('style' => 'display:inline;', 'class' => 'pointname')));
+                        ?>
+                        <?php echo $form->error($model, 'value_added_service'); ?>
                     </div>
-                    <div class="sep"></div>
-                    <span class="tip">最大可输入10个字</span>
                 </div>
             </div>
         </div>
-        <!-- 买单免检 -->
         <div class="section">
             <div class="from-group">
-                <label class="control-label" for="Brand_tag">买单满减</label>
-
+                <?php echo $form->labelEx($model, 'expensive_status', array('class' => 'control-label')); ?>
                 <div class="from-control col-lg">
-                    <div class="sep"></div>
-                    <div class="sep"></div>
-                    <div class="sep"></div>
-                    <label>满</label>
-                    <?php echo $form->textField($model, 'reach_amount', array('autocomplete' => 'off', 'maxlength' => 12, 'style' => 'border: 1px solid #ccc;width: 50px')); ?>
-                    <div class="sep">&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                    <div class="sep"></div>
-                    <div class="sep"></div>
-                    <label>减</label>
-                    <?php echo $form->textField($model, 'discount_amount', array('autocomplete' => 'off', 'maxlength' => 12, 'style' => 'border: 1px solid #ccc;width: 50px')); ?>
-                </div>
-            </div>
-        </div>
-        <!-- 买单免检 -->
-        <div class="section">
-            <div class="from-group">
-                <label class="control-label" for="Brand_tag">买单免检</label>
-
-                <div class="from-control col-lg">
-                    <div class="sep"></div>
-                    <div class="sep"></div>
-                    <div class="sep"></div>
-                    <label>满</label>
-                    <?php echo $form->textField($model, 'reach_amount', array('autocomplete' => 'off', 'maxlength' => 12, 'style' => 'border: 1px solid #ccc;width: 50px')); ?>
-                    <div class="sep">&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                    <div class="sep"></div>
-                    <div class="sep"></div>
-                    <label>减</label>
-                    <?php echo $form->textField($model, 'discount_amount', array('autocomplete' => 'off', 'maxlength' => 12, 'style' => 'border: 1px solid #ccc;width: 50px')); ?>
-                </div>
-            </div>
-        </div>
-        <!-- 银行补贴详情 -->
-        <div class="section">
-            <div class="from-group">
-                <?php echo $form->labelEx($model, 'allowance_detail', array('class' => 'control-label')); ?>
-                <div class="from-control col-lg">
-                    <div class="textarea">
-                        <?php echo $form->textArea($model, 'allowance_detail', array('cols' => '30', 'rows' => '10', 'maxlength' => 40)) ?>
-                        <?php echo $form->error($model, 'allowance_detail'); ?>
+                    <div>
+                        <?php
+                        echo $form->radioButtonList($model, 'expensive_status', Brand::getExpensiveStatusItems(), array(
+                            'class' => 'proxyList',
+                            'separator' => '',
+                            'container' => 'ul class="role-list"',
+                            'template' => '<li class ="item">{input}{label}</li>',
+                            'labelOptions' => array('style' => 'display:inline;', 'class' => 'pointname')));
+                        ?>
+                        <?php echo $form->error($model, 'expensive_status'); ?>
                     </div>
                 </div>
             </div>
@@ -128,18 +102,6 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div>
             </div>
         </div>
-        <!-- 推荐理由详情 -->
-        <div class="section">
-            <div class="from-group">
-                <?php echo $form->labelEx($model, 'recommend_detail', array('class' => 'control-label')); ?>
-                <div class="from-control col-lg">
-                    <div class="textarea">
-                        <?php echo $form->textArea($model, 'recommend_detail', array('cols' => '30', 'rows' => '10', 'maxlength' => 40)) ?>
-                        <?php echo $form->error($model, 'recommend_detail'); ?>
-                    </div>
-                </div>
-            </div>
-        </div>
         <!-- 提供增值服务 -->
         <div class="section">
             <div class="from-group">
@@ -147,7 +109,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 <div class="from-control col-lg">
                     <div>
                         <?php
-                        echo $form->checkBoxList($model, 'value_added_service', Brand::getValueAddedServiceItems(), array(
+                        echo $form->checkBoxList($model, 'value_added_service', ValueAddedService::getAllByListData(), array(
                             'class' => 'proxyList',
                             'separator' => '',
                             'checkAll' => '全部',

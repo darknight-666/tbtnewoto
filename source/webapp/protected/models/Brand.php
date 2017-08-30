@@ -9,11 +9,8 @@
  * @property string $name
  * @property string $tag
  * @property integer $status
- * @property double $reach_amount
- * @property double $discount_amount
- * @property string $allowance_detail
+ * @property integer $expensive_status
  * @property string $recommend_reason
- * @property string $recommend_detail
  * @property string $value_added_service
  * @property string $image_path
  * @property string $qualification_path
@@ -21,9 +18,13 @@
  */
 class Brand extends CActiveRecord {
 
+    //状态
     const STATUS_NOTCONFIRM = 1; //待审核
     const STATUS_CONFIRMED = 11; //已审核
     const STATUS_DELETED = 21; //已删除
+    //一贵就赔
+    const EXPENSIVE_STATUS_YES = 1; //是
+    const EXPENSIVE_STATUS_NO = 2; //否
 
     public $pageSize = 10;
     public $parent_id; //分类id一级
@@ -44,9 +45,8 @@ class Brand extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('name, parent_id, brand_type_id, status, allowance_detail, recommend_detail, image_path, create_time', 'required'),
-            array('brand_type_id, status', 'numerical', 'integerOnly' => true),
-            array('reach_amount, discount_amount', 'numerical'),
+            array('name, parent_id, brand_type_id, status, expensive_status, image_path, create_time', 'required'),
+            array('brand_type_id, status, expensive_status', 'numerical', 'integerOnly' => true),
             array('name', 'length', 'max' => 20),
             array('tag', 'length', 'max' => 10),
             array('recommend_reason', 'length', 'max' => 40),
@@ -55,7 +55,7 @@ class Brand extends CActiveRecord {
             array('qualification_path_tmp, qualification_path', 'length', 'max' => 1000),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('brand_id, brand_type_id, name, tag, status, reach_amount, discount_amount, allowance_detail, recommend_reason, recommend_detail, value_added_service, image_path, qualification_path, create_time', 'safe', 'on' => 'search'),
+            array('brand_id, brand_type_id, name, tag, status, expensive_status, recommend_reason, value_added_service, image_path, qualification_path, create_time', 'safe', 'on' => 'search'),
         );
     }
 
@@ -81,11 +81,8 @@ class Brand extends CActiveRecord {
             'name' => '品牌名称',
             'tag' => '品牌标签',
             'status' => '状态',
-            'reach_amount' => '满减限定金额',
-            'discount_amount' => '满减减少金额',
-            'allowance_detail' => '银行补贴详情',
+            'expensive_status' => '是否承诺 一贵就赔',
             'recommend_reason' => '推荐理由',
-            'recommend_detail' => '推荐详情',
             'value_added_service' => '增值服务',
             'image_path' => '品牌主图',
             'qualification_path' => '企业资质',
@@ -115,11 +112,7 @@ class Brand extends CActiveRecord {
         $criteria->compare('name', $this->name, true);
         $criteria->compare('tag', $this->tag, true);
         $criteria->compare('status', $this->status);
-//        $criteria->compare('reach_amount', $this->reach_amount);
-//        $criteria->compare('discount_amount', $this->discount_amount);
-        $criteria->compare('allowance_detail', $this->allowance_detail, true);
         $criteria->compare('recommend_reason', $this->recommend_reason, true);
-        $criteria->compare('recommend_detail', $this->recommend_detail, true);
         $criteria->compare('value_added_service', $this->value_added_service, true);
         $criteria->compare('image_path', $this->image_path, true);
         $criteria->compare('qualification_path', $this->qualification_path, true);
@@ -145,6 +138,7 @@ class Brand extends CActiveRecord {
     }
 
     public function beforeValidate() {
+        $this->tag = !empty($this->tag) ? implode(',', $this->tag) : '';
         $this->value_added_service = !empty($this->value_added_service) ? implode(',', $this->value_added_service) : '';
         $this->status = !empty($this->status) ? $this->status : self::STATUS_CONFIRMED;
         $this->create_time = !empty($this->create_time) ? $this->create_time : date('Y-m-d H:i:s');
@@ -152,11 +146,13 @@ class Brand extends CActiveRecord {
     }
 
     public function afterSave() {
+        $this->tag = !empty($this->tag) ? explode(',', $this->tag) : array();
         $this->value_added_service = !empty($this->value_added_service) ? explode(',', $this->value_added_service) : array();
         return parent::afterSave();
     }
 
     public function afterFind() {
+        $this->tag = !empty($this->tag) ? explode(',', $this->tag) : array();
         $this->value_added_service = !empty($this->value_added_service) ? explode(',', $this->value_added_service) : array();
         $this->parent_id = $this->type->parent_id;
         parent::afterFind();
@@ -184,24 +180,22 @@ class Brand extends CActiveRecord {
     }
 
     /**
-     * 增值服务组
+     * 一贵就赔 - 状态组
      */
-    static function getValueAddedServiceItems() {
+    static function getExpensiveStatusItems() {
         return array(
-            1 => '空调',
-            2 => '咖啡',
-            3 => '小零食',
-            4 => '饮料',
+            self::EXPENSIVE_STATUS_YES => '是',
+            self::EXPENSIVE_STATUS_NO => '否',
         );
     }
 
     /**
-     * 获取指定增值服务值
+     * 获取一贵就赔指定状态值
      * @param type $key
      * @return type
      */
-    static function getValueAddedServiceItemsTitle($key) {
-        $items = self::getValueAddedServiceItems();
+    static function getExpensiveStatusTitle($key) {
+        $items = self::getExpensiveStatusItems();
         return isset($items[$key]) ? $items[$key] : Null;
     }
 
@@ -230,6 +224,9 @@ class Brand extends CActiveRecord {
      * 获取所有数据by typeid
      */
     static function getAllByBrandTypeId($brandTypeId) {
+        if (empty($brandTypeId)) {
+            return array();
+        }
         $model = self::model();
         $model->pageSize = 999;
         $model->brand_type_id = $brandTypeId;

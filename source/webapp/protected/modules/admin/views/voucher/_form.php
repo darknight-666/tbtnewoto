@@ -55,6 +55,7 @@ $form = $this->beginWidget('CActiveForm', array(
                             echo $form->dropDownList($model, 'brand_id', Brand::getAllByBrandTypeIdByListData($model->brand_type_id), array('empty' => '请选择'));
                             ?>
                         </div>
+                        <?php echo $form->error($model, 'brand_id'); ?>
                     </div>
                 </div>
             </div>
@@ -73,13 +74,25 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div>
             </div>
         </div>
-        <!-- 有效期至 -->
+        <!-- 有效期开始 -->
         <div class="section">
             <div class="from-group">
-                <?php echo $form->labelEx($model, 'overdue_time', array('class' => 'control-label', 'label' => '有效期至')); ?>
+                <?php echo $form->labelEx($model, 'start_time', array('class' => 'control-label')); ?>
                 <div class="from-control col-lg">
                     <div class="input">
-                        <?php echo $form->textField($model, 'overdue_time', array('autocomplete' => 'off', 'maxlength' => 20)); ?>
+                        <?php echo $form->textField($model, 'start_time', array('autocomplete' => 'off', 'value' => My::formatDate($model->start_time), 'maxlength' => 20)); ?>
+                        <?php echo $form->error($model, 'start_time'); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 有效期结束 -->
+        <div class="section">
+            <div class="from-group">
+                <?php echo $form->labelEx($model, 'overdue_time', array('class' => 'control-label')); ?>
+                <div class="from-control col-lg">
+                    <div class="input">
+                        <?php echo $form->textField($model, 'overdue_time', array('autocomplete' => 'off', 'value' => My::formatDate($model->overdue_time), 'maxlength' => 20)); ?>
                         <?php echo $form->error($model, 'overdue_time'); ?>
                     </div>
                 </div>
@@ -88,11 +101,11 @@ $form = $this->beginWidget('CActiveForm', array(
         <!-- 数量 -->
         <div class="section">
             <div class="from-group">
-                <?php echo $form->labelEx($model, 'quantity', array('class' => 'control-label')); ?>
+                <?php echo $form->labelEx($model, 'limit_quantity', array('class' => 'control-label')); ?>
                 <div class="from-control col-lg">
                     <div class="input">
-                        <?php echo $form->textField($model, 'quantity', array('autocomplete' => 'off', 'maxlength' => 11)); ?>
-                        <?php echo $form->error($model, 'quantity'); ?>
+                        <?php echo $form->textField($model, 'limit_quantity', array('autocomplete' => 'off', 'maxlength' => 11)); ?>
+                        <?php echo $form->error($model, 'limit_quantity'); ?>
                     </div>
                 </div>
             </div>
@@ -110,7 +123,6 @@ $form = $this->beginWidget('CActiveForm', array(
             </div>
         </div>
         <!-- 价格 -->
-        <!-- 优惠卷面值 -->
         <div class="section">
             <div class="from-group">
                 <?php echo $form->labelEx($model, 'price', array('class' => 'control-label')); ?>
@@ -137,6 +149,18 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div>
             </div>
         </div>
+        <!-- 排序号 -->
+        <div class="section">
+            <div class="from-group">
+                <?php echo $form->labelEx($model, 'order_number', array('class' => 'control-label')); ?>
+                <div class="from-control col-lg">
+                    <div class="input">
+                        <?php echo $form->textField($model, 'order_number', array('autocomplete' => 'off', 'maxlength' => 8)); ?>
+                        <?php echo $form->error($model, 'order_number'); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- 使用提示 -->
         <div class="section">
             <div class="from-group">
@@ -149,6 +173,55 @@ $form = $this->beginWidget('CActiveForm', array(
                     </div>
                     <div class="sep"></div>
                     <span class="tip">最大可输入300个字</span>
+                </div>
+            </div>
+        </div>
+        <!-- 开户户名 -->
+        <div class="section">
+            <div class="from-group">
+                <?php echo $form->labelEx($model, 'account_name', array('class' => 'control-label')); ?>
+                <div class="from-control col-lg">
+                    <div class="input">
+                        <?php echo $form->textField($model, 'account_name', array('autocomplete' => 'off', 'maxlength' => 60)); ?>
+                        <?php echo $form->error($model, 'account_name'); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 账号 -->
+        <div class="section">
+            <div class="from-group">
+                <?php echo $form->labelEx($model, 'account_number', array('class' => 'control-label')); ?>
+                <div class="from-control col-lg">
+                    <div class="input">
+                        <?php echo $form->textField($model, 'account_number', array('autocomplete' => 'off', 'maxlength' => 40)); ?>
+                        <?php echo $form->error($model, 'account_number'); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 开户行 -->
+        <div class="section">
+            <div class="from-group">
+                <?php echo $form->labelEx($model, 'account_bank_name', array('class' => 'control-label')); ?>
+                <div class="from-control col-lg">
+                    <div class="input">
+                        <?php echo $form->textField($model, 'account_bank_name', array('autocomplete' => 'off', 'maxlength' => 80)); ?>
+                        <?php echo $form->error($model, 'account_bank_name'); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 账户地址 -->
+        <div class="section">
+            <div class="from-group">
+                <?php echo $form->labelEx($model, 'account_bank_address', array('class' => 'control-label')); ?>
+                <div class="from-control col-lg">
+                    <div class="input">
+                        <?php echo $form->textField($model, 'account_bank_address', array('autocomplete' => 'off', 'maxlength' => 80)); ?>
+                        <?php echo $form->error($model, 'account_bank_address'); ?>
+                    </div>
                 </div>
             </div>
         </div>

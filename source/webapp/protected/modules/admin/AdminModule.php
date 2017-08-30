@@ -42,6 +42,18 @@ class AdminModule extends BaseMoudle {
                         'number' => 0,
                         'itemOptions' => array('name' => 'brand.list', 'class' => 'second-parent'),
                     ),
+                    array(
+                        'label' => '品牌TAG',
+                        'url' => array('/admin/brand/tagList'),
+                        'number' => 0,
+                        'itemOptions' => array('name' => 'brand.tagList', 'class' => 'second-parent'),
+                    ),
+                    array(
+                        'label' => '增值服务',
+                        'url' => array('/admin/brand/valueAddedServiceList'),
+                        'number' => 0,
+                        'itemOptions' => array('name' => 'brand.valueAddedServiceList', 'class' => 'second-parent'),
+                    ),
                 ),
             ),
             array(
@@ -57,8 +69,8 @@ class AdminModule extends BaseMoudle {
                         'number' => 0,
                         'itemOptions' => array('name' => 'voucher.list', 'class' => 'second-parent'),
                     ),
-                    ),
                 ),
+            ),
             array(
                 'label' => '我的信息',
                 'url' => 'javascript:;',

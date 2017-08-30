@@ -208,4 +208,106 @@ class BrandController extends AdminBaseController {
         $this->render('shopList', array('model' => $model, 'pager' => $pager, 'list' => $list));
     }
 
+    /**
+     * ********************* 增值服务 *********************
+     * 增值服务 - 新增
+     */
+    public function actionValueAddedServiceAdd() {
+        $model = new ValueAddedService();
+        if (isset($_POST['ValueAddedService'])) {
+            $model->attributes = $_POST['ValueAddedService'];
+            if ($model->save()) {
+                $this->redirect('/admin/brand/valueAddedServiceList');
+            }
+        }
+        $this->render('valueAddedServiceAdd', array('model' => $model));
+    }
+
+    /**
+     * 增值服务 - 更新
+     */
+    public function actionValueAddedServiceUpdate() {
+        $id = Yii::app()->request->getParam('id');
+        $model = ValueAddedService::model()->findByPk($id);
+        if (is_null($model)) {
+            throw new CHttpException(404, '页面不存在');
+        }
+        if (isset($_POST['ValueAddedService'])) {
+            $model->attributes = $_POST['ValueAddedService'];
+            if ($model->save()) {
+                $this->redirect('/admin/brand/valueAddedServiceList');
+            }
+        }
+        $this->render('valueAddedServiceUpdate', array('model' => $model));
+    }
+
+    /**
+     * 增值服务 - 列表
+     */
+    public function actionValueAddedServiceList() {
+        $model = new ValueAddedService();
+        $dataProvider = $model->search();
+        $list = $dataProvider->getData();
+        $pager = $dataProvider->pagination;
+        $this->render('valueAddedServiceList', array('model' => $model, 'pager' => $pager, 'list' => $list));
+    }
+
+    /**
+     * 增值服务 - 删除
+     */
+    public function actionValueAddedServiceDelete() {
+        
+    }
+
+    /**
+     * ********************* TAG管理 *********************
+     * TAG - 新增
+     */
+    public function actionTagAdd() {
+        $model = new Tag();
+        if (isset($_POST['Tag'])) {
+            $model->attributes = $_POST['Tag'];
+            if ($model->save()) {
+                $this->redirect('/admin/brand/tagList');
+            }
+        }
+        $this->render('tagAdd', array('model' => $model));
+    }
+
+    /**
+     * TAG - 更新
+     */
+    public function actionTagUpdate() {
+        $id = Yii::app()->request->getParam('id');
+        $model = Tag::model()->findByPk($id);
+        if (is_null($model)) {
+            throw new CHttpException(404, '页面不存在');
+        }
+        if (isset($_POST['Tag'])) {
+            $model->attributes = $_POST['Tag'];
+            if ($model->save()) {
+                $this->redirect('/admin/brand/tagList');
+            }
+        }
+        $this->render('tagUpdate', array('model' => $model));
+    }
+
+    /**
+     * TAG - 列表
+     */
+    public function actionTagList() {
+        $model = new Tag();
+        $dataProvider = $model->search();
+        $list = $dataProvider->getData();
+        $pager = $dataProvider->pagination;
+        $this->render('tagList', array('model' => $model, 'pager' => $pager, 'list' => $list));
+    }
+
+    /**
+     * TAG - 删除
+     */
+    public function actionTagDelete() {
+        
+    }
+
 }

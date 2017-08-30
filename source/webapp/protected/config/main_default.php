@@ -24,7 +24,7 @@ return array(
     ),
     'modules' => array(
         'admin', // 系统管理员模块
-        'user', // 用户模块
+        'customer', // 用户模块
         'shop', // 商户模块
         // uncomment the following to enable the Gii tool
 //        'gii' => array(
@@ -67,6 +67,26 @@ return array(
             'itemChildTable' => 'oto_authitemchild',
             'rightsTable' => 'oto_rights',
             'defaultRoles' => array('Guest'),
+        ),
+        //需要在runtime中增加SESSION目录
+        'session' => array(
+            'autoStart' => false,
+            'sessionName' => 'TBT',
+            'timeout' => 60 * 60 * 24 * 30,
+            'cacheID' => 'cache',
+            'class' => 'CCacheHttpSession',
+        // 'cookieMode' => 'only',
+        // 'cookieParams' => array('domain' => '.tongbaotu.com', 'lifetime' => 0),
+//			去除 默认是/tmp 目录
+//		   'savePath'=>'protected/runtime/SESSION/',
+        ),
+        // redis
+        'cache' => array(
+            'class' => 'system.caching.CRedisCache',
+            'hostname' => '10.20.1.18',
+            'port' => '6379',
+            'password' => 'redistest',
+            'database' => '9',
         ),
         // uncomment the following to enable URLs in path-format
         'urlManager' => array(

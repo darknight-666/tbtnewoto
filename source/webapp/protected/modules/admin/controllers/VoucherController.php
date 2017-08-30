@@ -10,6 +10,7 @@ class VoucherController extends AdminBaseController {
      */
     public function actionAdd() {
         $model = new Voucher();
+        $model->order_number = Voucher::getMaxOrderNumber() + 1;
         $menu = Yii::app()->request->getParam('menu');
         if (isset($_POST['Voucher'])) {
             $model->attributes = $_POST['Voucher'];
@@ -26,6 +27,8 @@ class VoucherController extends AdminBaseController {
     public function actionUpdate() {
         $id = Yii::app()->request->getParam('id');
         $model = Voucher::model()->findByPk($id);
+        $model->brand_type_id = $model->brand->brand_type_id;
+        $model->parent_id = $model->brand->type->parent_id;
         if (isset($_POST['Voucher'])) {
             $model->attributes = $_POST['Voucher'];
             if ($model->save()) {
@@ -91,7 +94,21 @@ class VoucherController extends AdminBaseController {
      * 代金券 - 上线/下线 - Ajax
      */
     public function actionUpdateStatus() {
-        $this->render('updateStatus');
+        $id = Yii::app()->request->getParam('id');
+        $status = Yii::app()->request->getParam('type');
+        if (empty($id) || empty($status)) {
+            $this->output('', ApiStatusCode::$error, '缺少必要参数');
+        }
+        $model = Voucher::model()->findByPk($id);
+        if (empty($model)) {
+            $this->output('', ApiStatusCode::$error, '参数无效');
+        }
+        $model->status = $status;
+        if ($model->save()) {
+            $this->output('');
+        } else {
+            $this->output('', ApiStatusCode::$error, '操作失败');
+        }
     }
 
 }

@@ -6,25 +6,35 @@
  * The followings are the available columns in table '{{voucher}}':
  * @property string $voucher_id
  * @property integer $brand_id
- * @property integer $quantity
+ * @property integer $limit_quantity
+ * @property integer $sell_quantity
  * @property double $face_value
  * @property double $price
  * @property integer $status
  * @property integer $discount_status
- * @property double $discount
  * @property string $tips
+ * @property string $start_time
  * @property string $overdue_time
  * @property string $create_time
+ * @property string $online_time
+ * @property int $order_number
+ * 
  */
 class Voucher extends CActiveRecord {
 
+    //STATUS
     const STATUS_NOTONLINE = 1; // 待上线
     const STATUS_ONLINE = 11; // 已上线
+    const STATUS_SELLOUT = 12;
     const STATUS_LINEOFF = 21; // 已下线
     const STATUS_OVERDUE = 31; // 已过期
+    //DISCOUNT_STATUS
     const DISCOUNT_STATUS_YES = 1; // 是否周三五折 1是 2否
     const DISCOUNT_STATUS_NO = 2; // 是否周三五折 1是 2否
     const DISCOUNT_DEFAULT_VALUE = 0.5; // 默认折扣
+    //ORDERWAY
+    const ORDERWAY_BY_ORDERNUMBER = 1; // 排序 - 智能排序
+    const ORDERWAY_BY_DISTANCE = 2; // 排序 - 距离最近
 
     public $parent_id; // 一级分类类别
     public $brand_type_id; // 二级分类类别
@@ -44,14 +54,17 @@ class Voucher extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('brand_id, name, quantity, face_value, price, status, discount_status, discount, tips, overdue_time, create_time', 'required'),
-            array('brand_id, quantity, status, discount_status', 'numerical', 'integerOnly' => true),
-            array('face_value, price, discount', 'numerical'),
+            array('brand_id, name, limit_quantity, sell_quantity, face_value, price, status, discount_status, tips,'
+                . 'start_time, overdue_time, create_time, order_number, '
+                . 'account_name, account_number, account_bank_name, account_bank_address', 'required'),
+            array('brand_id, limit_quantity, sell_quantity, status, discount_status, order_number', 'numerical', 'integerOnly' => true),
+            array('face_value, price', 'numerical'),
             array('name', 'length', 'max' => 20),
             array('parent_id, brand_type_id,', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('voucher_id, brand_id, quantity, face_value, price, status, discount_status, discount, tips, overdue_time, create_time', 'safe', 'on' => 'search'),
+            array('voucher_id, brand_id, limit_quantity, sell_quantity, face_value, price, status, discount_status, tips, '
+                . 'start_time, overdue_time, create_time, online_time, order_number', 'safe', 'on' => 'search'),
         );
     }
 
@@ -74,15 +87,22 @@ class Voucher extends CActiveRecord {
             'voucher_id' => '代金券id',
             'brand_id' => '品牌',
             'name' => '代金券名称',
-            'quantity' => '数量',
+            'limit_quantity' => '剩余数量',
+            'sell_quantity' => '已售数量',
             'face_value' => '优惠券面值',
             'price' => '价格',
             'status' => '状态',
             'discount_status' => '是否为周三五折',
-            'discount' => '周三打折值',
             'tips' => '使用提示',
-            'overdue_time' => '有效期',
+            'start_time' => '有效期开始日',
+            'overdue_time' => '有效期截止日',
+            'order_number' => '排序号',
             'create_time' => '创建时间',
+            'online_time' => '上线时间',
+            'account_name' => '开户户名',
+            'account_number' => '账号',
+            'account_bank_name' => '开户行',
+            'account_bank_address' => '账户地址',
             'brand_type_id' => '品牌分类',
         );
     }
@@ -98,31 +118,6 @@ class Voucher extends CActiveRecord {
      *
      * @return CActiveDataProvider the data provider that can return the models
      * based on the search/filter conditions.
-     * 
-     * 
-     * 
-     * 
-     * 
-     * SELECT  voucher.voucher_id, voucher.name, voucher.price, 
-      (
-      SELECT MIN(ROUND(6378.138*2*ASIN(SQRT(POW(SIN((40.041274*PI()/180-shop.location_lat*PI()/180)/2),2)+COS(40.041274*PI()/180)*COS(shop.location_lat*PI()/180)*POW(sin( (116.187216*PI()/180-shop.location_lng*PI()/180)/2),2)))*1000)) AS shop_distance
-      FROM `oto_voucher_shop_relation` AS r
-      LEFT JOIN  `oto_shop` AS shop ON r.`shop_id` = shop.`shop_id`
-      WHERE r.`voucher_id` = voucher.`voucher_id` AND shop.`business_center_id` = 1
-      ) AS distance,
-      brand.`name` AS brand__name, brand.`tag` AS brand__tag, brand.`image_path` AS brand__image_path,
-      brand_type.`name` AS brand_type__name, brand_type.`brand_type_id` AS brand_type__brand_type_id,
-      shop.`business_center_id` AS shop__business_center_id, shop.`shop_id` AS shop__shop_id
-      FROM `oto_voucher` AS voucher
-      LEFT JOIN  `oto_brand`AS brand ON voucher.brand_id = brand.`brand_id`
-      LEFT JOIN  `oto_brand_type` AS brand_type ON brand.`brand_type_id` = brand_type.`brand_type_id`
-      LEFT JOIN  `oto_voucher_shop_relation` AS voucher_shop_relation ON voucher_shop_relation.`voucher_id` = voucher.voucher_id
-      LEFT JOIN  `oto_shop` AS shop ON voucher_shop_relation.`shop_id` = shop.`shop_id`
-      WHERE shop.`business_center_id` = 1
-      GROUP BY voucher.`voucher_id`
-      ORDER BY distance ASC , voucher.price DESC
-      LIMIT 0,3
-
      */
     public function search() {
         // @todo Please modify the following code to remove attributes that should not be searched.
@@ -132,12 +127,11 @@ class Voucher extends CActiveRecord {
         $criteria->compare('voucher_id', $this->voucher_id, true);
         $criteria->compare('brand_id', $this->brand_id);
         $criteria->compare('name', $this->name);
-        $criteria->compare('quantity', $this->quantity);
+//        $criteria->compare('quantity', $this->quantity);
         $criteria->compare('face_value', $this->face_value);
         $criteria->compare('price', $this->price);
         $criteria->compare('status', $this->status);
         $criteria->compare('discount_status', $this->discount_status);
-        $criteria->compare('discount', $this->discount);
         $criteria->compare('tips', $this->tips, true);
         $criteria->compare('overdue_time', $this->overdue_time, true);
         $criteria->compare('create_time', $this->create_time, true);
@@ -161,19 +155,22 @@ class Voucher extends CActiveRecord {
     }
 
     public function beforeValidate() {
-        $this->create_time = !empty($this->create_time) ? $this->create_time . ' 23:59:59' : date('Y-m-d H:i:s');
-        $this->overdue_time = !empty($this->overdue_time) ? $this->overdue_time : '0000-00-00 00:00:00';
+        $this->create_time = !empty($this->create_time) ? $this->create_time : date('Y-m-d H:i:s');
+        $this->online_time = !empty($this->online_time) ? $this->online_time : '0000-00-00 00:00:00';
         $this->status = !empty($this->status) ? $this->status : self::STATUS_NOTONLINE;
-        if ($this->discount_status == self::DISCOUNT_STATUS_YES) {
-            $this->discount = self::DISCOUNT_DEFAULT_VALUE;
-        } else {
-            $this->discount = 1;
+        if ($this->status == self::STATUS_ONLINE && $this->limit_quantity == 0) {
+            $this->status = self::STATUS_SELLOUT;
         }
+        if ($this->status == self::STATUS_SELLOUT && $this->limit_quantity != 0) {
+            $this->status = self::STATUS_ONLINE;
+        }
+
         return parent::beforeValidate();
     }
 
     public function afterValidate() {
-        $this->overdue_time = $this->overdue_time != '0000-00-00 00:00:00' ? $this->overdue_time : '';
+        $this->start_time = !empty($this->start_time) ? $this->start_time . ' 00:00:00' : $this->start_time;
+        $this->overdue_time = !empty($this->overdue_time) ? $this->overdue_time . ' 23:59:59' : $this->overdue_time;
         return parent::afterValidate();
     }
 
@@ -185,6 +182,7 @@ class Voucher extends CActiveRecord {
         return array(
             self::STATUS_NOTONLINE => '未上线',
             self::STATUS_ONLINE => '已上线',
+            self::STATUS_SELLOUT => '已售罄',
             self::STATUS_LINEOFF => '已下线',
             self::STATUS_OVERDUE => '已过期',
         );
@@ -219,6 +217,15 @@ class Voucher extends CActiveRecord {
     static function getDiscountStatusTitle($key) {
         $items = self::getDiscountStatusItems();
         return isset($items[$key]) ? $items[$key] : Null;
+    }
+
+    /**
+     * 获取当前排序号最大值
+     */
+    static function getMaxOrderNumber() {
+        $sql = "SELECT MAX(order_number) AS max_order_number FROM `oto_voucher`";
+        $data = DBTools::queryOne($sql);
+        return $data['max_order_number'];
     }
 
 }

@@ -105,19 +105,21 @@ $menu = $this->getAction()->getId();
                         <td><?php echo $item->name ?></td>
                         <td><?php echo $item->face_value ?></td>
                         <td><?php echo $item->price ?></td>
-                        <td><?php echo $item->quantity ?></td>
-                        <td>xxx</td>
+                        <td><?php echo $item->limit_quantity + $item->sell_quantity ?></td>
+                        <td><?php echo $item->limit_quantity ?></td>
                         <td><?php echo Voucher::getStatusTitle($item->status) ?></td>
                         <td>
                             <?php echo CHtml::link('详情', '/admin/voucher/detail/menu/' . $menu . '/id/' . $item->voucher_id, array('class' => 'btn-link')) ?>
+                            <span class="sep">|</span>
+                            <?php echo CHtml::link('编辑', '/admin/voucher/update/menu/' . $menu . '/id/' . $item->voucher_id, array('class' => 'btn-link')) ?>
                             <span class="sep">|</span>
                             <?php echo CHtml::link('适用门店', '/admin/voucher/addShop/menu/' . $menu . '/voucher_id/' . $item->voucher_id, array('class' => 'btn-link return-btn')) ?>
                             <span class="sep">|</span>
                             <?php
                             if ($item->status == Voucher::STATUS_NOTONLINE || $item->status == Voucher::STATUS_LINEOFF) {
-                                echo CHtml::link('上线', 'javascript:;' . $item->voucher_id, array('class' => 'btn-link return-btn', 'voucherStatus' => Voucher::STATUS_ONLINE));
-                            } else {
-                                echo CHtml::link('下线', 'javascript:;' . $item->voucher_id, array('class' => 'btn-link return-btn', 'voucherStatus' => Voucher::STATUS_LINEOFF));
+                                echo CHtml::link('上线', 'javascript:;', array('class' => 'btn-link return-btn', 'voucherStatus' => Voucher::STATUS_ONLINE));
+                            } else if ($item->status == Voucher::STATUS_SELLOUT || $item->status == Voucher::STATUS_ONLINE) {
+                                echo CHtml::link('下线', 'javascript:;', array('class' => 'btn-link return-btn', 'voucherStatus' => Voucher::STATUS_LINEOFF));
                             }
                             ?>
                         </td>
