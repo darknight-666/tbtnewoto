@@ -3,7 +3,7 @@ $form = $this->beginWidget('CActiveForm', array(
     'id' => 'organization-form',
     'enableAjaxValidation' => false,
     'htmlOptions' => array('enctype' => 'multipart/form-data', 'class' => 'smart-form'),
-        ));
+));
 ?>
 <div class="tbt-panel">
     <div class="panel-header">
@@ -42,7 +42,9 @@ $form = $this->beginWidget('CActiveForm', array(
         <!-- 所在地区 -->
         <div class="section">
             <div class="from-group">
-                <label class="control-label required" for="TrainingCourse_course_type_id">所在地区<span class="required">*</span></label>
+                <label class="control-label required" for="TrainingCourse_course_type_id">所在地区<span
+                        class="required">*</span></label>
+
                 <div class="from-control col-lg">
                     <div class="select">
                         <div class="select-wrap">
@@ -146,14 +148,37 @@ $form = $this->beginWidget('CActiveForm', array(
         <!-- 地图 -->
         <div class="section">
             <div class="from-group">
-                <div class="file-show">
-
+                <!--            地图显示-->
+                <div id="container">
+                    <div id="myPageTop">
+                        <table>
+                            <tr>
+                                <td>
+                                    <label>请输入关键字：</label>
+                                </td>
+                                <td class="column2">
+                                    <label>左击获取经纬度：</label>
+                                </td>
+                                <td class="column2">
+                                    <label>点击地图显示位置：</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input id="tipinput" value='输入地址显示位置'/>
+                                </td>
+                                <td class="column2">
+                                    <input type="text" readonly="true" id="lnglat" value='点击地图显示经纬度'/>
+                                </td>
+                                <td>
+                                    <input type="text" id="map-mc" value='点击地图显示位置'/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-        <div id="mapContainer" tabindex="0" style='width:800px; height:600px'></div>
-        <input id = 'mapInput' value = '点击地图显示地址/输入地址显示位置' onfocus = 'this.value = ""'></input>
-        <div id='mapMessage'></div>
     </div>
 </div>
 <div class="btn-panel">
@@ -164,11 +189,11 @@ $form = $this->beginWidget('CActiveForm', array(
 <?php $this->endWidget(); ?>
 <!--<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=ba4de2c26e0f25b2632f1d9b4f3c3114&plugin=AMap.DistrictSearch"></script>-->
 <script>
-            $(function () {
-                $(".submitForm").click(function(){
-                    $("#organization-form").submit();
-                });
-                
+    $(function () {
+        $(".submitForm").click(function () {
+            $("#organization-form").submit();
+        });
+
 //                var map = new AMap.Map('mapContainer', {
 //                    resizeEnable: true,
 //                    zoom: 13,
@@ -227,5 +252,63 @@ if (!empty($model->location_lng) && !empty($model->location_lat)) {
 //                        })
 //                    }
 //                });
+    });
+</script>
+<script type="text/javascript"
+        src="http://webapi.amap.com/maps?v=1.3&key=ba4de2c26e0f25b2632f1d9b4f3c3114&plugin=AMap.Autocomplete,AMap.PlaceSearch"></script>
+<script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+<script type="text/javascript">
+    var map = new AMap.Map("container", {
+        resizeEnable: true
+    });
+    //为地图注册click事件获取鼠标点击出的经纬度坐标
+    var clickEventListener = map.on('click', function (e) {
+        marker.setPosition(e.lnglat);
+        document.getElementById("Shop_location_lng").value = e.lnglat.getLng();
+        document.getElementById("Shop_location_lat").value = e.lnglat.getLat();
+        document.getElementById("lnglat").value = e.lnglat.getLng() + ',' + e.lnglat.getLat()
+        if (e.poi && e.poi.location) {
+            map.setZoom(15);
+            map.setCenter(e.poi.location);
+            placeSearch.search(e.poi.name);  //关键字查询显示图标及名称
+            document.getElementById("map-mc").value = e.poi.name; //获取name
+        }
+    });
+    var auto = new AMap.Autocomplete({
+        input: "tipinput"
+    });
+    //输入提示
+    var autoOptions = {
+        input: "tipinput"
+    };
+    var marker = new AMap.Marker({
+        map: map,
+        bubble: true
+    })
+    var autoOptions = {
+        input: "tipinput"
+    };
+    var auto = new AMap.Autocomplete(autoOptions);
+    var placeSearch = new AMap.PlaceSearch({
+        map: map
+    }); //构造地点查询类
+    AMap.event.addListener(auto, "select", select); //注册监听，当选中某条记录时会触发
+    function select(e) {
+        placeSearch.setCity(e.poi.adcode);
+        placeSearch.search(e.poi.name); //关键字查询查询
+        var geocoder = '';
+        AMap.service('AMap.Geocoder', function () { //回调函数
+            geocoder = new AMap.Geocoder({});
+            geocoder.getLocation(e.poi.name, function (status, result) {
+                if (status === 'complete' && result.info === 'OK') {
+                    marker.setPosition(result.geocodes[0].location);
+                    document.getElementById("lnglat").value = result.geocodes[0].location.lng + ',' + result.geocodes[0].location.lat;
+
+                    document.getElementById("map-mc").value = e.poi.name; //获取name
+                } else {
+                    console.log("获取经纬度失败");
+                }
             });
+        })
+    }
 </script>
