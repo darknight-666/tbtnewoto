@@ -72,6 +72,69 @@ class AdminModule extends BaseMoudle {
                 ),
             ),
             array(
+                'label' => '订单管理',
+                'url' => 'javascript:;',
+                'number' => 0,
+                'fa_img' => 'fa-th',
+                'itemOptions' => array('name' => 'default'),
+                'items' => array(
+                    array(
+                        'label' => '订单列表',
+                        'url' => array('/admin/order/list'),
+                        'number' => 0,
+                        'itemOptions' => array('name' => 'order.list', 'class' => 'second-parent'),
+                    ),
+                    array(
+                        'label' => '订单详情',
+                        'url' => array('/admin/order/detail'),
+                        'number' => 0,
+                        'itemOptions' => array('name' => 'order.detail', 'class' => 'second-parent'),
+                    ),
+                ),
+            ),
+            array(
+                'label' => '结算数据',
+                'url' => 'javascript:;',
+                'number' => 0,
+                'fa_img' => 'fa-th',
+                'itemOptions' => array('name' => 'default'),
+                'items' => array(
+                    array(
+                        'label' => '结算数据列表',
+                        'url' => array('/admin/settlement/list'),
+                        'number' => 0,
+                        'itemOptions' => array('name' => 'settlement.list', 'class' => 'second-parent'),
+                    ),
+                    array(
+                        'label' => '结算数据详情',
+                        'url' => array('/admin/settlement/detail'),
+                        'number' => 0,
+                        'itemOptions' => array('name' => 'settlement.detail', 'class' => 'second-parent'),
+                    ),
+                ),
+            ),
+            array(
+                'label' => '商户账户管理',
+                'url' => 'javascript:;',
+                'number' => 0,
+                'fa_img' => 'fa-th',
+                'itemOptions' => array('name' => 'default'),
+                'items' => array(
+                    array(
+                        'label' => '商户账户列表',
+                        'url' => array('/admin/shopUser/list'),
+                        'number' => 0,
+                        'itemOptions' => array('name' => 'shopUser.list', 'class' => 'second-parent'),
+                    ),
+                    array(
+                        'label' => '商户账户新增',
+                        'url' => array('/admin/shopUser/add'),
+                        'number' => 0,
+                        'itemOptions' => array('name' => 'shopUser.add', 'class' => 'second-parent'),
+                    ),
+                ),
+            ),
+            array(
                 'label' => '我的信息',
                 'url' => 'javascript:;',
                 'number' => isset($newData['default']['number']) ? $newData['default']['number'] : 0,
