@@ -125,6 +125,12 @@ return array(
                     'categories' => 'newapi.*',
                     'logFile' => 'newapi.log',
                 ),
+                array(
+                    'class' => 'CFileLogRoute',
+                    'levels' => 'info, profile',
+                    'categories' => 'payinfo.*',
+                    'logFile' => 'payinfo.log',
+                ),
             ),
         ),
     ),
