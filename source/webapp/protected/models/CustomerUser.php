@@ -36,7 +36,7 @@ class CustomerUser extends CActiveRecord {
         return array(
             array('salt, reg_time, last_login_time', 'required'),
             array('code', 'checkCode', 'on' => array('register', 'forgetPassword')),
-            array('oldPassword, newPassword', 'verifyPassword', array('changePassword')),
+            array('oldPassword, newPassword', 'verifyPassword', 'on' => array('changePassword')),
             array('phonenumber, username', 'unique', 'message' => '此{attribute}已经被注册'),
             array('phonenumber', 'match', 'pattern' => '/^[1][3458][0-9]{9}$/', 'message' => '请填写正确的手机号码'),
             array('username, realname', 'length', 'max' => 20),
