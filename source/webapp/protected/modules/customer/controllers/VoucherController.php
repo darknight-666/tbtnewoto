@@ -36,6 +36,7 @@ class VoucherController extends CustomerBaseController {
      * 代金券列表
      */
     public function actionList() {
+        Yii::app();
         $this->checkParams(array('empty' => array('discount_status')));
         //动态获取sql条件
         $discountStatusSql = !empty($this->params['discount_status']) ? 'AND voucher.`discount_status`=' . $this->params['discount_status'] . ' ' : '';
@@ -84,7 +85,7 @@ class VoucherController extends CustomerBaseController {
 
         //查询拼接brand_tag
         foreach ($data['items'] as &$item) {
-            $item['brand_tag'] = TAG::getAllByTagIdByArray($item['brand']['tag']);
+            $item['brand_tag'] = Tag::getAllByTagIdByArray($item['brand']['tag']);
         }
         $this->output($data);
     }
@@ -115,6 +116,58 @@ class VoucherController extends CustomerBaseController {
         }
         $data['shops'] = VoucherShopRelation::getAllByVoucherIdOrderByDistance($this->params['voucher_id'], $lng, $lat, 1, 1);
         $this->output($data);
+    }
+
+    /**
+     * 门店列表
+     */
+    public function actionShopList() {
+        $this->checkParams(array('empty' => array('voucher_id')));
+        $lng = !empty($this->params['location_lng']) ? $this->params['location_lng'] : 0;
+        $lat = !empty($this->params['location_lat']) ? $this->params['location_lat'] : 0;
+        $model = Voucher::model()->findByPk($this->params['voucher_id']);
+        if (empty($model)) {
+            $this->output('', ApiStatusCode::$error, '无此产品');
+        }
+        $data = VoucherShopRelation::getAllByVoucherIdOrderByDistance($this->params['voucher_id'], $lng, $lat, 1, 999);
+        $this->output($data);
+    }
+
+    /**
+     * 下单
+     */
+    public function actionOrderSubmit() {
+        $this->checkParams(array('empty' => array('voucher_id', 'quantity')));
+        $model = Voucher::model()->findByPk($this->params['voucher_id']);
+        if (empty($model)) {
+            $this->output('', ApiStatusCode::$error, '无此产品');
+        }
+        // 周三五折产品时间不到
+        if ($model->discount_status == Voucher::DISCOUNT_STATUS_YES && SystemConfig::systemWeek() != SystemConfig::SYSTEM_WEEK_WEDNESDAY) {
+            $this->output('', ApiStatusCode::$error, '产品未开售');
+        }
+        // 产品未上线
+        if ($model->status != Voucher::STATUS_ONLINE) {
+            $this->output('', ApiStatusCode::$error, '产品已售罄');
+        }
+        /**
+         * 数量不够
+         */
+        if ($model->limit_quantity - $this->params['quantity'] < 0) {
+            $this->output('', ApiStatusCode::$error, '产品数量不足');
+        } else if ($model->limit_quantity - $this->params['quantity'] == 0) { // 售罄处理
+            $model->status = Voucher::STATUS_SELLOUT;
+        }
+        $model->limit_quantity = $model->limit_quantity - $this->params['quantity']; // 库存量 -1
+        $model->sell_quantity = $model->sell_quantity + $this->params['quantity']; // 已售数量 +1
+        //下单前检测数量是否发生了变化
+//        $result = $model->updateByPk($model->voucher_id, $model->attributes, 'voucher_id=:voucher_id AND sell_quantity =' . ($model->sell_quantity - $this->params['quantity']), array(':voucher_id' => $this->params['voucher_id']));
+        if (empty($result)) { // 购买失败
+            $this->output('', ApiStatusCode::$error, '系统繁忙');
+        } else { // 生成订单
+            $orderModel = new Order();
+            $this->output($orderModel->attributes);
+        }
     }
 
 }

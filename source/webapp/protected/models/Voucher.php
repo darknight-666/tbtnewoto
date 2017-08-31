@@ -164,7 +164,7 @@ class Voucher extends CActiveRecord {
         if ($this->status == self::STATUS_ONLINE && $this->limit_quantity == 0) {
             $this->status = self::STATUS_SELLOUT;
         }
-        if ($this->status == self::STATUS_SELLOUT && $this->limit_quantity != 0) {
+        if ($this->status == self::STATUS_SELLOUT && $this->limit_quantity > 0) {
             $this->status = self::STATUS_ONLINE;
         }
 
