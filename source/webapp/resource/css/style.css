@@ -985,7 +985,7 @@
 /*- file -*/
 .file-upload {
     width: 100%;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 .file .input-file,
 .file .btn-file {
@@ -997,7 +997,7 @@
     width: 750px;
     height: 30px;
     /*margin-bottom: 20px;*/
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 .file .btn-file {
     border-radius: 0 4px 4px 0;

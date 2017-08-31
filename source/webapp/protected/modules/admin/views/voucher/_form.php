@@ -10,6 +10,7 @@ $form = $this->beginWidget('CActiveForm', array(
         <h3 class="panel-title">发布</h3>
     </div>
     <div class="panel-body">
+
         <!-- 品牌类别 -->
         <div class="section">
             <div class="from-group">
@@ -44,6 +45,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div>
             </div>
         </div>
+
         <!-- 选择品牌 -->
         <div class="section">
             <div class="from-group">
@@ -60,6 +62,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div>
             </div>
         </div>
+
         <!-- 代金券名称 -->
         <div class="section">
             <div class="from-group">
@@ -74,6 +77,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div>
             </div>
         </div>
+
         <!-- 有效期开始 -->
         <div class="section">
             <div class="from-group">
@@ -86,6 +90,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div>
             </div>
         </div>
+
         <!-- 有效期结束 -->
         <div class="section">
             <div class="from-group">
@@ -110,6 +115,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div>
             </div>
         </div>
+
         <!-- 优惠卷面值 -->
         <div class="section">
             <div class="from-group">
@@ -122,6 +128,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div>
             </div>
         </div>
+
         <!-- 价格 -->
         <div class="section">
             <div class="from-group">
@@ -134,6 +141,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div>
             </div>
         </div>
+
         <!-- 是否为周三五折劵 -->
         <div class="section">
             <div class="from-group">
@@ -149,6 +157,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div>
             </div>
         </div>
+
         <!-- 排序号 -->
         <div class="section">
             <div class="from-group">
@@ -161,6 +170,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div>
             </div>
         </div>
+
         <!-- 使用提示 -->
         <div class="section">
             <div class="from-group">
@@ -176,6 +186,29 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div>
             </div>
         </div>
+
+        <!-- 图标 -->
+        <div class="section">
+            <div class="from-group">
+                <?php echo $form->labelEx($model, 'image_path', array('class' => 'control-label')); ?>
+                <div class="from-control col-lg">
+                    <div class="file-upload">
+                        <div class="file">
+                            <div class="input">
+                                <?php echo $form->textField($model, 'image_path', array('autocomplete' => 'off', 'class' => 'fileInput fileInput_image')); ?>
+                                <?php echo $form->error($model, 'image_path'); ?>
+                            </div>
+                            <?php echo CHtml::Button('上传', array('class' => 'btn btn-primary btn-file activeFileSubmit')); ?>
+                            <div class="sep"></div>
+                            <span class="tip">仅支持jpg、png、jpeg格式，最大不超过200KB</span>
+                        </div>
+                        <div class="errorMessage Voucher_image_path_errormessage"></div>
+                        <div class="file-show"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- 开户户名 -->
         <div class="section">
             <div class="from-group">
@@ -188,6 +221,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div>
             </div>
         </div>
+
         <!-- 账号 -->
         <div class="section">
             <div class="from-group">
@@ -200,6 +234,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div>
             </div>
         </div>
+
         <!-- 开户行 -->
         <div class="section">
             <div class="from-group">
@@ -233,3 +268,56 @@ $form = $this->beginWidget('CActiveForm', array(
     </div>
 </div>
 <?php $this->endWidget(); ?>
+
+
+<script>
+    $(function () {
+        $(".activeFileSubmit").each(function () {
+            uploadBtn = $(this);
+            new AjaxUpload(uploadBtn, {
+                action: "/admin/default/uploadImage/FormIframeUpload[field]/" + uploadBtn.parent('.file').find('.fileInput').attr('id'),
+                name: "FormIframeUpload[fileField]",
+                data: {YII_CSRF_TOKEN: "<?php echo Yii::app()->request->csrfToken; ?>"},
+                onComplete: function (file, response) {
+                    uploadBtn.disabled = "";
+                    uploadBtn.value = "上传";
+                }
+            });
+        });
+
+        //图片回显
+        showImage();
+
+    });
+
+    /**
+     *  上传异步回调
+     */
+    function iframeUpload(status, data, message) {
+        var jsonData = jQuery.parseJSON(data);
+        if (status != 10000) {
+            $("#" + jsonData.field + "").parents(".file-upload").find(".errorMessage").html('');
+            $("." + jsonData.field + "_errormessage").html(message);
+            return false;
+        }
+        $("#" + jsonData.field + "").parents(".file-upload").find(".errorMessage").html('');
+        $("." + jsonData.field + "_errormessage").html('');
+
+        $("#" + jsonData.field).val(jsonData.fileField);
+        if ($("#" + jsonData.field).hasClass("fileInput_image")) {
+            showImage();
+        }
+
+    }
+
+    /**
+     *  图片回显
+     */
+    function showImage() {
+        $(".fileInput_image").each(function () {
+            if (jQuery.trim($(this).val()) != '') {
+                $(this).parents(".file-upload").find(".file-show").html('<img src="' + $(this).val() + '"  width="300">');
+            }
+        });
+    }
+</script>

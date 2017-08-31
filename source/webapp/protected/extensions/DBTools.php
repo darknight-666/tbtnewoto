@@ -10,17 +10,17 @@ class DBTools {
      * @param type $sql
      * @return array array('totalCount'=>1,array(array()));
      */
-    static function queryAll($sql) {
+    static function queryAll($sql, $page = 1, $page_size = 10) {
+        $limitSql = "LIMIT " . ($page_size * ($page - 1)) . ',' . $page_size . ' ';
         $conn = Yii::app()->db;
-        $command = $conn->createCommand($sql);
-        $command->where;
+        $command = $conn->createCommand($sql . $limitSql);
         $dataReader = $command->query();
         $data = array('totalCount' => 0, 'items' => array());
         $data['items'] = $dataReader->readAll();
         foreach ($data['items'] as &$item) {
             $item = self::groupDataByArray($item);
         }
-        $data['totalCount'] = count($data['items']);
+        $data['totalCount'] = self::getCount($sql);
         return $data;
     }
 
@@ -59,6 +59,18 @@ class DBTools {
         $dataReader = $command->query();
         $data = $dataReader->read();
         return $data;
+    }
+
+    /**
+     * 获取数据总条数
+     * @param type $sql
+     * @return type
+     */
+    static function getCount($sql) {
+        $conn = Yii::app()->db;
+        $command = $conn->createCommand($sql);
+        $dataReader = $command->query();
+        return $dataReader->count();
     }
 
 }

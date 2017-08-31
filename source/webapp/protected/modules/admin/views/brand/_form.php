@@ -135,7 +135,7 @@ $form = $this->beginWidget('CActiveForm', array(
                             </div>
                             <?php echo CHtml::Button('上传', array('class' => 'btn btn-primary btn-file activeFileSubmit')); ?>
                             <div class="sep"></div>
-                            <span class="tip">仅支持PDF格式文件,最大不超过200KB。仅支持jpg、png、jpeg格式</span>
+                            <span class="tip">最大不超过200KB。仅支持jpg、png、jpeg格式</span>
                         </div>
                         <div class="errorMessage Brand_image_path_errormessage"></div>
                         <div class="file-show"></div>
@@ -156,7 +156,7 @@ $form = $this->beginWidget('CActiveForm', array(
                             </div>
                             <?php echo CHtml::Button('上传', array('class' => 'btn btn-primary btn-file activeFileSubmit')); ?>
                             <div class="sep"></div>
-                            <span class="tip">仅支持PDF格式文件,最大不超过200KB。仅支持jpg、png、jpeg格式</span>
+                            <span class="tip">最大不超过200KB。仅支持jpg、png、jpeg格式</span>
                         </div>
                         <div class="errorMessage Brand_qualification_path_tmp_errormessage"></div>
                         <div class="file-show"></div>

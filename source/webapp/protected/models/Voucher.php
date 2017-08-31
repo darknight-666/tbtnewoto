@@ -12,6 +12,7 @@
  * @property double $price
  * @property integer $status
  * @property integer $discount_status
+ * @property integer $image_path
  * @property string $tips
  * @property string $start_time
  * @property string $overdue_time
@@ -54,16 +55,17 @@ class Voucher extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('brand_id, name, limit_quantity, sell_quantity, face_value, price, status, discount_status, tips,'
+            array('brand_id, name, limit_quantity, sell_quantity, face_value, price, status, discount_status, image_path, tips,'
                 . 'start_time, overdue_time, create_time, order_number, '
                 . 'account_name, account_number, account_bank_name, account_bank_address', 'required'),
             array('brand_id, limit_quantity, sell_quantity, status, discount_status, order_number', 'numerical', 'integerOnly' => true),
             array('face_value, price', 'numerical'),
             array('name', 'length', 'max' => 20),
+            array('image_path', 'length', 'max' => 255),
             array('parent_id, brand_type_id,', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('voucher_id, brand_id, limit_quantity, sell_quantity, face_value, price, status, discount_status, tips, '
+            array('voucher_id, brand_id, limit_quantity, sell_quantity, face_value, price, status, discount_status, image_path, tips, '
                 . 'start_time, overdue_time, create_time, online_time, order_number', 'safe', 'on' => 'search'),
         );
     }
@@ -93,6 +95,7 @@ class Voucher extends CActiveRecord {
             'price' => '价格',
             'status' => '状态',
             'discount_status' => '是否为周三五折',
+            'image_path' => '代金券主图',
             'tips' => '使用提示',
             'start_time' => '有效期开始日',
             'overdue_time' => '有效期截止日',
@@ -226,6 +229,16 @@ class Voucher extends CActiveRecord {
         $sql = "SELECT MAX(order_number) AS max_order_number FROM `oto_voucher`";
         $data = DBTools::queryOne($sql);
         return $data['max_order_number'];
+    }
+
+    /**
+     * 获取tips - 数组
+     * @param type $tips
+     * @return type
+     */
+    static function getTipsByArray($tips) {
+        $tips = trim($tips);
+        return explode("\r\n", $tips);
     }
 
 }

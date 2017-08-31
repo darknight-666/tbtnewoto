@@ -501,9 +501,34 @@ class My {
         return number_format($amount, 2);
     }
 
+    /**
+     * 获取model的第一个错误
+     * @param type $errors
+     * @return type
+     */
     static function getModelErrors($errors) {
         $error = current($errors);
         return $error[0];
+    }
+    
+    /**
+     * upload文件增加域名
+     * @param type $path
+     * @return type
+     */
+    static function uploadUrlAdd($path) {
+        if (!is_array($path)) {
+            if (!empty($path) && stripos($path, 'http://') === FALSE && stripos($path, 'https://') === FALSE) {
+                return Yii::app()->params['site']['uploadUrl'] . $path;
+            } else {
+                return $path;
+            }
+        } else {
+            foreach ($path as &$item) {
+                $item = self::uploadUrlAdd($item);
+            }
+            return $path;
+        }
     }
 
 }

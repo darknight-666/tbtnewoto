@@ -41,7 +41,6 @@ class VoucherController extends CustomerBaseController {
         $discountStatusSql = !empty($this->params['discount_status']) ? 'AND voucher.`discount_status`=' . $this->params['discount_status'] . ' ' : '';
         $brandTypeSql = !empty($this->params['brand_type_id']) ? 'AND brand_type.`brand_type_id`=' . $this->params['brand_type_id'] . ' ' : '';
         $businessCenterSql = !empty($this->params['business_center_id']) ? 'AND shop.`business_center_id`=' . $this->params['business_center_id'] . ' ' : '';
-        $limitSql = "LIMIT " . ($this->params['page_size'] * ($this->params['page'] - 1)) . ',' . $this->params['page_size'] . ' ';
 
         if (empty($this->params['orderWayValue']) || $this->params['orderWayValue'] == Voucher::ORDERWAY_BY_ORDERNUMBER) {
             $orderSql = 'ORDER BY voucher.order_number ASC, voucher.voucher_id ASC ';
@@ -80,16 +79,41 @@ class VoucherController extends CustomerBaseController {
                 . $brandTypeSql
                 . $businessCenterSql
                 . "GROUP BY voucher.`voucher_id` "
-                . $orderSql
-                . $limitSql;
-//        echo $sql;
-//        die;
-        $data = DBTools::queryAll($sql);
+                . $orderSql;
+        $data = DBTools::queryAll($sql, $this->params['page'], $this->params['page_size']);
 
         //查询拼接brand_tag
         foreach ($data['items'] as &$item) {
             $item['brand_tag'] = TAG::getAllByTagIdByArray($item['brand']['tag']);
         }
+        $this->output($data);
+    }
+
+    /**
+     * 代金券详情
+     */
+    public function actionDetail() {
+        $this->checkParams(array('empty' => array('voucher_id')));
+        $lng = !empty($this->params['location_lng']) ? $this->params['location_lng'] : 0;
+        $lat = !empty($this->params['location_lat']) ? $this->params['location_lat'] : 0;
+        $model = Voucher::model()->findByPk($this->params['voucher_id']);
+        if (empty($model)) {
+            $this->output('', ApiStatusCode::$error, '无此产品');
+        }
+        $data = $model->attributes;
+        $data['brand'] = $model->brand->attributes;
+        $data['brand_type'] = $model->brand->type->attributes;
+        $data['brand_tag'] = TAG::getAllByTagIdByArray($data['brand']['tag']);
+        $data['brand_value_added_service'] = ValueAddedService::getAllByIdByArray($data['brand']['value_added_service']);
+        $data['image_path'] = My::uploadUrlAdd($data['image_path']);
+        $data['tips'] = Voucher::getTipsByArray($data['tips']);
+        $data['brand']['recommend_reason'] = Brand::getRecommendReasonByArray($data['brand']['recommend_reason']);
+        $data['brand']['image_path'] = My::uploadUrlAdd($data['brand']['image_path']);
+        $data['brand']['qualification_path'] = My::uploadUrlAdd(explode(',', $data['brand']['qualification_path']));
+        foreach ($data['brand_value_added_service'] as &$item) {
+            $item['image_path'] = My::uploadUrlAdd($item['image_path']);
+        }
+        $data['shops'] = VoucherShopRelation::getAllByVoucherIdOrderByDistance($this->params['voucher_id'], $lng, $lat, 1, 1);
         $this->output($data);
     }
 

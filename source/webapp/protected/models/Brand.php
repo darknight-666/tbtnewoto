@@ -245,4 +245,14 @@ class Brand extends CActiveRecord {
         return CHtml::listData($data, 'brand_id', 'name');
     }
 
+    /**
+     * 获取tips - 数组
+     * @param type $reason
+     * @return type
+     */
+    static function getRecommendReasonByArray($reason) {
+        $reason = trim($reason);
+        return explode("\r\n", $reason);
+    }
+
 }

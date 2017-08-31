@@ -112,4 +112,35 @@ class ValueAddedService extends CActiveRecord {
         return CHtml::listData($data, 'value_added_service_id', 'name');
     }
 
+    /**
+     * 根据id获取增值服务列表
+     * @param type $id
+     * @return type
+     */
+    static function getAllByTagId($id) {
+        if (empty($id)) {
+            return array();
+        }
+        $id = is_array($id) ? $id : explode(',', $id);
+        $model = self::model();
+        $model->value_added_service_id = $id;
+        $dataProvider = $model->search();
+        $list = $dataProvider->getData();
+        return $list;
+    }
+
+    /**
+     * 根据id获取增值服务列表 - 数组数据
+     * @param type $id
+     * @return type
+     */
+    static function getAllByIdByArray($id) {
+        $list = self::getAllByTagId($id);
+        $data = array();
+        foreach ($list as $obj) {
+            $data[] = $obj->attributes;
+        }
+        return $data;
+    }
+
 }
