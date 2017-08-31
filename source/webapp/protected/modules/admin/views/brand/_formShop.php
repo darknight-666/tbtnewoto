@@ -303,7 +303,6 @@ if (!empty($model->location_lng) && !empty($model->location_lat)) {
                 if (status === 'complete' && result.info === 'OK') {
                     marker.setPosition(result.geocodes[0].location);
                     document.getElementById("lnglat").value = result.geocodes[0].location.lng + ',' + result.geocodes[0].location.lat;
-
                     document.getElementById("map-mc").value = e.poi.name; //获取name
                 } else {
                     console.log("获取经纬度失败");
