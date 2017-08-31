@@ -9,7 +9,7 @@
  */
 class VoucherShopRelation extends CActiveRecord {
 
-    public $shopIds; // 优惠券ids
+    public $shopIds; // 代金券ids
     public $pageSize = 10;
 
     /**
@@ -95,7 +95,7 @@ class VoucherShopRelation extends CActiveRecord {
     }
 
     /**
-     * 获取优惠券关联的所有门店
+     * 获取代金券关联的所有门店
      * @param type $voucherId
      * @return type
      */
@@ -111,7 +111,7 @@ class VoucherShopRelation extends CActiveRecord {
     }
 
     /**
-     * 获取优惠券关联的所有门店 - listData
+     * 获取代金券关联的所有门店 - listData
      * @param type $voucherId
      */
     static function getAllByVoucherIdByArray($voucherId) {

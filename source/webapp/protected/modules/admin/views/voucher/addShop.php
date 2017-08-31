@@ -38,7 +38,7 @@ $form = $this->beginWidget('CActiveForm', array(
 </div>
 <div class="btn-panel">
     <div class="btn-wrap">
-        <?php echo CHtml::submitButton('发布优惠券', array('class' => 'btn btn-primary submitForm')); ?>
+        <?php echo CHtml::submitButton('发布代金券', array('class' => 'btn btn-primary submitForm')); ?>
     </div>
 </div>
 <?php $this->endWidget(); ?>

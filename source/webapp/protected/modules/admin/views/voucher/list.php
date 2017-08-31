@@ -89,7 +89,7 @@ $menu = $this->getAction()->getId();
             <thead><tr role="row" >
                     <th>ID</th>
                     <th>品牌</th>
-                    <th>优惠券名称</th>
+                    <th>代金券名称</th>
                     <th>代金券面值</th>
                     <th>价格</th>
                     <th>数量</th>

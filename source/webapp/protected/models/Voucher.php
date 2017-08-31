@@ -89,7 +89,7 @@ class Voucher extends CActiveRecord {
             'name' => '代金券名称',
             'limit_quantity' => '剩余数量',
             'sell_quantity' => '已售数量',
-            'face_value' => '优惠券面值',
+            'face_value' => '代金券面值',
             'price' => '价格',
             'status' => '状态',
             'discount_status' => '是否为周三五折',
