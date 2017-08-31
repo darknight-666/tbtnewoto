@@ -121,7 +121,11 @@ class ShortMessageService {
                 $this->errorCode = self::ERROR_CODE_INVALID;
             }
             if ($sessionCode['code'] != $code) {
-                $this->errorCode = self::ERROR_CODE_INVALID;
+                if (YII_TBTENV == 1) { // 生产环境
+                    $this->errorCode = self::ERROR_CODE_INVALID;
+                } else if ($sessionCode['code'] != '5555') {
+                    $this->errorCode = self::ERROR_CODE_INVALID;
+                }
             }
             if ($sessionCode['timeout'] < time() && $checkTimeOut == TRUE) {
                 $this->errorCode = self::ERROR_CODE_TIMEOUT;
@@ -129,5 +133,5 @@ class ShortMessageService {
         }
         return $this->errorCode;
     }
-    
+
 }
