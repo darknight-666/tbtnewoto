@@ -297,6 +297,9 @@ if (!empty($model->location_lng) && !empty($model->location_lat)) {
         map: map,
         bubble: true
     })
+    var autoOptions = {
+        input: "tipinput"
+    };
     var auto = new AMap.Autocomplete(autoOptions);
     var placeSearch = new AMap.PlaceSearch({
         map: map
@@ -304,13 +307,12 @@ if (!empty($model->location_lng) && !empty($model->location_lat)) {
     AMap.event.addListener(auto, "select", select); //注册监听，当选中某条记录时会触发
     function select(e) {
         if (e.poi && e.poi.location) {
-            map.setZoom(15);
+//            map.setZoom(15);
             map.setCenter(e.poi.location);
             var arr1 = [e.poi.location.lng, e.poi.location.lat];
 //            alert(e.poi.location.lng);
             placeSearch.setCity(e.poi.adcode);
-//            placeSearch.search(e.poi.name); //关键字查询显示图标及名称
-//            document.getElementById("lnglat").value = e.poi.location; //获取经纬度
+            placeSearch.search(e.poi.name); //关键字查询显示图标及名称
             document.getElementById("Shop_location_lng").value = e.poi.location.lng;
             document.getElementById("Shop_location_lat").value = e.poi.location.lat;
             document.getElementById("map-mc").value = e.poi.name; //获取name
