@@ -31,7 +31,7 @@ class VoucherController extends AdminBaseController {
         $model->parent_id = $model->brand->type->parent_id;
         if (isset($_POST['Voucher'])) {
             $model->attributes = $_POST['Voucher'];
-            if ($model->save()) {
+            if ($model->validate() && $model->updateWithCheckVersion()) {
                 $this->redirect('/admin/voucher/list');
             }
         }

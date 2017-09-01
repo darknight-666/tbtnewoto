@@ -37,7 +37,7 @@ class Voucher extends CActiveRecord {
     //ORDERWAY
     const ORDERWAY_BY_ORDERNUMBER = 1; // 排序 - 智能排序
     const ORDERWAY_BY_DISTANCE = 2; // 排序 - 距离最近
-    
+
     public $version_code_old; //老版本号
     public $parent_id; // 一级分类类别
     public $brand_type_id; // 二级分类类别
@@ -163,7 +163,7 @@ class Voucher extends CActiveRecord {
     public function beforeValidate() {
         $this->create_time = !empty($this->create_time) ? $this->create_time : date('Y-m-d H:i:s');
         $this->online_time = !empty($this->online_time) ? $this->online_time : '0000-00-00 00:00:00';
-        $this->version_code = My::microtime(); // 每次更新强制更新版本号
+        $this->version_code = !empty($this->version_code) ? $this->version_code : My::microtime(); // 每次更新强制更新版本号
         $this->status = !empty($this->status) ? $this->status : self::STATUS_NOTONLINE;
         if ($this->status == self::STATUS_ONLINE && $this->limit_quantity == 0) {
             $this->status = self::STATUS_SELLOUT;
@@ -180,11 +180,16 @@ class Voucher extends CActiveRecord {
         $this->overdue_time = !empty($this->overdue_time) ? $this->overdue_time . ' 23:59:59' : $this->overdue_time;
         return parent::afterValidate();
     }
-    
-    public function afterFind() {
+
+    /**
+     * 检测版本号并
+     */
+    public function updateWithCheckVersion() {
         $this->version_code_old = $this->version_code;
-        parent::afterFind();
+        $this->version_code = My::microtime(); // 变更新版本号
+        return $this->updateByPk($this->voucher_id, $this->attributes, 'version_code=:version_code_old', array(':version_code_old' => $this->version_code_old));
     }
+
     /**
      * 状态组
      * @return type

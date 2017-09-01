@@ -129,7 +129,7 @@ class VoucherController extends CustomerBaseController {
         if (empty($model)) {
             $this->output('', ApiStatusCode::$error, '无此产品');
         }
-        $data = VoucherShopRelation::getAllByVoucherIdOrderByDistance($this->params['voucher_id'], $lng, $lat, 1, 999);
+        $data = VoucherShopRelation::getAllByVoucherIdOrderByDistance($this->params['voucher_id'], $lng, $lat, $this->params['page'], $this->params['page_size']);
         $this->output($data);
     }
 
@@ -137,6 +137,7 @@ class VoucherController extends CustomerBaseController {
      * 下单
      */
     public function actionOrderSubmit() {
+        $this->checkLogin();
         $this->checkParams(array('empty' => array('voucher_id', 'quantity')));
         $model = Voucher::model()->findByPk($this->params['voucher_id']);
         if (empty($model)) {
@@ -160,14 +161,12 @@ class VoucherController extends CustomerBaseController {
         }
         $model->limit_quantity = $model->limit_quantity - $this->params['quantity']; // 库存量 -1
         $model->sell_quantity = $model->sell_quantity + $this->params['quantity']; // 已售数量 +1
-        $model->version_code_old = $model->version_code;
-        $model->version_code = My::microtime();
-        $result = $model->updateByPk($model->voucher_id, $model->attributes, 'version_code=:version_code_old', array(':version_code_old' => $model->version_code_old));
+        $result = $model->updateWithCheckVersion();
         if (empty($result)) { // 购买失败
             $this->output('', ApiStatusCode::$error, '系统繁忙');
         } else { // 生成订单
-            $orderModel = new Order();
-            $this->output($orderModel->attributes);
+            $ret = Order::orderCreate($model, $this->params['quantity'], Yii::app()->user->id);
+            $this->output(array('order_id'=> $ret));
         }
     }
 

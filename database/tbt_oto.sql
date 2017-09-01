@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2017-08-18 17:29:17
+-- Generation Time: 2017-09-01 19:15:32
 -- 服务器版本： 5.5.34-0ubuntu0.13.04.1
 -- PHP Version: 5.4.9-4ubuntu2.4
 
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `oto_admin` (
 --
 
 INSERT INTO `oto_admin` (`id`, `username`, `password`, `salt`, `phonenumber`, `realname`, `last_login_time`) VALUES
-(1, 'admin', 'a2f55585ae8b887db34fa65689dd595efe76daaa', '7e0709', '18810498066', '王明旭', '2017-08-18 00:39:59');
+(1, 'admin', 'a2f55585ae8b887db34fa65689dd595efe76daaa', '7e0709', '18810498066', '王明旭', '2017-08-31 20:55:09');
 
 -- --------------------------------------------------------
 
@@ -115,13 +115,10 @@ CREATE TABLE IF NOT EXISTS `oto_brand` (
 `brand_id` int(11) unsigned NOT NULL COMMENT '品牌id',
   `brand_type_id` int(11) NOT NULL COMMENT '品牌分类id',
   `name` varchar(20) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '品牌名称',
-  `tag` varchar(10) COLLATE utf8_bin DEFAULT '' COMMENT '品牌标签',
+  `tag` varchar(120) COLLATE utf8_bin DEFAULT '' COMMENT '品牌标签',
   `status` int(4) NOT NULL COMMENT '状态 1.待审核,11.审核通过,21.已删除',
-  `reach_amount` double(12,2) NOT NULL DEFAULT '0.00' COMMENT '满减限定金额',
-  `discount_amount` double(12,2) NOT NULL DEFAULT '0.00' COMMENT '满减减少金额',
-  `allowance_detail` text COLLATE utf8_bin NOT NULL COMMENT '银行补贴详情',
+  `expensive_status` int(4) NOT NULL DEFAULT '1' COMMENT '一贵就赔 1.是 2否',
   `recommend_reason` varchar(40) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '推荐理由',
-  `recommend_detail` text COLLATE utf8_bin NOT NULL COMMENT '推荐详情',
   `value_added_service` varchar(120) COLLATE utf8_bin DEFAULT '' COMMENT '增值服务',
   `image_path` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '品牌主图',
   `qualification_path` varchar(1000) COLLATE utf8_bin DEFAULT '' COMMENT '企业资质',
@@ -132,9 +129,9 @@ CREATE TABLE IF NOT EXISTS `oto_brand` (
 -- 转存表中的数据 `oto_brand`
 --
 
-INSERT INTO `oto_brand` (`brand_id`, `brand_type_id`, `name`, `tag`, `status`, `reach_amount`, `discount_amount`, `allowance_detail`, `recommend_reason`, `recommend_detail`, `value_added_service`, `image_path`, `qualification_path`, `create_time`) VALUES
-(1, 4, '呷哺呷哺', '火锅', 11, 100.00, 20.00, '满100减20', '好吃、方便、快捷', '蟹棒不错、肥牛分量很足', '1,2,3,4', '/upload/oto/2017-08/20170814160646_18906.png', '', '2017-08-14 09:03:35'),
-(2, 3, '真功夫', '好吃的蒸功夫', 11, 0.00, 0.00, '十大', '123', '21312', '1,2,3,4', '/upload/oto/2017-08/20170817151932_224195.png', '', '2017-08-17 15:19:49');
+INSERT INTO `oto_brand` (`brand_id`, `brand_type_id`, `name`, `tag`, `status`, `expensive_status`, `recommend_reason`, `value_added_service`, `image_path`, `qualification_path`, `create_time`) VALUES
+(1, 4, '呷哺呷哺', '2,1', 11, 1, '好吃、方便、快捷', '3,1', '/upload/oto/2017-08/20170814160646_18906.png', '', '2017-08-14 09:03:35'),
+(2, 3, '真功夫', '2,1', 11, 1, '123\r\n123\r\n123\r\n123\r\n123', '3,2,1', '/upload/oto/2017-08/20170817151932_224195.png', '/upload/oto/2017-08/20170821180731_826714.png,/upload/oto/2017-08/20170831100707_10293.png', '2017-08-17 15:19:49');
 
 -- --------------------------------------------------------
 
@@ -145,29 +142,30 @@ INSERT INTO `oto_brand` (`brand_id`, `brand_type_id`, `name`, `tag`, `status`, `
 CREATE TABLE IF NOT EXISTS `oto_brand_type` (
 `brand_type_id` int(11) unsigned NOT NULL COMMENT '品牌分类id',
   `parent_id` int(11) NOT NULL COMMENT '父分类id',
-  `name` varchar(20) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '分类名称'
+  `name` varchar(20) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '分类名称',
+  `order_number` int(8) NOT NULL DEFAULT '0' COMMENT '排序号'
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto品牌分类表' AUTO_INCREMENT=16 ;
 
 --
 -- 转存表中的数据 `oto_brand_type`
 --
 
-INSERT INTO `oto_brand_type` (`brand_type_id`, `parent_id`, `name`) VALUES
-(1, 0, '餐饮类'),
-(2, 0, '娱乐类'),
-(3, 1, '快餐'),
-(4, 1, '火锅'),
-(5, 1, '烤肉'),
-(6, 1, '米线'),
-(7, 2, 'KTV'),
-(8, 2, '台球室'),
-(9, 2, '棋牌室'),
-(10, 1, '冷饮'),
-(11, 1, '热饮'),
-(12, 1, '串串'),
-(13, 1, '自助餐'),
-(14, 1, '大排档'),
-(15, 1, '西餐');
+INSERT INTO `oto_brand_type` (`brand_type_id`, `parent_id`, `name`, `order_number`) VALUES
+(1, 0, '餐饮类', 1),
+(2, 0, '娱乐类', 2),
+(3, 1, '快餐', 0),
+(4, 1, '火锅', 0),
+(5, 1, '烤肉', 0),
+(6, 1, '米线', 0),
+(7, 2, 'KTV', 0),
+(8, 2, '台球室', 0),
+(9, 2, '棋牌室', 0),
+(10, 1, '冷饮', 0),
+(11, 1, '热饮', 0),
+(12, 1, '串串', 0),
+(13, 1, '自助餐', 0),
+(14, 1, '大排档', 0),
+(15, 1, '西餐', 0);
 
 -- --------------------------------------------------------
 
@@ -179,7 +177,7 @@ CREATE TABLE IF NOT EXISTS `oto_business_center` (
 `business_center_id` int(11) unsigned NOT NULL COMMENT '商圈id',
   `district_adcode` varchar(20) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '地区adcode',
   `name` varchar(20) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '商圈名称'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
 
 --
 -- 转存表中的数据 `oto_business_center`
@@ -187,7 +185,9 @@ CREATE TABLE IF NOT EXISTS `oto_business_center` (
 
 INSERT INTO `oto_business_center` (`business_center_id`, `district_adcode`, `name`) VALUES
 (1, '131002', '万达广场'),
-(2, '131002', '金泉广场');
+(2, '131002', '金泉广场'),
+(3, '131003', '金祥大厦'),
+(4, '131003', '万福广场');
 
 -- --------------------------------------------------------
 
@@ -204,15 +204,16 @@ CREATE TABLE IF NOT EXISTS `oto_customer_user` (
   `realname` varchar(20) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '真实姓名',
   `reg_time` datetime NOT NULL COMMENT '注册时间',
   `last_login_time` datetime NOT NULL COMMENT '最后一次登录时间'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto客户用户表' AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto客户用户表' AUTO_INCREMENT=5 ;
 
 --
 -- 转存表中的数据 `oto_customer_user`
 --
 
 INSERT INTO `oto_customer_user` (`id`, `username`, `phonenumber`, `password`, `salt`, `realname`, `reg_time`, `last_login_time`) VALUES
-(1, '18809090909', '18809090909', '4f73cde8031c091b84773a7f721f2d565c0b0e22', '1acba4', '', '2017-08-17 12:04:01', '2017-08-17 12:04:01'),
-(3, '18810498066', '18810498066', 'f92a9bc7d641946e8f3470a121497c478f4e31d2', '637fd4', '', '2017-08-17 10:04:38', '2017-08-17 10:04:38');
+(1, '18809090909', '18809090909', '4f73cde8031c091b84773a7f721f2d565c0b0e22', '1acba4', '', '2017-09-01 18:59:43', '2017-09-01 18:59:43'),
+(3, '18810498066', '18810498066', 'f92a9bc7d641946e8f3470a121497c478f4e31d2', '637fd4', '', '2017-08-17 10:04:38', '2017-08-17 10:04:38'),
+(4, '18088888888', '18088888888', 'cda2ceb800e7c32b9f9182801da79e0b14e05cab', '44f26a', '', '2017-09-01 18:22:30', '2017-09-01 18:22:30');
 
 -- --------------------------------------------------------
 
@@ -7650,6 +7651,56 @@ INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `a
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `oto_order`
+--
+
+CREATE TABLE IF NOT EXISTS `oto_order` (
+`order_id` int(11) unsigned NOT NULL COMMENT '订单id',
+  `customer_user_id` int(11) NOT NULL COMMENT '客户用户id',
+  `pay_serial_number` varchar(60) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '支付流水号',
+  `amount` double(12,2) NOT NULL COMMENT '金额',
+  `amount_paid` double(12,2) NOT NULL COMMENT '应付金额',
+  `status` int(4) NOT NULL COMMENT '订单状态 1待付款 11已付款 21已失效',
+  `pay_time` datetime NOT NULL COMMENT '付款时间',
+  `create_time` datetime NOT NULL COMMENT '创建时间'
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto订单表' AUTO_INCREMENT=5 ;
+
+--
+-- 转存表中的数据 `oto_order`
+--
+
+INSERT INTO `oto_order` (`order_id`, `customer_user_id`, `pay_serial_number`, `amount`, `amount_paid`, `status`, `pay_time`, `create_time`) VALUES
+(1, 1, '', 50.00, 50.00, 1, '0000-00-00 00:00:00', '2017-09-01 19:04:06'),
+(2, 1, '', 50.00, 50.00, 1, '0000-00-00 00:00:00', '2017-09-01 19:04:51'),
+(3, 1, '', 1000.00, 1000.00, 1, '0000-00-00 00:00:00', '2017-09-01 19:05:09'),
+(4, 1, '', 56000.00, 56000.00, 1, '0000-00-00 00:00:00', '2017-09-01 19:06:19');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `oto_order_voucher`
+--
+
+CREATE TABLE IF NOT EXISTS `oto_order_voucher` (
+  `order_id` int(11) unsigned NOT NULL COMMENT '订单id',
+  `voucher_id` int(11) unsigned NOT NULL COMMENT '代金券id',
+  `quantity` int(11) NOT NULL COMMENT '购买数量',
+  `price` double(12,2) NOT NULL COMMENT '单价价格'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto订单代金券表';
+
+--
+-- 转存表中的数据 `oto_order_voucher`
+--
+
+INSERT INTO `oto_order_voucher` (`order_id`, `voucher_id`, `quantity`, `price`) VALUES
+(1, 1, 1, 50.00),
+(2, 1, 1, 50.00),
+(3, 1, 20, 50.00),
+(4, 1, 1120, 50.00);
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `oto_rights`
 --
 
@@ -7675,8 +7726,8 @@ CREATE TABLE IF NOT EXISTS `oto_shop` (
   `district_adcode` varchar(20) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '地区adcode',
   `business_center_id` int(11) DEFAULT NULL COMMENT '商圈id',
   `address` varchar(200) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '地址',
-  `location_x` double(10,6) NOT NULL COMMENT '经度',
-  `location_y` double(10,6) NOT NULL COMMENT '维度',
+  `location_lng` double(10,6) NOT NULL COMMENT '经度',
+  `location_lat` double(10,6) NOT NULL COMMENT '维度',
   `create_time` datetime NOT NULL COMMENT '创建时间'
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto门店表' AUTO_INCREMENT=5 ;
 
@@ -7684,11 +7735,70 @@ CREATE TABLE IF NOT EXISTS `oto_shop` (
 -- 转存表中的数据 `oto_shop`
 --
 
-INSERT INTO `oto_shop` (`shop_id`, `brand_id`, `name`, `phonenumber`, `province_adcode`, `city_adcode`, `district_adcode`, `business_center_id`, `address`, `location_x`, `location_y`, `create_time`) VALUES
+INSERT INTO `oto_shop` (`shop_id`, `brand_id`, `name`, `phonenumber`, `province_adcode`, `city_adcode`, `district_adcode`, `business_center_id`, `address`, `location_lng`, `location_lat`, `create_time`) VALUES
 (1, 1, '呷哺呷哺（万达广场店）', '010-1234412', '130000', '131000', '131002', 1, '河北省廊坊市安次区万达广场5楼212室', 120.111000, 13.120000, '2017-08-14 14:52:00'),
 (2, 1, '呷哺呷哺（金泉广场店）', '010-1123123', '130000', '131000', '131002', 1, '河北省石家庄市正定县诸福屯街道迎旭大道', 116.187216, 40.041274, '2017-08-14 14:59:31'),
 (3, 2, '真功夫（亚运村店）', '010-1231231', '130000', '131000', '131002', 2, '亚运村', 119.123100, 37.123000, '2017-08-17 15:27:07'),
 (4, 2, '真功夫（大望路店）', '0212-23421213', '130000', '131000', '131002', 1, '大望路', 120.123120, 39.881231, '2017-08-17 15:38:33');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `oto_system_config`
+--
+
+CREATE TABLE IF NOT EXISTS `oto_system_config` (
+  `name` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '配置项名称',
+  `value` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '配置项值',
+  `description` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '配置项描述'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='系统配置表';
+
+--
+-- 转存表中的数据 `oto_system_config`
+--
+
+INSERT INTO `oto_system_config` (`name`, `value`, `description`) VALUES
+('SYSTEM_DATE', '2017-08-31', '系统日期');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `oto_tag`
+--
+
+CREATE TABLE IF NOT EXISTS `oto_tag` (
+`tag_id` int(11) unsigned NOT NULL COMMENT '品牌tagID',
+  `name` varchar(10) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '品牌tag名称'
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto品牌tag表' AUTO_INCREMENT=3 ;
+
+--
+-- 转存表中的数据 `oto_tag`
+--
+
+INSERT INTO `oto_tag` (`tag_id`, `name`) VALUES
+(1, '物美价廉'),
+(2, '实惠好吃');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `oto_value_added_service`
+--
+
+CREATE TABLE IF NOT EXISTS `oto_value_added_service` (
+`value_added_service_id` int(11) unsigned NOT NULL COMMENT '增值服务id',
+  `name` varchar(10) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '服务名称',
+  `image_path` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '图标路径'
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto增值服务表' AUTO_INCREMENT=4 ;
+
+--
+-- 转存表中的数据 `oto_value_added_service`
+--
+
+INSERT INTO `oto_value_added_service` (`value_added_service_id`, `name`, `image_path`) VALUES
+(1, '免费wifi', '/upload/oto/2017-08/20170829094502_712659.png'),
+(2, '免费咖啡', '/upload/oto/2017-08/20170829102812_187561.png'),
+(3, '免费停车位', '/upload/oto/2017-08/20170829103115_524294.png');
 
 -- --------------------------------------------------------
 
@@ -7700,25 +7810,54 @@ CREATE TABLE IF NOT EXISTS `oto_voucher` (
 `voucher_id` int(11) unsigned NOT NULL COMMENT '代金券id',
   `brand_id` int(11) NOT NULL COMMENT '品牌id',
   `name` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '代金券名称',
-  `quantity` int(11) NOT NULL COMMENT '数量',
+  `limit_quantity` int(11) unsigned NOT NULL COMMENT '剩余数量',
+  `sell_quantity` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '已售量',
   `face_value` double(12,2) NOT NULL COMMENT '面值',
   `price` double(12,2) NOT NULL COMMENT '价格',
-  `status` int(4) NOT NULL COMMENT '状态 1未上线,11已上线,21已下线,31已过期,',
+  `status` int(4) NOT NULL COMMENT '状态 1未上线,11已上线,12已售罄,21已下线,31已过期,',
   `discount_status` int(4) NOT NULL COMMENT '是否为周三五折 1:是,2否',
-  `discount` double(4,2) NOT NULL COMMENT '周三打折值',
+  `image_path` varchar(255) COLLATE utf8_bin NOT NULL COMMENT '主图',
   `tips` text COLLATE utf8_bin NOT NULL COMMENT '使用提示',
-  `overdue_time` datetime NOT NULL COMMENT '有效期',
-  `create_time` datetime NOT NULL COMMENT '创建时间'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+  `version_code` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '产品版本号',
+  `order_number` int(8) NOT NULL DEFAULT '0' COMMENT '排序号',
+  `start_time` datetime NOT NULL COMMENT '有效期开始日',
+  `overdue_time` datetime NOT NULL COMMENT '有效期截止日',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `online_time` datetime NOT NULL COMMENT '上线时间',
+  `account_name` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '开户户名',
+  `account_number` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '账号',
+  `account_bank_name` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '开户行',
+  `account_bank_address` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '账户地址'
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='代金券表' AUTO_INCREMENT=6 ;
 
 --
 -- 转存表中的数据 `oto_voucher`
 --
 
-INSERT INTO `oto_voucher` (`voucher_id`, `brand_id`, `name`, `quantity`, `face_value`, `price`, `status`, `discount_status`, `discount`, `tips`, `overdue_time`, `create_time`) VALUES
-(1, 1, '50元顶100元券', 200, 100.00, 50.00, 1, 1, 0.50, '请去指定店铺消费', '2017-12-12 00:00:00', '2017-08-14 17:59:38'),
-(2, 1, '80元抵100', 100, 100.00, 80.00, 1, 2, 1.00, '仅限周一至周五晚6点至10点使用', '2017-12-12 00:00:00', '2017-08-15 11:23:00'),
-(3, 2, '真功夫满20减2元', 120, 20.00, 18.00, 1, 2, 1.00, '随时使用', '2017-12-30 00:00:00', '2017-08-17 15:39:43');
+INSERT INTO `oto_voucher` (`voucher_id`, `brand_id`, `name`, `limit_quantity`, `sell_quantity`, `face_value`, `price`, `status`, `discount_status`, `image_path`, `tips`, `version_code`, `order_number`, `start_time`, `overdue_time`, `create_time`, `online_time`, `account_name`, `account_number`, `account_bank_name`, `account_bank_address`) VALUES
+(1, 1, '50元顶100元券', 21051, 4349, 100.00, 50.00, 11, 2, '/upload/oto/2017-09/20170901100816_151349.png', '请去指定店铺消费', '20170901190619008439', 10, '0000-00-00 00:00:00', '2017-12-12 23:59:59', '2017-08-14 17:59:38', '0000-00-00 00:00:00', '测试11', '12312', '北京银行', '海淀'),
+(2, 1, '80元抵100', 150, 100, 100.00, 80.00, 11, 2, '/upload/oto/2017-08/20170831100513_407275.png', '仅限周一至周五晚6点至10点使用', '20170901100720840857', 6, '0000-00-00 00:00:00', '2017-12-12 00:00:00', '2017-08-15 11:23:00', '0000-00-00 00:00:00', '测试12', '12312', '北京银行123', '海淀1231'),
+(3, 2, '真功夫满20减2元', 0, 120, 20.00, 18.00, 12, 2, '/upload/oto/2017-08/20170831100513_407275.png', '随时使用', '20170901100712326331', 4, '0000-00-00 00:00:00', '2017-12-30 00:00:00', '2017-08-17 15:39:43', '0000-00-00 00:00:00', '测试33', '123', '测试；拉', '地址啦啦啦'),
+(5, 2, '满500减100', 100, 0, 500.00, 400.00, 11, 2, '/upload/oto/2017-08/20170831100513_407275.png', '请于2017年11月01日前使用\r\n请到指定门店使用', '20170901100702528686', 22, '2017-09-01 00:00:00', '2017-11-01 00:00:00', '2017-08-30 15:47:31', '0000-00-00 00:00:00', '真功夫大额支付账户', '1000232111202211', '北京银行', '海淀区中关村丹棱街22号');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `oto_voucher_code`
+--
+
+CREATE TABLE IF NOT EXISTS `oto_voucher_code` (
+`voucher_code_id` int(11) unsigned NOT NULL COMMENT '券码id',
+  `voucher_code_number` varchar(20) COLLATE utf8_bin DEFAULT '' COMMENT '券码',
+  `order_id` int(11) NOT NULL COMMENT '订单id',
+  `voucher_id` int(11) NOT NULL COMMENT '代金券id',
+  `price` double(12,2) NOT NULL COMMENT '价格',
+  `status` int(4) NOT NULL COMMENT '状态 1未使用，11已使用 21退款中 31已退款',
+  `refund_time` datetime NOT NULL COMMENT '退款时间',
+  `used_time` datetime NOT NULL COMMENT '使用时间',
+  `start_time` datetime NOT NULL COMMENT '开始时间',
+  `overdue_time` datetime NOT NULL COMMENT '过期时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto代金券券码表' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -7728,7 +7867,7 @@ INSERT INTO `oto_voucher` (`voucher_id`, `brand_id`, `name`, `quantity`, `face_v
 
 CREATE TABLE IF NOT EXISTS `oto_voucher_shop_relation` (
   `voucher_id` int(11) unsigned NOT NULL COMMENT '代金券id',
-  `shop_id` int(11) NOT NULL COMMENT '门店id'
+  `shop_id` int(11) unsigned NOT NULL COMMENT '门店id'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto代金券门店关联表';
 
 --
@@ -7737,10 +7876,12 @@ CREATE TABLE IF NOT EXISTS `oto_voucher_shop_relation` (
 
 INSERT INTO `oto_voucher_shop_relation` (`voucher_id`, `shop_id`) VALUES
 (1, 1),
-(1, 2),
 (2, 1),
+(1, 2),
 (2, 2),
+(5, 2),
 (3, 3),
+(5, 3),
 (3, 4);
 
 --
@@ -7802,6 +7943,18 @@ ALTER TABLE `oto_map`
  ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `oto_order`
+--
+ALTER TABLE `oto_order`
+ ADD PRIMARY KEY (`order_id`);
+
+--
+-- Indexes for table `oto_order_voucher`
+--
+ALTER TABLE `oto_order_voucher`
+ ADD PRIMARY KEY (`order_id`,`voucher_id`);
+
+--
 -- Indexes for table `oto_rights`
 --
 ALTER TABLE `oto_rights`
@@ -7814,16 +7967,40 @@ ALTER TABLE `oto_shop`
  ADD PRIMARY KEY (`shop_id`);
 
 --
+-- Indexes for table `oto_system_config`
+--
+ALTER TABLE `oto_system_config`
+ ADD PRIMARY KEY (`name`);
+
+--
+-- Indexes for table `oto_tag`
+--
+ALTER TABLE `oto_tag`
+ ADD PRIMARY KEY (`tag_id`);
+
+--
+-- Indexes for table `oto_value_added_service`
+--
+ALTER TABLE `oto_value_added_service`
+ ADD PRIMARY KEY (`value_added_service_id`);
+
+--
 -- Indexes for table `oto_voucher`
 --
 ALTER TABLE `oto_voucher`
  ADD PRIMARY KEY (`voucher_id`);
 
 --
+-- Indexes for table `oto_voucher_code`
+--
+ALTER TABLE `oto_voucher_code`
+ ADD PRIMARY KEY (`voucher_code_id`);
+
+--
 -- Indexes for table `oto_voucher_shop_relation`
 --
 ALTER TABLE `oto_voucher_shop_relation`
- ADD PRIMARY KEY (`voucher_id`,`shop_id`);
+ ADD PRIMARY KEY (`voucher_id`,`shop_id`), ADD KEY `oto_voucher_shop_relation_ibfk2` (`shop_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -7848,27 +8025,47 @@ MODIFY `brand_type_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '品牌�
 -- AUTO_INCREMENT for table `oto_business_center`
 --
 ALTER TABLE `oto_business_center`
-MODIFY `business_center_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '商圈id',AUTO_INCREMENT=3;
+MODIFY `business_center_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '商圈id',AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `oto_customer_user`
 --
 ALTER TABLE `oto_customer_user`
-MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户id',AUTO_INCREMENT=4;
+MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户id',AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `oto_map`
 --
 ALTER TABLE `oto_map`
 MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7401;
 --
+-- AUTO_INCREMENT for table `oto_order`
+--
+ALTER TABLE `oto_order`
+MODIFY `order_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '订单id',AUTO_INCREMENT=5;
+--
 -- AUTO_INCREMENT for table `oto_shop`
 --
 ALTER TABLE `oto_shop`
 MODIFY `shop_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '门店id',AUTO_INCREMENT=5;
 --
+-- AUTO_INCREMENT for table `oto_tag`
+--
+ALTER TABLE `oto_tag`
+MODIFY `tag_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '品牌tagID',AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `oto_value_added_service`
+--
+ALTER TABLE `oto_value_added_service`
+MODIFY `value_added_service_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '增值服务id',AUTO_INCREMENT=4;
+--
 -- AUTO_INCREMENT for table `oto_voucher`
 --
 ALTER TABLE `oto_voucher`
-MODIFY `voucher_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '代金券id',AUTO_INCREMENT=4;
+MODIFY `voucher_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '代金券id',AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `oto_voucher_code`
+--
+ALTER TABLE `oto_voucher_code`
+MODIFY `voucher_code_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '券码id';
 --
 -- 限制导出的表
 --
@@ -7891,6 +8088,13 @@ ADD CONSTRAINT `oto_authitemchild_ibfk_2` FOREIGN KEY (`child`) REFERENCES `oto_
 --
 ALTER TABLE `oto_rights`
 ADD CONSTRAINT `oto_rights_ibfk_1` FOREIGN KEY (`itemname`) REFERENCES `oto_authitem` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- 限制表 `oto_voucher_shop_relation`
+--
+ALTER TABLE `oto_voucher_shop_relation`
+ADD CONSTRAINT `oto_voucher_shop_relation_ibfk2` FOREIGN KEY (`shop_id`) REFERENCES `oto_shop` (`shop_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `oto_voucher_shop_relation_ibfk1` FOREIGN KEY (`voucher_id`) REFERENCES `oto_voucher` (`voucher_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
