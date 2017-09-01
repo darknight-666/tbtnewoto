@@ -38,6 +38,14 @@ class UserController extends CustomerBaseController {
     }
 
     /**
+     * 退出登录
+     */
+    public function actionLogout() {
+        Yii::app()->user->logout(FALSE);
+        $this->output('ok');
+    }
+
+    /**
      * 用户详情
      */
     public function actionInfo() {
