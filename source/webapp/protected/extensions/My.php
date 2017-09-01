@@ -40,81 +40,6 @@ class My {
     }
 
     /**
-     * 获取金额
-     * @param type $moneyString 金额
-     * @return type 金额
-     */
-    static function getCompare($moneyString) {
-
-        foreach (MoneyCompare::items() as $compare) {
-
-            if (strstr($moneyString, $compare) !== false) {
-                $moneyArray = explode($compare, $moneyString);
-                $money = isset($moneyArray[1]) ? (double) $moneyArray[1] * 10000 : 0;
-                return array($compare, $money);
-            }
-        }
-        return array('=', (double) $moneyString * 10000);
-    }
-
-    /**
-     * 验证上传文件
-     * @param type $file 文件
-     * @param type $fileName 新的文件名
-     * @param type $size 图片大小
-     * @return null|string 状态码
-     */
-    static function uploadImage($file, $fileName, $size = 0, $tip = 0) {
-        if ($file == null) {
-            return null;
-        }
-        $typeArray = explode('/', $file->getType());
-        $extensionName = $file->getExtensionName(); //验证文件后缀名并声明允许的img后缀类型 By wmx
-        $imagesExtensionName = array('gif', 'jpg', 'png', 'jpeg');
-        if (!isset($typeArray[0])) {
-            return null;
-        }
-        if ($typeArray[0] != 'image') {
-            return '-1';
-        }
-        if (empty($extensionName) || !in_array($extensionName, $imagesExtensionName)) {
-            return '-1';
-        }
-        if ($size > 0 && $file->getSize() > $size) {
-            return '-2';
-        }
-        if (!isset($typeArray[0])) {
-            return null;
-        }
-        return self::upload($file, $fileName, $tip);
-    }
-
-    /**
-     * 上传
-     * @param type $file 文件
-     * @param string $fileName 新的文件名
-     * @return null 文件名
-     */
-    static function upload($file, $fileName, $tip) {
-        if ($file == null) {
-            return null;
-        }
-        $nameTypeArray = explode('.', $file->getName());
-        $nameType = end($nameTypeArray);
-        $uploadDir = './upload/' . $fileName . '/' . date('Y-m');
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0755, true);
-        }
-        if ($tip == 0) {
-            $fileName = $uploadDir . '/' . time() . '.' . $nameType;
-        } else {
-            $fileName = $uploadDir . '/' . time() . rand(100, 999) . '.' . $nameType;
-        }
-        $file->saveAs($fileName, true);
-        return trim($fileName, '.');
-    }
-
-    /**
      * 格式化时间
      * @param type $date 时间
      * @return string 时间
@@ -465,35 +390,6 @@ class My {
         return rmdir($dirName);
     }
 
-    /*     * *
-     * 获取产品列表
-     * wangchunyan
-     * 2016年01月21日
-     */
-
-    static function getProductList($status, $type = '0', $typeMark = 0) {
-        $proxyId = Yii::app()->user->getState('organization_id');
-        $ret = My::API('/sell/product/lstProducts', array('institutionid' => $proxyId, 'status' => $status, 'page_size' => 999, 'type' => $type, 'typeMark' => $typeMark));
-        $data = array();
-        if (!empty($ret['data']['products'])) {
-            foreach ($ret['data']['products'] as $k => $v) {
-                $data[$v['id']] = $v['id'] . '--' . $v['nameAbbr'];
-            }
-        }
-        return $data;
-    }
-
-    static function getProductList1($typeMark) {
-        $ret = My::API('/tong/product/institution_getallproduct', array('page_size' => 999, 'typeMark' => $typeMark));
-        $data = array();
-        if (!empty($ret['data']['products'])) {
-            foreach ($ret['data']['products'] as $k => $v) {
-                $data[$v['id']] = $v['id'] . '--' . $v['nameAbbr'];
-            }
-        }
-        return $data;
-    }
-
     /**
      * 千分位格式化
      */
@@ -510,7 +406,7 @@ class My {
         $error = current($errors);
         return $error[0];
     }
-    
+
     /**
      * upload文件增加域名
      * @param type $path
@@ -529,6 +425,16 @@ class My {
             }
             return $path;
         }
+    }
+
+    /**
+     * 获取年月日时分秒毫秒
+     */
+    static function microtime() {
+        list($mic, $time) = explode(' ', microtime());
+        $mic = substr($mic, 2,6);
+        $date = date('YmdHis', $time);
+        return $date . $mic;
     }
 
 }

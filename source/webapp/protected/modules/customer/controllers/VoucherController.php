@@ -104,7 +104,7 @@ class VoucherController extends CustomerBaseController {
         $data = $model->attributes;
         $data['brand'] = $model->brand->attributes;
         $data['brand_type'] = $model->brand->type->attributes;
-        $data['brand_tag'] = TAG::getAllByTagIdByArray($data['brand']['tag']);
+        $data['brand_tag'] = Tag::getAllByTagIdByArray($data['brand']['tag']);
         $data['brand_value_added_service'] = ValueAddedService::getAllByIdByArray($data['brand']['value_added_service']);
         $data['image_path'] = My::uploadUrlAdd($data['image_path']);
         $data['tips'] = Voucher::getTipsByArray($data['tips']);
@@ -160,8 +160,9 @@ class VoucherController extends CustomerBaseController {
         }
         $model->limit_quantity = $model->limit_quantity - $this->params['quantity']; // 库存量 -1
         $model->sell_quantity = $model->sell_quantity + $this->params['quantity']; // 已售数量 +1
-        //下单前检测数量是否发生了变化
-//        $result = $model->updateByPk($model->voucher_id, $model->attributes, 'voucher_id=:voucher_id AND sell_quantity =' . ($model->sell_quantity - $this->params['quantity']), array(':voucher_id' => $this->params['voucher_id']));
+        $model->version_code_old = $model->version_code;
+        $model->version_code = My::microtime();
+        $result = $model->updateByPk($model->voucher_id, $model->attributes, 'version_code=:version_code_old', array(':version_code_old' => $model->version_code_old));
         if (empty($result)) { // 购买失败
             $this->output('', ApiStatusCode::$error, '系统繁忙');
         } else { // 生成订单

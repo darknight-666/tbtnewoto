@@ -14,6 +14,7 @@
  * @property integer $discount_status
  * @property integer $image_path
  * @property string $tips
+ * @property string $version_code
  * @property string $start_time
  * @property string $overdue_time
  * @property string $create_time
@@ -36,7 +37,8 @@ class Voucher extends CActiveRecord {
     //ORDERWAY
     const ORDERWAY_BY_ORDERNUMBER = 1; // 排序 - 智能排序
     const ORDERWAY_BY_DISTANCE = 2; // 排序 - 距离最近
-
+    
+    public $version_code_old; //老版本号
     public $parent_id; // 一级分类类别
     public $brand_type_id; // 二级分类类别
     public $pageSize = 10;
@@ -61,6 +63,7 @@ class Voucher extends CActiveRecord {
             array('brand_id, limit_quantity, sell_quantity, status, discount_status, order_number', 'numerical', 'integerOnly' => true),
             array('face_value, price', 'numerical'),
             array('name', 'length', 'max' => 20),
+            array('version_code', 'length', 'max' => 20),
             array('image_path', 'length', 'max' => 255),
             array('parent_id, brand_type_id,', 'safe'),
             // The following rule is used by search().
@@ -160,6 +163,7 @@ class Voucher extends CActiveRecord {
     public function beforeValidate() {
         $this->create_time = !empty($this->create_time) ? $this->create_time : date('Y-m-d H:i:s');
         $this->online_time = !empty($this->online_time) ? $this->online_time : '0000-00-00 00:00:00';
+        $this->version_code = My::microtime(); // 每次更新强制更新版本号
         $this->status = !empty($this->status) ? $this->status : self::STATUS_NOTONLINE;
         if ($this->status == self::STATUS_ONLINE && $this->limit_quantity == 0) {
             $this->status = self::STATUS_SELLOUT;
@@ -176,7 +180,11 @@ class Voucher extends CActiveRecord {
         $this->overdue_time = !empty($this->overdue_time) ? $this->overdue_time . ' 23:59:59' : $this->overdue_time;
         return parent::afterValidate();
     }
-
+    
+    public function afterFind() {
+        $this->version_code_old = $this->version_code;
+        parent::afterFind();
+    }
     /**
      * 状态组
      * @return type
