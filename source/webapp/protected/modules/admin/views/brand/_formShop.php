@@ -154,22 +154,22 @@ $form = $this->beginWidget('CActiveForm', array(
                         <table>
                             <tr>
                                 <td>
-                                    <label>请输入关键字：</label>
+                                    <label>请输入关键字查询：</label>
                                 </td>
-                                <td class="column2">
-                                    <label>左击获取经纬度：</label>
-                                </td>
+                                <!--                                <td class="column2">-->
+                                <!--                                    <label>左击获取经纬度：</label>-->
+                                <!--                                </td>-->
                                 <td class="column2">
                                     <label>点击地图显示位置：</label>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <input id="tipinput" value='输入地址显示位置'/>
+                                    <input id="tipinput" value=''/>
                                 </td>
-                                <td class="column2">
-                                    <input type="text" readonly="true" id="lnglat" value='点击地图显示经纬度'/>
-                                </td>
+                                <!--                                <td class="column2">-->
+                                <!--                                    <input type="text" readonly="true" id="lnglat" value='点击地图显示经纬度'/>-->
+                                <!--                                </td>-->
                                 <td>
                                     <input type="text" id="map-mc" value='点击地图显示位置'/>
                                 </td>
@@ -258,21 +258,32 @@ if (!empty($model->location_lng) && !empty($model->location_lat)) {
         src="http://webapi.amap.com/maps?v=1.3&key=ba4de2c26e0f25b2632f1d9b4f3c3114&plugin=AMap.Autocomplete,AMap.PlaceSearch"></script>
 <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
 <script type="text/javascript">
+    var geocoder = '';
+    var search = "";
+    var flag = false;
+    AMap.service('AMap.Geocoder', function () {
+        geocoder = new AMap.Geocoder({});
+    })
     var map = new AMap.Map("container", {
         resizeEnable: true
     });
-    //为地图注册click事件获取鼠标点击出的经纬度坐标
     var clickEventListener = map.on('click', function (e) {
         marker.setPosition(e.lnglat);
+        var arr = [e.lnglat.lng, e.lnglat.lat];
+        geocoder.getAddress(arr, function (status, result) {
+            if (status === 'complete' && result.info === 'OK') {
+                document.getElementById("map-mc").value = result.regeocode.formattedAddress;
+            } else {
+                console.log("获取经纬度失败");
+            }
+        });
+        if (flag) {
+            placeSearch.setCity(search.poi.adcode);
+            placeSearch.search(search.poi.name);// }//关键字查询查询
+            flag = false;
+        }
         document.getElementById("Shop_location_lng").value = e.lnglat.getLng();
         document.getElementById("Shop_location_lat").value = e.lnglat.getLat();
-        document.getElementById("lnglat").value = e.lnglat.getLng() + ',' + e.lnglat.getLat()
-        if (e.poi && e.poi.location) {
-            map.setZoom(15);
-            map.setCenter(e.poi.location);
-            placeSearch.search(e.poi.name);  //关键字查询显示图标及名称
-            document.getElementById("map-mc").value = e.poi.name; //获取name
-        }
     });
     var auto = new AMap.Autocomplete({
         input: "tipinput"
@@ -281,9 +292,11 @@ if (!empty($model->location_lng) && !empty($model->location_lat)) {
     var autoOptions = {
         input: "tipinput"
     };
+    //增加图标
     var marker = new AMap.Marker({
         map: map,
-        bubble: true
+        bubble: true,
+//        position:[116.13612,40.058622]
     })
     var autoOptions = {
         input: "tipinput"
@@ -294,20 +307,18 @@ if (!empty($model->location_lng) && !empty($model->location_lat)) {
     }); //构造地点查询类
     AMap.event.addListener(auto, "select", select); //注册监听，当选中某条记录时会触发
     function select(e) {
-        placeSearch.setCity(e.poi.adcode);
-        placeSearch.search(e.poi.name); //关键字查询查询
-        var geocoder = '';
-        AMap.service('AMap.Geocoder', function () { //回调函数
-            geocoder = new AMap.Geocoder({});
-            geocoder.getLocation(e.poi.name, function (status, result) {
-                if (status === 'complete' && result.info === 'OK') {
-                    marker.setPosition(result.geocodes[0].location);
-                    document.getElementById("lnglat").value = result.geocodes[0].location.lng + ',' + result.geocodes[0].location.lat;
-                    document.getElementById("map-mc").value = e.poi.name; //获取name
-                } else {
-                    console.log("获取经纬度失败");
-                }
-            });
-        })
+        if (e.poi && e.poi.location) {
+            map.setZoom(15);
+            map.setCenter(e.poi.location);
+            marker.setPosition([e.poi.location.lng, e.poi.location.lat]);
+//            var arr1 = [e.poi.location.lng, e.poi.location.lat];
+            placeSearch.setCity(e.poi.adcode);
+//            placeSearch.search(e.poi.name); //关键字查询显示图标及名称
+            document.getElementById("Shop_location_lng").value = e.poi.location.lng;
+            document.getElementById("Shop_location_lat").value = e.poi.location.lat;
+            document.getElementById("map-mc").value = e.poi.name; //获取name
+        }
     }
+
+
 </script>

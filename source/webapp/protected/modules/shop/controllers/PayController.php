@@ -1,14 +1,14 @@
 <?php
 
 /**
- * 测试支付接口dome
+ * 支付接口dome
  */
-class PayController extends Controller {
+class PayController extends CustomerBaseController {
 
     /**
      * 检测银行卡是否开通银联支付
      */
-    public function ActionIndex() {
+    public function actionIndex() {
         $model = new UnionPay();
         $orderId = '20170831123456';
         $txnTime = date('YmdHis'); //YYYYMMDDhhmmss
@@ -48,7 +48,6 @@ class PayController extends Controller {
             'certifTp' => '01', //证件类型，01-身份证
             'certifId' => '510265790128303', //证件号，15位身份证不校验尾号，18位会校验尾号，请务必在前端写好校验代码
             'customerNm' => '张三', //姓名
-            'smsCode' => '654321', //短信验证码，测试环境不会真实收到短信，固定填111111。除了123456和654321固定反失败，其余固定成功。
         );
         $orderId = '20170831123456';
         $txnTime = date('YmdHis'); //YYYYMMDDhhmmss
@@ -84,14 +83,32 @@ class PayController extends Controller {
     }
     /**
      * 接收开通结果
+     * activateStatus 
+     * 0为开通
+     * 1已开通银联全渠道支付
+     * 2已开通小额认证支付
+     * 3评级开通
      */
     public function actionReceiveOpenBack(){
+        $result = $_REQUEST;
         LogServer::payLog('银联返回开通结果', '', $_REQUEST); 
+        if(isset($result['activateStatus']) && $result['activateStatus'] == 1){
+            LogServer::payLog('银联返回开通结果', '', $result['respMsg']); 
+        }else{
+            LogServer::payLog('银联返回开通结果--失败', '', $_REQUEST); 
+        }
+        
     }
     /**
      * 接收支付结果
      */
     public function actionReceivePayBack(){
         LogServer::payLog('银联返回支付结果', '', $_REQUEST); 
+    }
+    /**
+     * 接收退货结果
+     */
+    public function actionRefundPayBack(){
+        LogServer::payLog('接收退货结果', '', $_REQUEST); 
     }
 }
