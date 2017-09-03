@@ -19,6 +19,9 @@ class Order extends CActiveRecord {
     const STATUS_PAID = 11;  // 已付款
     const STATUS_OVERDUE = 21; //已失效
 
+    public $brand_id;
+    public $create_time_begin; // 下单开始时间
+    public $create_time_end; // 下单结束时间
     public $pageSize = 10;
 
     /**
@@ -35,6 +38,7 @@ class Order extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
+            array('brand_id, create_time_begin ,create_time_end', 'safe'),
             array('customer_user_id, amount, amount_paid, status, pay_time, create_time', 'required'),
             array('customer_user_id, status', 'numerical', 'integerOnly' => true),
             array('amount, amount_paid', 'numerical'),
@@ -52,6 +56,7 @@ class Order extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
+            'orderVoucher' => array(self::HAS_ONE, 'OrderVoucher', 'order_id'),
         );
     }
 
@@ -67,7 +72,8 @@ class Order extends CActiveRecord {
             'amount_paid' => '应付金额',
             'status' => '订单状态 1待付款 11已付款 21已失效',
             'pay_time' => '付款时间',
-            'create_time' => '创建时间',
+            'create_time' => '下单时间',
+            'brand_id' => '品牌',
         );
     }
 
@@ -95,14 +101,24 @@ class Order extends CActiveRecord {
 
         $criteria = new CDbCriteria;
 
-        $criteria->compare('order_id', $this->order_id, true);
-        $criteria->compare('customer_user_id', $this->customer_user_id);
-        $criteria->compare('pay_serial_number', $this->pay_serial_number, true);
-        $criteria->compare('amount', $this->amount);
-        $criteria->compare('amount_paid', $this->amount_paid);
-        $criteria->compare('status', $this->status);
-        $criteria->compare('pay_time', $this->pay_time, true);
-        $criteria->compare('create_time', $this->create_time, true);
+        $criteria->compare('t.order_id', $this->order_id, true);
+        $criteria->compare('t.customer_user_id', $this->customer_user_id);
+        $criteria->compare('t.pay_serial_number', $this->pay_serial_number, true);
+        $criteria->compare('t.amount', $this->amount);
+        $criteria->compare('t.amount_paid', $this->amount_paid);
+        $criteria->compare('t.status', $this->status);
+        $criteria->compare('t.pay_time', $this->pay_time, true);
+        if (!empty($this->create_time_begin) || !empty($this->create_time_end)) {
+            $this->create_time_begin = !empty($this->create_time_begin) ? $this->create_time_begin : $this->create_time_end;
+            $this->create_time_end = !empty($this->create_time_end) ? $this->create_time_end : $this->create_time_begin;
+            $criteria->addBetweenCondition('t.create_time', $this->create_time_begin . ' 00:00:00', $this->create_time_end . ' 23:59:59');
+        }
+        if (!empty($this->brand_id)) {
+            $criteria->join = 'LEFT JOIN oto_order_voucher as orderVoucher ON orderVoucher.order_id=t.order_id ';
+            $criteria->join.='LEFT JOIN oto_voucher as voucher ON voucher.voucher_id=orderVoucher.voucher_id ';
+            $criteria->join.='LEFT JOIN oto_brand as brand ON brand.brand_id=voucher.brand_id ';
+            $criteria->addCondition('brand.brand_id=' . $this->brand_id);
+        }
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

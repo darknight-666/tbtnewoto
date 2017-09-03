@@ -215,7 +215,7 @@ class Brand extends CActiveRecord {
      * 获取所有数据 - listData
      * @return type
      */
-    static function getAllListByListData() {
+    static function getAllByListData() {
         $data = self::getAll();
         return CHtml::listData($data, 'brand_id', 'name');
     }

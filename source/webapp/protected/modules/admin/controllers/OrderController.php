@@ -9,7 +9,14 @@ class OrderController extends AdminBaseController {
      * 代金券订单 - 列表
      */
     public function actionList() {
-        $this->render('list');
+        $model = new Order('search');
+        if (isset($_GET['Order'])) {
+            $model->attributes = $_GET['Order'];
+        }
+        $dataProvider = $model->search();
+        $list = $dataProvider->getData();
+        $pager = $dataProvider->getPagination();
+        $this->render('list', array('model' => $model, 'list' => $list, 'pager' => $pager));
     }
 
     /**

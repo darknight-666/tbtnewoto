@@ -9,61 +9,58 @@ $menu = $this->getAction()->getId();
         <h3 class="panel-title">优惠券订单</h3>
     </div>
     <div class="panel-body">
+        <?php
+        $form = $this->beginWidget('CActiveForm', array(
+            'id' => 'organization-form',
+            'enableAjaxValidation' => true,
+            'htmlOptions' => array('enctype' => 'multipart/form-data'),
+            'action' => '/admin/order/list',
+            'method' => 'GET',
+        ));
+        ?>
         <div class="section">
-            <!--            品牌-->
+            <!--品牌-->
             <div class="from-group">
-                <label for="" class="control-label">品牌</label>
-
+                <?php echo $form->labelEx($model, 'brand_id', array('class' => 'control-label')); ?>
                 <div class="from-control">
                     <div class="select">
                         <div class="select-wrap">
                             <div class="select">
                                 <div class="select-wrap">
-                                    <select>
-                                        <option value="">全部...</option>
-                                        <option value="1">111</option>
-                                        <option value="2">111</option>
-                                        <option value="3">222</option>
-                                        <option value="4">333</option>
-                                        <option value="5">333</option>
-                                    </select>
+                                    <?php
+                                    echo $form->dropDownList($model, 'brand_id', Brand::getAllByListData(), array('empty' => '请选择'))
+                                    ?>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!--            下单时间-->
+            <!--下单时间-->
             <div class="from-group">
                 <label for="" class="control-label">下单时间</label>
 
                 <div class="from-control col-lg">
                     <div class="input sm">
-                        <input maxlength="10" class="" autocomplete="off" name="FormLiborCustomer[begDate]"
-                               id="FormLiborCustomer_begDate" type="text"></div>
+                        <?php echo $form->textField($model, 'create_time_begin', array('autocomplete' => 'off', 'maxlength' => 10)); ?>
+                    </div>
                     <div class="sep">-</div>
                     <div class="input sm">
-                        <input maxlength="10" class="" autocomplete="off" name="FormLiborCustomer[endDate]"
-                               id="FormLiborCustomer_endDate" type="text"></div>
+                        <?php echo $form->textField($model, 'create_time_end', array('autocomplete' => 'off', 'maxlength' => 10)); ?>
+                    </div>
                 </div>
             </div>
-            <!--            订单状态-->
+            <!--订单状态-->
             <div class="from-group">
                 <label for="" class="control-label">订单状态</label>
-
                 <div class="from-control">
                     <div class="select">
                         <div class="select-wrap">
                             <div class="select">
                                 <div class="select-wrap">
-                                    <select>
-                                        <option value="">全部...</option>
-                                        <option value="1">111</option>
-                                        <option value="2">111</option>
-                                        <option value="3">222</option>
-                                        <option value="4">333</option>
-                                        <option value="5">333</option>
-                                    </select>
+                                    <?php
+                                    echo $form->dropDownList($model, 'status', Order::getStatusItems(), array('empty' => '请选择'))
+                                    ?>
                                 </div>
                             </div>
                         </div>
@@ -75,6 +72,7 @@ $menu = $this->getAction()->getId();
             <div class="btn-wrap">
                 <input class="btn btn-primary" name="yt0" value="查询" type="submit"></div>
         </div>
+        <?php $this->endWidget(); ?>
     </div>
 </div>
 <!--优惠券列表-->
@@ -85,41 +83,33 @@ $menu = $this->getAction()->getId();
     <div class="panel-body">
         <table class="table table-striped">
             <thead>
-            <tr role="row">
-                <th>订单编号</th>
-                <th>代金券名称</th>
-                <th>购买数量(张)</th>
-                <th>价格(元)</th>
-                <th>订单金额(元)</th>
-                <th>下单时间</th>
-                <th>订单状态</th>
-                <th>操作</th>
-            </tr>
+                <tr role="row">
+                    <th>订单编号</th>
+                    <th>代金券名称</th>
+                    <th>购买数量(张)</th>
+                    <th>价格(元)</th>
+                    <th>订单金额(元)</th>
+                    <th>下单时间</th>
+                    <th>订单状态</th>
+                    <th>操作</th>
+                </tr>
             </thead>
             <tbody>
-            <tr>
-                <td></td>
-                <td>福成100元代金券1111</td>
-                <td>2</td>
-                <td>80</td>
-                <td>2017-07-29 16:12:12</td>
-                <td>T13</td>
-                <td></td>
-                <td>
-                    <a class="btn-link" href="#">详情</a>
-            </tr>
-            <tr>
-                <td></td>
-                <td>福成100元代金券1111</td>
-                <td>2</td>
-                <td>80</td>
-                <td>2017-07-29 16:12:12</td>
-                <td>T13</td>
-                <td></td>
-                <td>
-                    <a class="btn-link" href="#">详情</a>
-            </tr>
-
+                <?php foreach ($list as $item) { ?>
+                    <tr>
+                        <td><?php echo $item->order_id ?></td>
+                        <td><?php echo $item->orderVoucher->voucher->name?></td>
+                        <td><?php echo $item->orderVoucher->quantity?></td>
+                        <td><?php echo $item->orderVoucher->price?></td>
+                        <td><?php echo $item->amount ?></td>
+                        <td><?php echo $item->create_time ?></td>
+                        <td><?php echo Order::getStatusTitle($item->status) ?></td>
+                        <td>
+                            <?php echo CHtml::link('详情', '/admin/order/detail/id/' . $item->order_id, array('class' => 'btn-link')) ?>
+                    </tr>
+                <?php } ?>
             </tbody>
         </table>
+        <?php $this->widget('application.widgets.PagerWidget', array('pages' => $pager)); ?>
     </div>
+</div>

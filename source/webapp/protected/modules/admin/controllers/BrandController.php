@@ -208,6 +208,15 @@ class BrandController extends AdminBaseController {
         $this->render('shopList', array('model' => $model, 'pager' => $pager, 'list' => $list));
     }
 
+    public function actionGetShopListByBrandId() {
+        $brandId = Yii::app()->request->getParam('brand_id');
+        $data = Shop::getAllByBrandIdbyListData($brandId);
+        echo CHtml::tag('option', array('value' => ''), '请选择', TRUE);
+        foreach ($data as $key => $value) {
+            echo CHtml::tag('option', array('value' => $key), $value, TRUE);
+        }
+    }
+
     /**
      * ********************* 增值服务 *********************
      * 增值服务 - 新增

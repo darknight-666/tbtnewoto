@@ -30,7 +30,7 @@ $menu = $this->getAction()->getId();
                             <div class="select">
                                 <div class="select-wrap">
                                     <?php
-                                    echo $form->dropDownList($model, 'brand_id', Brand::getAllListByListData(), array('empty' => '请选择'))
+                                    echo $form->dropDownList($model, 'brand_id', Brand::getAllByListData(), array('empty' => '请选择'))
                                     ?>
                                 </div>
                             </div>

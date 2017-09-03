@@ -126,12 +126,6 @@ class AdminModule extends BaseMoudle {
                         'number' => 0,
                         'itemOptions' => array('name' => 'shopUser.list', 'class' => 'second-parent'),
                     ),
-                    array(
-                        'label' => '商户账户新增',
-                        'url' => array('/admin/shopUser/add'),
-                        'number' => 0,
-                        'itemOptions' => array('name' => 'shopUser.add', 'class' => 'second-parent'),
-                    ),
                 ),
             ),
             array(

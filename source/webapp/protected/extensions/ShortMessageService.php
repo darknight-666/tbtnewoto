@@ -123,7 +123,7 @@ class ShortMessageService {
             if ($sessionCode['code'] != $code) {
                 if (YII_TBTENV == 1) { // 生产环境
                     $this->errorCode = self::ERROR_CODE_INVALID;
-                } else if ($sessionCode['code'] != '5555') {
+                } else if ($code != '5555') {
                     $this->errorCode = self::ERROR_CODE_INVALID;
                 }
             }
