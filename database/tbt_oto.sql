@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.1
+-- version 4.5.3.1
 -- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: 2017-09-01 19:15:32
--- 服务器版本： 5.5.34-0ubuntu0.13.04.1
--- PHP Version: 5.4.9-4ubuntu2.4
+-- Host: localhost
+-- Generation Time: Sep 03, 2017 at 05:43 PM
+-- Server version: 5.5.57-0ubuntu0.14.04.1
+-- PHP Version: 5.5.9-1ubuntu4.22
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `tbt_oto`
@@ -23,33 +23,33 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- 表的结构 `oto_admin`
+-- Table structure for table `oto_admin`
 --
 
-CREATE TABLE IF NOT EXISTS `oto_admin` (
-`id` int(11) unsigned NOT NULL COMMENT '系统管理员id',
+CREATE TABLE `oto_admin` (
+  `id` int(11) UNSIGNED NOT NULL COMMENT '系统管理员id',
   `username` varchar(20) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '用户名',
   `password` char(40) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '密码',
   `salt` char(6) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '密码盐值',
   `phonenumber` char(11) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '手机号',
   `realname` varchar(20) COLLATE utf8_bin DEFAULT NULL COMMENT '用户真实姓名',
   `last_login_time` datetime NOT NULL COMMENT '最后一次登陆时间'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='系统管理员' AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='系统管理员';
 
 --
--- 转存表中的数据 `oto_admin`
+-- Dumping data for table `oto_admin`
 --
 
 INSERT INTO `oto_admin` (`id`, `username`, `password`, `salt`, `phonenumber`, `realname`, `last_login_time`) VALUES
-(1, 'admin', 'a2f55585ae8b887db34fa65689dd595efe76daaa', '7e0709', '18810498066', '王明旭', '2017-08-31 20:55:09');
+(1, 'admin', 'a2f55585ae8b887db34fa65689dd595efe76daaa', '7e0709', '18810498066', '王明旭', '2017-09-03 14:36:55');
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `oto_authassignment`
+-- Table structure for table `oto_authassignment`
 --
 
-CREATE TABLE IF NOT EXISTS `oto_authassignment` (
+CREATE TABLE `oto_authassignment` (
   `itemname` varchar(64) COLLATE utf8_bin NOT NULL,
   `userid` varchar(64) COLLATE utf8_bin NOT NULL,
   `bizrule` text COLLATE utf8_bin,
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `oto_authassignment` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
--- 转存表中的数据 `oto_authassignment`
+-- Dumping data for table `oto_authassignment`
 --
 
 INSERT INTO `oto_authassignment` (`itemname`, `userid`, `bizrule`, `data`) VALUES
@@ -66,10 +66,10 @@ INSERT INTO `oto_authassignment` (`itemname`, `userid`, `bizrule`, `data`) VALUE
 -- --------------------------------------------------------
 
 --
--- 表的结构 `oto_authitem`
+-- Table structure for table `oto_authitem`
 --
 
-CREATE TABLE IF NOT EXISTS `oto_authitem` (
+CREATE TABLE `oto_authitem` (
   `name` varchar(64) COLLATE utf8_bin NOT NULL,
   `type` int(11) NOT NULL,
   `description` text COLLATE utf8_bin,
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `oto_authitem` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
--- 转存表中的数据 `oto_authitem`
+-- Dumping data for table `oto_authitem`
 --
 
 INSERT INTO `oto_authitem` (`name`, `type`, `description`, `bizrule`, `data`) VALUES
@@ -90,16 +90,16 @@ INSERT INTO `oto_authitem` (`name`, `type`, `description`, `bizrule`, `data`) VA
 -- --------------------------------------------------------
 
 --
--- 表的结构 `oto_authitemchild`
+-- Table structure for table `oto_authitemchild`
 --
 
-CREATE TABLE IF NOT EXISTS `oto_authitemchild` (
+CREATE TABLE `oto_authitemchild` (
   `parent` varchar(64) COLLATE utf8_bin NOT NULL,
   `child` varchar(64) COLLATE utf8_bin NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
--- 转存表中的数据 `oto_authitemchild`
+-- Dumping data for table `oto_authitemchild`
 --
 
 INSERT INTO `oto_authitemchild` (`parent`, `child`) VALUES
@@ -108,11 +108,11 @@ INSERT INTO `oto_authitemchild` (`parent`, `child`) VALUES
 -- --------------------------------------------------------
 
 --
--- 表的结构 `oto_brand`
+-- Table structure for table `oto_brand`
 --
 
-CREATE TABLE IF NOT EXISTS `oto_brand` (
-`brand_id` int(11) unsigned NOT NULL COMMENT '品牌id',
+CREATE TABLE `oto_brand` (
+  `brand_id` int(11) UNSIGNED NOT NULL COMMENT '品牌id',
   `brand_type_id` int(11) NOT NULL COMMENT '品牌分类id',
   `name` varchar(20) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '品牌名称',
   `tag` varchar(120) COLLATE utf8_bin DEFAULT '' COMMENT '品牌标签',
@@ -123,10 +123,10 @@ CREATE TABLE IF NOT EXISTS `oto_brand` (
   `image_path` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '品牌主图',
   `qualification_path` varchar(1000) COLLATE utf8_bin DEFAULT '' COMMENT '企业资质',
   `create_time` datetime NOT NULL COMMENT '创建时间'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto品牌表' AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto品牌表';
 
 --
--- 转存表中的数据 `oto_brand`
+-- Dumping data for table `oto_brand`
 --
 
 INSERT INTO `oto_brand` (`brand_id`, `brand_type_id`, `name`, `tag`, `status`, `expensive_status`, `recommend_reason`, `value_added_service`, `image_path`, `qualification_path`, `create_time`) VALUES
@@ -136,18 +136,18 @@ INSERT INTO `oto_brand` (`brand_id`, `brand_type_id`, `name`, `tag`, `status`, `
 -- --------------------------------------------------------
 
 --
--- 表的结构 `oto_brand_type`
+-- Table structure for table `oto_brand_type`
 --
 
-CREATE TABLE IF NOT EXISTS `oto_brand_type` (
-`brand_type_id` int(11) unsigned NOT NULL COMMENT '品牌分类id',
+CREATE TABLE `oto_brand_type` (
+  `brand_type_id` int(11) UNSIGNED NOT NULL COMMENT '品牌分类id',
   `parent_id` int(11) NOT NULL COMMENT '父分类id',
   `name` varchar(20) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '分类名称',
   `order_number` int(8) NOT NULL DEFAULT '0' COMMENT '排序号'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto品牌分类表' AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto品牌分类表';
 
 --
--- 转存表中的数据 `oto_brand_type`
+-- Dumping data for table `oto_brand_type`
 --
 
 INSERT INTO `oto_brand_type` (`brand_type_id`, `parent_id`, `name`, `order_number`) VALUES
@@ -170,17 +170,17 @@ INSERT INTO `oto_brand_type` (`brand_type_id`, `parent_id`, `name`, `order_numbe
 -- --------------------------------------------------------
 
 --
--- 表的结构 `oto_business_center`
+-- Table structure for table `oto_business_center`
 --
 
-CREATE TABLE IF NOT EXISTS `oto_business_center` (
-`business_center_id` int(11) unsigned NOT NULL COMMENT '商圈id',
+CREATE TABLE `oto_business_center` (
+  `business_center_id` int(11) UNSIGNED NOT NULL COMMENT '商圈id',
   `district_adcode` varchar(20) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '地区adcode',
   `name` varchar(20) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '商圈名称'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
--- 转存表中的数据 `oto_business_center`
+-- Dumping data for table `oto_business_center`
 --
 
 INSERT INTO `oto_business_center` (`business_center_id`, `district_adcode`, `name`) VALUES
@@ -192,11 +192,11 @@ INSERT INTO `oto_business_center` (`business_center_id`, `district_adcode`, `nam
 -- --------------------------------------------------------
 
 --
--- 表的结构 `oto_customer_user`
+-- Table structure for table `oto_customer_user`
 --
 
-CREATE TABLE IF NOT EXISTS `oto_customer_user` (
-`id` int(11) unsigned NOT NULL COMMENT '用户id',
+CREATE TABLE `oto_customer_user` (
+  `id` int(11) UNSIGNED NOT NULL COMMENT '用户id',
   `username` varchar(20) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '用户名',
   `phonenumber` char(11) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '手机号',
   `password` char(40) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '密码',
@@ -204,10 +204,10 @@ CREATE TABLE IF NOT EXISTS `oto_customer_user` (
   `realname` varchar(20) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '真实姓名',
   `reg_time` datetime NOT NULL COMMENT '注册时间',
   `last_login_time` datetime NOT NULL COMMENT '最后一次登录时间'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto客户用户表' AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto客户用户表';
 
 --
--- 转存表中的数据 `oto_customer_user`
+-- Dumping data for table `oto_customer_user`
 --
 
 INSERT INTO `oto_customer_user` (`id`, `username`, `phonenumber`, `password`, `salt`, `realname`, `reg_time`, `last_login_time`) VALUES
@@ -218,21 +218,21 @@ INSERT INTO `oto_customer_user` (`id`, `username`, `phonenumber`, `password`, `s
 -- --------------------------------------------------------
 
 --
--- 表的结构 `oto_map`
+-- Table structure for table `oto_map`
 --
 
-CREATE TABLE IF NOT EXISTS `oto_map` (
-`id` int(11) NOT NULL,
+CREATE TABLE `oto_map` (
+  `id` int(11) NOT NULL,
   `citycode` varchar(10) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `adcode` varchar(20) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `name` varchar(20) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `center` varchar(50) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `level` varchar(10) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `areacode` varchar(20) CHARACTER SET utf8 NOT NULL DEFAULT ''
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='高德地图省市区街道表' AUTO_INCREMENT=7401 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='高德地图省市区街道表';
 
 --
--- 转存表中的数据 `oto_map`
+-- Dumping data for table `oto_map`
 --
 
 INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `areacode`) VALUES
@@ -886,8 +886,7 @@ INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `a
 (648, '0312', '130682', '定州市', '114.991389,38.517602', 'district', ''),
 (649, '0312', '130683', '安国市', '115.33141,38.421367', 'district', ''),
 (650, '0312', '130684', '高碑店市', '115.882704,39.327689', 'district', ''),
-(651, '0313', '130700', '张家口市', '114.884091,40.811901', 'city', '');
-INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `areacode`) VALUES
+(651, '0313', '130700', '张家口市', '114.884091,40.811901', 'city', ''),
 (652, '0313', '130702', '桥东区', '114.885658,40.813875', 'district', ''),
 (653, '0313', '130703', '桥西区', '114.882127,40.824385', 'district', ''),
 (654, '0313', '130705', '宣化区', '115.0632,40.609368', 'district', ''),
@@ -938,7 +937,8 @@ INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `a
 (699, '0316', '131000', '廊坊市', '116.704441,39.523927', 'city', ''),
 (700, '0316', '131002', '安次区', '116.694544,39.502569', 'district', ''),
 (701, '0316', '131003', '广阳区', '116.713708,39.521931', 'district', ''),
-(702, '0316', '131022', '固安县', '116.299894,39.436468', 'district', ''),
+(702, '0316', '131022', '固安县', '116.299894,39.436468', 'district', '');
+INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `areacode`) VALUES
 (703, '0316', '131023', '永清县', '116.498089,39.319717', 'district', ''),
 (704, '0316', '131024', '香河县', '117.007161,39.757212', 'district', ''),
 (705, '0316', '131025', '大城县', '116.640735,38.699215', 'district', ''),
@@ -1529,8 +1529,7 @@ INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `a
 (1290, '0411', '210212', '得胜', '121.263493,38.808020', 'street', '15511'),
 (1291, '0411', '210212', '长城', '121.323901,38.934676', 'street', '15530'),
 (1292, '0411', '210212', '江西', '121.166656,38.851392', 'street', '15531'),
-(1293, '0411', '210212', '龙头', '121.312281,38.868042', 'street', '15532');
-INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `areacode`) VALUES
+(1293, '0411', '210212', '龙头', '121.312281,38.868042', 'street', '15532'),
 (1294, '0411', '210212', '三涧堡', '121.273314,38.912987', 'street', '15533'),
 (1295, '0411', '210212', '市场', '121.270499,38.815762', 'street', '15534'),
 (1296, '0411', '210212', '水师营', '121.248705,38.854131', 'street', '15535'),
@@ -1636,7 +1635,8 @@ INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `a
 (1396, '0429', '211400', '葫芦岛市', '120.856394,40.755572', 'city', ''),
 (1397, '0429', '211402', '连山区', '120.85937,40.755143', 'district', ''),
 (1398, '0429', '211403', '龙港区', '120.838569,40.709991', 'district', ''),
-(1399, '0429', '211404', '南票区', '120.752314,41.098813', 'district', ''),
+(1399, '0429', '211404', '南票区', '120.752314,41.098813', 'district', '');
+INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `areacode`) VALUES
 (1400, '0429', '211421', '绥中县', '120.342112,40.328407', 'district', ''),
 (1401, '0429', '211422', '建昌县', '119.807776,40.812871', 'district', ''),
 (1402, '0429', '211481', '兴城市', '120.729365,40.619413', 'district', ''),
@@ -2166,8 +2166,7 @@ INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `a
 (1926, '021', '310108', '汶水路', '121.426729,31.288940', 'street', '13831'),
 (1927, '021', '310109', '虹口区', '121.491832,31.26097', 'district', ''),
 (1928, '021', '310109', '大柏树', '121.488797,31.291088', 'street', '13804'),
-(1929, '021', '310109', '广中路', '121.469505,31.278132', 'street', '13805');
-INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `areacode`) VALUES
+(1929, '021', '310109', '广中路', '121.469505,31.278132', 'street', '13805'),
 (1930, '021', '310109', '和平公园', '121.503583,31.270206', 'street', '13807'),
 (1931, '021', '310109', '凉城', '121.471078,31.291558', 'street', '13808'),
 (1932, '021', '310109', '鲁迅公园', '121.483133,31.269617', 'street', '13809'),
@@ -2326,7 +2325,8 @@ INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `a
 (2085, '025', '320102', '锁金村', '118.815706,32.071177', 'street', '14774'),
 (2086, '025', '320102', '后宰门', '118.820298,32.046757', 'street', '14775'),
 (2087, '025', '320102', '梅园', '118.801392,32.044511', 'street', '14776'),
-(2088, '025', '320102', '红山', '118.808351,32.092424', 'street', '14777'),
+(2088, '025', '320102', '红山', '118.808351,32.092424', 'street', '14777');
+INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `areacode`) VALUES
 (2089, '025', '320102', '卫岗', '118.842122,32.037289', 'street', '14778'),
 (2090, '025', '320102', '月苑', '118.829073,32.100175', 'street', '14779'),
 (2091, '025', '320104', '秦淮区', '118.786088,32.033818', 'district', ''),
@@ -2808,8 +2808,7 @@ INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `a
 (2567, '0571', '330109', '萧金路', '120.254208,30.155736', 'street', '17310'),
 (2568, '0571', '330109', '萧绍路', '120.282462,30.164796', 'street', '17311'),
 (2569, '0571', '330109', '新街', '120.333031,30.191316', 'street', '17312'),
-(2570, '0571', '330110', '余杭区', '120.301737,30.421187', 'district', '');
-INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `areacode`) VALUES
+(2570, '0571', '330110', '余杭区', '120.301737,30.421187', 'district', ''),
 (2571, '0571', '330110', '临平', '120.300020,30.423326', 'street', '17167'),
 (2572, '0571', '330110', '仓前', '119.994198,30.285890', 'street', '17168'),
 (2573, '0571', '330110', '崇贤', '120.171373,30.391510', 'street', '17169'),
@@ -3012,7 +3011,8 @@ INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `a
 (2770, '0577', '330304', '郭溪', '120.565446,27.988189', 'street', '18168'),
 (2771, '0577', '330304', '景山', '120.636618,28.001724', 'street', '18169'),
 (2772, '0577', '330304', '瞿溪', '120.533455,27.988315', 'street', '18170'),
-(2773, '0577', '330304', '娄桥', '120.612360,27.960768', 'street', '18171'),
+(2773, '0577', '330304', '娄桥', '120.612360,27.960768', 'street', '18171');
+INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `areacode`) VALUES
 (2774, '0577', '330304', '南白象', '120.678278,27.930415', 'street', '18172'),
 (2775, '0577', '330304', '潘桥', '120.576402,27.958715', 'street', '18173'),
 (2776, '0577', '330304', '梧田', '120.674867,27.967951', 'street', '18174'),
@@ -3448,8 +3448,7 @@ INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `a
 (3206, '0591', '350103', '白马中路', '119.293441,26.068098', 'street', '18543'),
 (3207, '0591', '350103', '宝龙', '119.291665,26.061855', 'street', '18544'),
 (3208, '0591', '350103', '苍霞', '119.304924,26.049021', 'street', '18545'),
-(3209, '0591', '350103', '达道', '119.310195,26.057241', 'street', '18546');
-INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `areacode`) VALUES
+(3209, '0591', '350103', '达道', '119.310195,26.057241', 'street', '18546'),
 (3210, '0591', '350103', '高桥', '119.310745,26.072449', 'street', '18547'),
 (3211, '0591', '350103', '工业路', '119.289025,26.065536', 'street', '18548'),
 (3212, '0591', '350103', '广达路', '119.307752,26.064886', 'street', '18549'),
@@ -3703,7 +3702,8 @@ INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `a
 (3460, '0791', '360102', '八一大道', '115.904234,28.674407', 'street', '14868'),
 (3461, '0791', '360102', '百花洲', '115.894665,28.677238', 'street', '14869'),
 (3462, '0791', '360102', '南京西路', '115.913425,28.684948', 'street', '14870'),
-(3463, '0791', '360102', '省政府', '115.908710,28.676578', 'street', '14871'),
+(3463, '0791', '360102', '省政府', '115.908710,28.676578', 'street', '14871');
+INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `areacode`) VALUES
 (3464, '0791', '360102', '滕王阁', '115.883552,28.680371', 'street', '14872'),
 (3465, '0791', '360102', '青山路', '115.909711,28.695675', 'street', '14873'),
 (3466, '0791', '360102', '爱国路', '115.891204,28.692394', 'street', '14874'),
@@ -4083,8 +4083,7 @@ INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `a
 (3840, '0532', '370203', '福州北路', '120.399330,36.094882', 'street', '19908'),
 (3841, '0532', '370203', '北仲路', '120.364374,36.082666', 'street', '19913'),
 (3842, '0532', '370203', '大港', '120.336074,36.086138', 'street', '19914'),
-(3843, '0532', '370203', '合肥路', '120.418581,36.113960', 'street', '19915');
-INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `areacode`) VALUES
+(3843, '0532', '370203', '合肥路', '120.418581,36.113960', 'street', '19915'),
 (3844, '0532', '370203', '华阳路', '120.348322,36.089817', 'street', '19916'),
 (3845, '0532', '370203', '即墨路', '120.321975,36.073489', 'street', '19917'),
 (3846, '0532', '370203', '台东', '120.356505,36.082859', 'street', '19919'),
@@ -4390,7 +4389,8 @@ INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `a
 (4146, '0534', '371482', '禹城市', '116.642554,36.934485', 'district', ''),
 (4147, '0635', '371500', '聊城市', '115.980367,36.456013', 'city', ''),
 (4148, '0635', '371502', '东昌府区', '115.980023,36.45606', 'district', ''),
-(4149, '0635', '371521', '阳谷县', '115.784287,36.113708', 'district', ''),
+(4149, '0635', '371521', '阳谷县', '115.784287,36.113708', 'district', '');
+INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `areacode`) VALUES
 (4150, '0635', '371522', '莘县', '115.667291,36.237597', 'district', ''),
 (4151, '0635', '371523', '茌平县', '116.25335,36.591934', 'district', ''),
 (4152, '0635', '371524', '东阿县', '116.248855,36.336004', 'district', ''),
@@ -4722,8 +4722,7 @@ INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `a
 (4478, '0394', '411626', '淮阳县', '114.870166,33.732547', 'district', ''),
 (4479, '0394', '411627', '太康县', '114.853834,34.065312', 'district', ''),
 (4480, '0394', '411628', '鹿邑县', '115.486386,33.861067', 'district', ''),
-(4481, '0394', '411681', '项城市', '114.899521,33.443085', 'district', '');
-INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `areacode`) VALUES
+(4481, '0394', '411681', '项城市', '114.899521,33.443085', 'district', ''),
 (4482, '0396', '411700', '驻马店市', '114.024736,32.980169', 'city', ''),
 (4483, '0396', '411702', '驿城区', '114.029149,32.977559', 'district', ''),
 (4484, '0396', '411721', '西平县', '114.026864,33.382315', 'district', ''),
@@ -5083,7 +5082,8 @@ INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `a
 (4838, '0731', '430111', '东塘', '112.994720,28.168757', 'street', '19779'),
 (4839, '0731', '430111', '高桥', '113.022508,28.172998', 'street', '19780'),
 (4840, '0731', '430111', '砂子塘', '112.997399,28.161249', 'street', '19781'),
-(4841, '0731', '430111', '雨花亭', '112.997573,28.150595', 'street', '19783'),
+(4841, '0731', '430111', '雨花亭', '112.997573,28.150595', 'street', '19783');
+INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `areacode`) VALUES
 (4842, '0731', '430111', '左家塘', '113.003294,28.176401', 'street', '19784'),
 (4843, '0731', '430111', '小林子冲', '112.988135,28.177010', 'street', '19786'),
 (4844, '0731', '430111', '阿弥岭', '113.006469,28.172421', 'street', '19788'),
@@ -5363,8 +5363,7 @@ INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `a
 (5118, '020', '440111', '良田', '113.386670,23.349175', 'street', '16515'),
 (5119, '020', '440111', '太和', '113.353734,23.294082', 'street', '16516'),
 (5120, '020', '440111', '均禾', '113.275857,23.255450', 'street', '16517'),
-(5121, '020', '440111', '人和', '113.295231,23.336324', 'street', '16518');
-INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `areacode`) VALUES
+(5121, '020', '440111', '人和', '113.295231,23.336324', 'street', '16518'),
 (5122, '020', '440111', '龙归', '113.308516,23.278404', 'street', '16519'),
 (5123, '020', '440111', '神山', '113.190373,23.332962', 'street', '16520'),
 (5124, '020', '440111', '竹料', '113.363761,23.362737', 'street', '16521'),
@@ -5777,7 +5776,8 @@ INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `a
 (5531, '0771', '450107', '石埠', '108.185125,22.818064', 'street', '14804'),
 (5532, '0771', '450107', '新阳', '108.292936,22.818481', 'street', '14805'),
 (5533, '0771', '450107', '秀灵路', '108.300873,22.843898', 'street', '14806'),
-(5534, '0771', '450107', '秀厢大道', '108.317542,22.858031', 'street', '14807'),
+(5534, '0771', '450107', '秀厢大道', '108.317542,22.858031', 'street', '14807');
+INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `areacode`) VALUES
 (5535, '0771', '450107', '中华路', '108.317845,22.826923', 'street', '14808'),
 (5536, '0771', '450107', '中尧路', '108.289099,22.814477', 'street', '14809'),
 (5537, '0771', '450107', '大学东路', '108.269026,22.836408', 'street', '14817'),
@@ -6007,8 +6007,7 @@ INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `a
 (5761, '023', '500105', '铁山坪', '106.685632,29.618980', 'street', '19420'),
 (5762, '023', '500105', '寸滩', '106.583304,29.618650', 'street', '19421'),
 (5763, '023', '500105', '鱼嘴', '106.759577,29.622564', 'street', '19422'),
-(5764, '023', '500105', '兴隆', '106.536114,29.581412', 'street', '19502');
-INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `areacode`) VALUES
+(5764, '023', '500105', '兴隆', '106.536114,29.581412', 'street', '19502'),
 (5765, '023', '500106', '沙坪坝区', '106.4542,29.541224', 'district', ''),
 (5766, '023', '500106', '大学城', '106.307383,29.602916', 'street', '19371'),
 (5767, '023', '500106', '工人村', '106.468793,29.557282', 'street', '19390'),
@@ -6477,7 +6476,8 @@ INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `a
 (6230, '0836', '513327', '炉霍县', '100.679495,31.392674', 'district', ''),
 (6231, '0836', '513328', '甘孜县', '99.991753,31.61975', 'district', ''),
 (6232, '0836', '513329', '新龙县', '100.312094,30.93896', 'district', ''),
-(6233, '0836', '513330', '德格县', '98.57999,31.806729', 'district', ''),
+(6233, '0836', '513330', '德格县', '98.57999,31.806729', 'district', '');
+INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `areacode`) VALUES
 (6234, '0836', '513331', '白玉县', '98.824343,31.208805', 'district', ''),
 (6235, '0836', '513332', '石渠县', '98.100887,32.975302', 'district', ''),
 (6236, '0836', '513333', '色达县', '100.331657,32.268777', 'district', ''),
@@ -6650,8 +6650,7 @@ INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `a
 (6403, '0855', '522629', '剑河县', '108.440499,26.727349', 'district', ''),
 (6404, '0855', '522630', '台江县', '108.314637,26.669138', 'district', ''),
 (6405, '0855', '522631', '黎平县', '109.136504,26.230636', 'district', ''),
-(6406, '0855', '522632', '榕江县', '108.521026,25.931085', 'district', '');
-INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `areacode`) VALUES
+(6406, '0855', '522632', '榕江县', '108.521026,25.931085', 'district', ''),
 (6407, '0855', '522633', '从江县', '108.912648,25.747058', 'district', ''),
 (6408, '0855', '522634', '雷山县', '108.079613,26.381027', 'district', ''),
 (6409, '0855', '522635', '麻江县', '107.593172,26.494803', 'district', ''),
@@ -7172,7 +7171,8 @@ INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `a
 (6924, '0916', '610721', '南郑县', '106.942393,33.003341', 'district', ''),
 (6925, '0916', '610722', '城固县', '107.329887,33.153098', 'district', ''),
 (6926, '0916', '610723', '洋县', '107.549962,33.223283', 'district', ''),
-(6927, '0916', '610724', '西乡县', '107.765858,32.987961', 'district', ''),
+(6927, '0916', '610724', '西乡县', '107.765858,32.987961', 'district', '');
+INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `areacode`) VALUES
 (6928, '0916', '610725', '勉县', '106.680175,33.155618', 'district', ''),
 (6929, '0916', '610726', '宁强县', '106.25739,32.830806', 'district', ''),
 (6930, '0916', '610727', '略阳县', '106.153899,33.329638', 'district', ''),
@@ -7287,8 +7287,7 @@ INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `a
 (7039, '0943', '620402', '白银区', '104.17425,36.545649', 'district', ''),
 (7040, '0943', '620403', '平川区', '104.819207,36.72921', 'district', ''),
 (7041, '0943', '620421', '靖远县', '104.686972,36.561424', 'district', ''),
-(7042, '0943', '620422', '会宁县', '105.054337,35.692486', 'district', '');
-INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `areacode`) VALUES
+(7042, '0943', '620422', '会宁县', '105.054337,35.692486', 'district', ''),
 (7043, '0943', '620423', '景泰县', '104.066394,37.193519', 'district', ''),
 (7044, '0938', '620500', '天水市', '105.724998,34.578529', 'city', ''),
 (7045, '0938', '620502', '秦州区', '105.724477,34.578645', 'district', ''),
@@ -7651,60 +7650,60 @@ INSERT INTO `oto_map` (`id`, `citycode`, `adcode`, `name`, `center`, `level`, `a
 -- --------------------------------------------------------
 
 --
--- 表的结构 `oto_order`
+-- Table structure for table `oto_order`
 --
 
-CREATE TABLE IF NOT EXISTS `oto_order` (
-`order_id` int(11) unsigned NOT NULL COMMENT '订单id',
+CREATE TABLE `oto_order` (
+  `order_id` int(11) UNSIGNED ZEROFILL NOT NULL COMMENT '订单id',
   `customer_user_id` int(11) NOT NULL COMMENT '客户用户id',
   `pay_serial_number` varchar(60) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '支付流水号',
   `amount` double(12,2) NOT NULL COMMENT '金额',
   `amount_paid` double(12,2) NOT NULL COMMENT '应付金额',
   `status` int(4) NOT NULL COMMENT '订单状态 1待付款 11已付款 21已失效',
   `pay_time` datetime NOT NULL COMMENT '付款时间',
-  `create_time` datetime NOT NULL COMMENT '创建时间'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto订单表' AUTO_INCREMENT=5 ;
+  `create_time` datetime NOT NULL COMMENT '下单时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto订单表';
 
 --
--- 转存表中的数据 `oto_order`
+-- Dumping data for table `oto_order`
 --
 
 INSERT INTO `oto_order` (`order_id`, `customer_user_id`, `pay_serial_number`, `amount`, `amount_paid`, `status`, `pay_time`, `create_time`) VALUES
-(1, 1, '', 50.00, 50.00, 1, '0000-00-00 00:00:00', '2017-09-01 19:04:06'),
-(2, 1, '', 50.00, 50.00, 1, '0000-00-00 00:00:00', '2017-09-01 19:04:51'),
-(3, 1, '', 1000.00, 1000.00, 1, '0000-00-00 00:00:00', '2017-09-01 19:05:09'),
-(4, 1, '', 56000.00, 56000.00, 1, '0000-00-00 00:00:00', '2017-09-01 19:06:19');
+(00000000001, 1, '', 50.00, 50.00, 1, '0000-00-00 00:00:00', '2017-09-01 19:04:06'),
+(00000000002, 1, '', 50.00, 50.00, 1, '0000-00-00 00:00:00', '2017-09-01 19:04:51'),
+(00000000003, 1, '', 1000.00, 1000.00, 1, '0000-00-00 00:00:00', '2017-09-01 19:05:09'),
+(00000000004, 1, '', 56000.00, 56000.00, 1, '0000-00-00 00:00:00', '2017-09-02 19:06:19');
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `oto_order_voucher`
+-- Table structure for table `oto_order_voucher`
 --
 
-CREATE TABLE IF NOT EXISTS `oto_order_voucher` (
-  `order_id` int(11) unsigned NOT NULL COMMENT '订单id',
-  `voucher_id` int(11) unsigned NOT NULL COMMENT '代金券id',
+CREATE TABLE `oto_order_voucher` (
+  `order_id` int(11) UNSIGNED ZEROFILL NOT NULL COMMENT '订单id',
+  `voucher_id` int(11) UNSIGNED NOT NULL COMMENT '代金券id',
   `quantity` int(11) NOT NULL COMMENT '购买数量',
   `price` double(12,2) NOT NULL COMMENT '单价价格'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto订单代金券表';
 
 --
--- 转存表中的数据 `oto_order_voucher`
+-- Dumping data for table `oto_order_voucher`
 --
 
 INSERT INTO `oto_order_voucher` (`order_id`, `voucher_id`, `quantity`, `price`) VALUES
-(1, 1, 1, 50.00),
-(2, 1, 1, 50.00),
-(3, 1, 20, 50.00),
-(4, 1, 1120, 50.00);
+(00000000001, 1, 1, 50.00),
+(00000000002, 1, 1, 50.00),
+(00000000003, 1, 20, 50.00),
+(00000000004, 1, 1120, 50.00);
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `oto_rights`
+-- Table structure for table `oto_rights`
 --
 
-CREATE TABLE IF NOT EXISTS `oto_rights` (
+CREATE TABLE `oto_rights` (
   `itemname` varchar(64) COLLATE utf8_bin NOT NULL,
   `type` int(11) NOT NULL,
   `weight` int(11) NOT NULL
@@ -7713,11 +7712,11 @@ CREATE TABLE IF NOT EXISTS `oto_rights` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `oto_shop`
+-- Table structure for table `oto_shop`
 --
 
-CREATE TABLE IF NOT EXISTS `oto_shop` (
-`shop_id` int(11) unsigned NOT NULL COMMENT '门店id',
+CREATE TABLE `oto_shop` (
+  `shop_id` int(11) UNSIGNED NOT NULL COMMENT '门店id',
   `brand_id` int(11) NOT NULL COMMENT '品牌id',
   `name` varchar(20) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '门店名称',
   `phonenumber` varchar(20) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '门店电话',
@@ -7729,10 +7728,10 @@ CREATE TABLE IF NOT EXISTS `oto_shop` (
   `location_lng` double(10,6) NOT NULL COMMENT '经度',
   `location_lat` double(10,6) NOT NULL COMMENT '维度',
   `create_time` datetime NOT NULL COMMENT '创建时间'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto门店表' AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto门店表';
 
 --
--- 转存表中的数据 `oto_shop`
+-- Dumping data for table `oto_shop`
 --
 
 INSERT INTO `oto_shop` (`shop_id`, `brand_id`, `name`, `phonenumber`, `province_adcode`, `city_adcode`, `district_adcode`, `business_center_id`, `address`, `location_lng`, `location_lat`, `create_time`) VALUES
@@ -7744,17 +7743,44 @@ INSERT INTO `oto_shop` (`shop_id`, `brand_id`, `name`, `phonenumber`, `province_
 -- --------------------------------------------------------
 
 --
--- 表的结构 `oto_system_config`
+-- Table structure for table `oto_shop_user`
 --
 
-CREATE TABLE IF NOT EXISTS `oto_system_config` (
+CREATE TABLE `oto_shop_user` (
+  `id` int(11) UNSIGNED NOT NULL COMMENT '用户id',
+  `shop_id` int(11) UNSIGNED NOT NULL,
+  `username` varchar(20) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '用户名',
+  `phonenumber` char(11) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '手机号',
+  `password` char(40) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '密码',
+  `salt` char(6) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '盐值',
+  `status` int(4) NOT NULL COMMENT '状态 1待审核 2已开通 3已注销',
+  `realname` varchar(20) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '真实姓名',
+  `reg_time` datetime NOT NULL COMMENT '注册时间',
+  `last_login_time` datetime NOT NULL COMMENT '最后一次登录时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto商户用户表';
+
+--
+-- Dumping data for table `oto_shop_user`
+--
+
+INSERT INTO `oto_shop_user` (`id`, `shop_id`, `username`, `phonenumber`, `password`, `salt`, `status`, `realname`, `reg_time`, `last_login_time`) VALUES
+(1, 2, '18810498066', '18810498066', '8da76d4db8bb3f3fa80cd865ba8958d45a6c24a3', '6e1b8d', 11, '', '2017-09-03 17:37:34', '2017-09-03 17:37:34'),
+(2, 4, '18801010101', '18801010101', 'eaa32a48f8a6258d89807c9c06722efd0cdcb2bf', '582c0e', 11, '', '2017-09-03 15:58:45', '2017-09-03 15:58:45');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `oto_system_config`
+--
+
+CREATE TABLE `oto_system_config` (
   `name` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '配置项名称',
   `value` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '配置项值',
   `description` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '配置项描述'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='系统配置表';
 
 --
--- 转存表中的数据 `oto_system_config`
+-- Dumping data for table `oto_system_config`
 --
 
 INSERT INTO `oto_system_config` (`name`, `value`, `description`) VALUES
@@ -7763,16 +7789,16 @@ INSERT INTO `oto_system_config` (`name`, `value`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
--- 表的结构 `oto_tag`
+-- Table structure for table `oto_tag`
 --
 
-CREATE TABLE IF NOT EXISTS `oto_tag` (
-`tag_id` int(11) unsigned NOT NULL COMMENT '品牌tagID',
+CREATE TABLE `oto_tag` (
+  `tag_id` int(11) UNSIGNED NOT NULL COMMENT '品牌tagID',
   `name` varchar(10) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '品牌tag名称'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto品牌tag表' AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto品牌tag表';
 
 --
--- 转存表中的数据 `oto_tag`
+-- Dumping data for table `oto_tag`
 --
 
 INSERT INTO `oto_tag` (`tag_id`, `name`) VALUES
@@ -7782,17 +7808,17 @@ INSERT INTO `oto_tag` (`tag_id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- 表的结构 `oto_value_added_service`
+-- Table structure for table `oto_value_added_service`
 --
 
-CREATE TABLE IF NOT EXISTS `oto_value_added_service` (
-`value_added_service_id` int(11) unsigned NOT NULL COMMENT '增值服务id',
+CREATE TABLE `oto_value_added_service` (
+  `value_added_service_id` int(11) UNSIGNED NOT NULL COMMENT '增值服务id',
   `name` varchar(10) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '服务名称',
   `image_path` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '图标路径'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto增值服务表' AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto增值服务表';
 
 --
--- 转存表中的数据 `oto_value_added_service`
+-- Dumping data for table `oto_value_added_service`
 --
 
 INSERT INTO `oto_value_added_service` (`value_added_service_id`, `name`, `image_path`) VALUES
@@ -7803,15 +7829,15 @@ INSERT INTO `oto_value_added_service` (`value_added_service_id`, `name`, `image_
 -- --------------------------------------------------------
 
 --
--- 表的结构 `oto_voucher`
+-- Table structure for table `oto_voucher`
 --
 
-CREATE TABLE IF NOT EXISTS `oto_voucher` (
-`voucher_id` int(11) unsigned NOT NULL COMMENT '代金券id',
+CREATE TABLE `oto_voucher` (
+  `voucher_id` int(11) UNSIGNED NOT NULL COMMENT '代金券id',
   `brand_id` int(11) NOT NULL COMMENT '品牌id',
   `name` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '代金券名称',
-  `limit_quantity` int(11) unsigned NOT NULL COMMENT '剩余数量',
-  `sell_quantity` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '已售量',
+  `limit_quantity` int(11) UNSIGNED NOT NULL COMMENT '剩余数量',
+  `sell_quantity` int(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '已售量',
   `face_value` double(12,2) NOT NULL COMMENT '面值',
   `price` double(12,2) NOT NULL COMMENT '价格',
   `status` int(4) NOT NULL COMMENT '状态 1未上线,11已上线,12已售罄,21已下线,31已过期,',
@@ -7828,10 +7854,10 @@ CREATE TABLE IF NOT EXISTS `oto_voucher` (
   `account_number` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '账号',
   `account_bank_name` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '开户行',
   `account_bank_address` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '账户地址'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='代金券表' AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='代金券表';
 
 --
--- 转存表中的数据 `oto_voucher`
+-- Dumping data for table `oto_voucher`
 --
 
 INSERT INTO `oto_voucher` (`voucher_id`, `brand_id`, `name`, `limit_quantity`, `sell_quantity`, `face_value`, `price`, `status`, `discount_status`, `image_path`, `tips`, `version_code`, `order_number`, `start_time`, `overdue_time`, `create_time`, `online_time`, `account_name`, `account_number`, `account_bank_name`, `account_bank_address`) VALUES
@@ -7843,13 +7869,13 @@ INSERT INTO `oto_voucher` (`voucher_id`, `brand_id`, `name`, `limit_quantity`, `
 -- --------------------------------------------------------
 
 --
--- 表的结构 `oto_voucher_code`
+-- Table structure for table `oto_voucher_code`
 --
 
-CREATE TABLE IF NOT EXISTS `oto_voucher_code` (
-`voucher_code_id` int(11) unsigned NOT NULL COMMENT '券码id',
+CREATE TABLE `oto_voucher_code` (
+  `voucher_code_id` int(11) UNSIGNED NOT NULL COMMENT '券码id',
   `voucher_code_number` varchar(20) COLLATE utf8_bin DEFAULT '' COMMENT '券码',
-  `order_id` int(11) NOT NULL COMMENT '订单id',
+  `order_id` int(11) UNSIGNED ZEROFILL NOT NULL COMMENT '订单id',
   `voucher_id` int(11) NOT NULL COMMENT '代金券id',
   `price` double(12,2) NOT NULL COMMENT '价格',
   `status` int(4) NOT NULL COMMENT '状态 1未使用，11已使用 21退款中 31已退款',
@@ -7857,21 +7883,21 @@ CREATE TABLE IF NOT EXISTS `oto_voucher_code` (
   `used_time` datetime NOT NULL COMMENT '使用时间',
   `start_time` datetime NOT NULL COMMENT '开始时间',
   `overdue_time` datetime NOT NULL COMMENT '过期时间'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto代金券券码表' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto代金券券码表';
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `oto_voucher_shop_relation`
+-- Table structure for table `oto_voucher_shop_relation`
 --
 
-CREATE TABLE IF NOT EXISTS `oto_voucher_shop_relation` (
-  `voucher_id` int(11) unsigned NOT NULL COMMENT '代金券id',
-  `shop_id` int(11) unsigned NOT NULL COMMENT '门店id'
+CREATE TABLE `oto_voucher_shop_relation` (
+  `voucher_id` int(11) UNSIGNED NOT NULL COMMENT '代金券id',
+  `shop_id` int(11) UNSIGNED NOT NULL COMMENT '门店id'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='oto代金券门店关联表';
 
 --
--- 转存表中的数据 `oto_voucher_shop_relation`
+-- Dumping data for table `oto_voucher_shop_relation`
 --
 
 INSERT INTO `oto_voucher_shop_relation` (`voucher_id`, `shop_id`) VALUES
@@ -7892,115 +7918,129 @@ INSERT INTO `oto_voucher_shop_relation` (`voucher_id`, `shop_id`) VALUES
 -- Indexes for table `oto_admin`
 --
 ALTER TABLE `oto_admin`
- ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `username` (`username`), ADD UNIQUE KEY `phonenumber` (`phonenumber`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `phonenumber` (`phonenumber`);
 
 --
 -- Indexes for table `oto_authassignment`
 --
 ALTER TABLE `oto_authassignment`
- ADD PRIMARY KEY (`itemname`,`userid`);
+  ADD PRIMARY KEY (`itemname`,`userid`);
 
 --
 -- Indexes for table `oto_authitem`
 --
 ALTER TABLE `oto_authitem`
- ADD PRIMARY KEY (`name`);
+  ADD PRIMARY KEY (`name`);
 
 --
 -- Indexes for table `oto_authitemchild`
 --
 ALTER TABLE `oto_authitemchild`
- ADD PRIMARY KEY (`parent`,`child`), ADD KEY `child` (`child`);
+  ADD PRIMARY KEY (`parent`,`child`),
+  ADD KEY `child` (`child`);
 
 --
 -- Indexes for table `oto_brand`
 --
 ALTER TABLE `oto_brand`
- ADD PRIMARY KEY (`brand_id`);
+  ADD PRIMARY KEY (`brand_id`);
 
 --
 -- Indexes for table `oto_brand_type`
 --
 ALTER TABLE `oto_brand_type`
- ADD PRIMARY KEY (`brand_type_id`);
+  ADD PRIMARY KEY (`brand_type_id`);
 
 --
 -- Indexes for table `oto_business_center`
 --
 ALTER TABLE `oto_business_center`
- ADD PRIMARY KEY (`business_center_id`);
+  ADD PRIMARY KEY (`business_center_id`);
 
 --
 -- Indexes for table `oto_customer_user`
 --
 ALTER TABLE `oto_customer_user`
- ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `username` (`username`), ADD UNIQUE KEY `phonenumber` (`phonenumber`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `phonenumber` (`phonenumber`);
 
 --
 -- Indexes for table `oto_map`
 --
 ALTER TABLE `oto_map`
- ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `oto_order`
 --
 ALTER TABLE `oto_order`
- ADD PRIMARY KEY (`order_id`);
+  ADD PRIMARY KEY (`order_id`);
 
 --
 -- Indexes for table `oto_order_voucher`
 --
 ALTER TABLE `oto_order_voucher`
- ADD PRIMARY KEY (`order_id`,`voucher_id`);
+  ADD PRIMARY KEY (`order_id`,`voucher_id`);
 
 --
 -- Indexes for table `oto_rights`
 --
 ALTER TABLE `oto_rights`
- ADD PRIMARY KEY (`itemname`);
+  ADD PRIMARY KEY (`itemname`);
 
 --
 -- Indexes for table `oto_shop`
 --
 ALTER TABLE `oto_shop`
- ADD PRIMARY KEY (`shop_id`);
+  ADD PRIMARY KEY (`shop_id`);
+
+--
+-- Indexes for table `oto_shop_user`
+--
+ALTER TABLE `oto_shop_user`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `phonenumber` (`phonenumber`);
 
 --
 -- Indexes for table `oto_system_config`
 --
 ALTER TABLE `oto_system_config`
- ADD PRIMARY KEY (`name`);
+  ADD PRIMARY KEY (`name`);
 
 --
 -- Indexes for table `oto_tag`
 --
 ALTER TABLE `oto_tag`
- ADD PRIMARY KEY (`tag_id`);
+  ADD PRIMARY KEY (`tag_id`);
 
 --
 -- Indexes for table `oto_value_added_service`
 --
 ALTER TABLE `oto_value_added_service`
- ADD PRIMARY KEY (`value_added_service_id`);
+  ADD PRIMARY KEY (`value_added_service_id`);
 
 --
 -- Indexes for table `oto_voucher`
 --
 ALTER TABLE `oto_voucher`
- ADD PRIMARY KEY (`voucher_id`);
+  ADD PRIMARY KEY (`voucher_id`);
 
 --
 -- Indexes for table `oto_voucher_code`
 --
 ALTER TABLE `oto_voucher_code`
- ADD PRIMARY KEY (`voucher_code_id`);
+  ADD PRIMARY KEY (`voucher_code_id`);
 
 --
 -- Indexes for table `oto_voucher_shop_relation`
 --
 ALTER TABLE `oto_voucher_shop_relation`
- ADD PRIMARY KEY (`voucher_id`,`shop_id`), ADD KEY `oto_voucher_shop_relation_ibfk2` (`shop_id`);
+  ADD PRIMARY KEY (`voucher_id`,`shop_id`),
+  ADD KEY `oto_voucher_shop_relation_ibfk2` (`shop_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -8010,91 +8050,96 @@ ALTER TABLE `oto_voucher_shop_relation`
 -- AUTO_INCREMENT for table `oto_admin`
 --
 ALTER TABLE `oto_admin`
-MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '系统管理员id',AUTO_INCREMENT=2;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '系统管理员id', AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `oto_brand`
 --
 ALTER TABLE `oto_brand`
-MODIFY `brand_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '品牌id',AUTO_INCREMENT=3;
+  MODIFY `brand_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '品牌id', AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `oto_brand_type`
 --
 ALTER TABLE `oto_brand_type`
-MODIFY `brand_type_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '品牌分类id',AUTO_INCREMENT=16;
+  MODIFY `brand_type_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '品牌分类id', AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT for table `oto_business_center`
 --
 ALTER TABLE `oto_business_center`
-MODIFY `business_center_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '商圈id',AUTO_INCREMENT=5;
+  MODIFY `business_center_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '商圈id', AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `oto_customer_user`
 --
 ALTER TABLE `oto_customer_user`
-MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户id',AUTO_INCREMENT=5;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '用户id', AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `oto_map`
 --
 ALTER TABLE `oto_map`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7401;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7401;
 --
 -- AUTO_INCREMENT for table `oto_order`
 --
 ALTER TABLE `oto_order`
-MODIFY `order_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '订单id',AUTO_INCREMENT=5;
+  MODIFY `order_id` int(11) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT COMMENT '订单id', AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `oto_shop`
 --
 ALTER TABLE `oto_shop`
-MODIFY `shop_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '门店id',AUTO_INCREMENT=5;
+  MODIFY `shop_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '门店id', AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `oto_shop_user`
+--
+ALTER TABLE `oto_shop_user`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '用户id', AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `oto_tag`
 --
 ALTER TABLE `oto_tag`
-MODIFY `tag_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '品牌tagID',AUTO_INCREMENT=3;
+  MODIFY `tag_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '品牌tagID', AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `oto_value_added_service`
 --
 ALTER TABLE `oto_value_added_service`
-MODIFY `value_added_service_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '增值服务id',AUTO_INCREMENT=4;
+  MODIFY `value_added_service_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '增值服务id', AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `oto_voucher`
 --
 ALTER TABLE `oto_voucher`
-MODIFY `voucher_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '代金券id',AUTO_INCREMENT=6;
+  MODIFY `voucher_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '代金券id', AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `oto_voucher_code`
 --
 ALTER TABLE `oto_voucher_code`
-MODIFY `voucher_code_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '券码id';
+  MODIFY `voucher_code_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '券码id';
 --
--- 限制导出的表
+-- Constraints for dumped tables
 --
 
 --
--- 限制表 `oto_authassignment`
+-- Constraints for table `oto_authassignment`
 --
 ALTER TABLE `oto_authassignment`
-ADD CONSTRAINT `oto_authassignment_ibfk_1` FOREIGN KEY (`itemname`) REFERENCES `oto_authitem` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `oto_authassignment_ibfk_1` FOREIGN KEY (`itemname`) REFERENCES `oto_authitem` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- 限制表 `oto_authitemchild`
+-- Constraints for table `oto_authitemchild`
 --
 ALTER TABLE `oto_authitemchild`
-ADD CONSTRAINT `oto_authitemchild_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `oto_authitem` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `oto_authitemchild_ibfk_2` FOREIGN KEY (`child`) REFERENCES `oto_authitem` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `oto_authitemchild_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `oto_authitem` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `oto_authitemchild_ibfk_2` FOREIGN KEY (`child`) REFERENCES `oto_authitem` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- 限制表 `oto_rights`
+-- Constraints for table `oto_rights`
 --
 ALTER TABLE `oto_rights`
-ADD CONSTRAINT `oto_rights_ibfk_1` FOREIGN KEY (`itemname`) REFERENCES `oto_authitem` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `oto_rights_ibfk_1` FOREIGN KEY (`itemname`) REFERENCES `oto_authitem` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- 限制表 `oto_voucher_shop_relation`
+-- Constraints for table `oto_voucher_shop_relation`
 --
 ALTER TABLE `oto_voucher_shop_relation`
-ADD CONSTRAINT `oto_voucher_shop_relation_ibfk2` FOREIGN KEY (`shop_id`) REFERENCES `oto_shop` (`shop_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `oto_voucher_shop_relation_ibfk1` FOREIGN KEY (`voucher_id`) REFERENCES `oto_voucher` (`voucher_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `oto_voucher_shop_relation_ibfk2` FOREIGN KEY (`shop_id`) REFERENCES `oto_shop` (`shop_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `oto_voucher_shop_relation_ibfk1` FOREIGN KEY (`voucher_id`) REFERENCES `oto_voucher` (`voucher_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
